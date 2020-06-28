@@ -1,0 +1,7 @@
+{
+	"rules": {
+		"no-any": true,
+		"semicolon": true,
+		"encoding": true
+	}
+}
