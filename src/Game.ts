@@ -16,12 +16,10 @@ export default class Game {
 	
 	public init() {
 		Blocks.registerBlocks();
-		
 		this.app.loader.load((loader, resources) => {
 			Blocks.setTexturesOfBlocks(resources);
 			this.loaded = true;
 		});
-		
 	}
 	
 	public preInit() {

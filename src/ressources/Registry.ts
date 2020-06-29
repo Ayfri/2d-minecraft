@@ -9,7 +9,5 @@ export default abstract class Registry<K> extends Map<string, K> {
 	
 	public get<J extends K>(key: string): K | J {
 		return super.get(key);
-	};
+	}
 }
-
-// especially a subclass type

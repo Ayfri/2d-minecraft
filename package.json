@@ -23,7 +23,8 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"scripts": {
-		"compile": "webpack --config webpack.config.js && webpack-dev-server --config webpack.config.js",
+		"start": "webpack-dev-server --config webpack.config.js --progress --color --watch",
+		"compile": "webpack --config webpack.config.js",
 		"build": "webpack --config webpack.config.js --mode production"
 	},
 	"author": "Ayfri",

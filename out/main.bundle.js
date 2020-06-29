@@ -43504,14 +43504,17 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
 /* harmony import */ var _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/Blocks */ "./blocks/Blocks.ts");
-/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./world/World */ "./world/World.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./world/World */ "./world/World.ts");
+
 
 
 class Game {
     constructor(app) {
         this.app = app;
         this.loaded = false;
-        this.world = new _world_World__WEBPACK_IMPORTED_MODULE_1__["default"](app);
+        this.gameData = _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__;
+        this.world = new _world_World__WEBPACK_IMPORTED_MODULE_2__["default"](app);
     }
     init() {
         _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__["default"].registerBlocks();
@@ -43554,6 +43557,9 @@ class Block {
         this.texture = null;
     }
     setTexture(texture) {
+        if (texture.height !== 16 || texture.width !== 16) {
+            return console.error(`Texture for ${this.name} block has not the right size (16 x 16).\nSize : ${texture.height} x ${texture.width}`);
+        }
         this.texture = texture;
     }
 }
@@ -43571,26 +43577,33 @@ class Block {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Blocks; });
-/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../main */ "./main.ts");
-/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
-/* harmony import */ var _VoidBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./VoidBlock */ "./blocks/VoidBlock.ts");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "../node_modules/pixi.js/lib/pixi.es.js");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../main */ "./main.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _SimpleBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SimpleBlock */ "./blocks/SimpleBlock.ts");
+/* harmony import */ var _VoidBlock__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./VoidBlock */ "./blocks/VoidBlock.ts");
+
+
 
 
 
 class Blocks {
     static setTexturesOfBlocks(resources) {
-        for (let [name, block] of _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["blocks"]) {
-            block.setTexture(resources[name].texture);
+        for (let [name, block] of _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["blocks"]) {
+            const texture = resources[name].texture;
+            texture.baseTexture.scaleMode = pixi_js__WEBPACK_IMPORTED_MODULE_0__["SCALE_MODES"].NEAREST;
+            block.setTexture(texture);
         }
     }
     static registerBlocks() {
-        Blocks.VOID = Blocks.register('void', new _VoidBlock__WEBPACK_IMPORTED_MODULE_2__["default"]());
+        Blocks.register('void', new _VoidBlock__WEBPACK_IMPORTED_MODULE_4__["default"]());
+        Blocks.register('dirt', new _SimpleBlock__WEBPACK_IMPORTED_MODULE_3__["default"]('dirt'));
     }
     static register(name, block) {
         const path = `http://localhost:3000/assets/sprites/${name}.png`;
-        _main__WEBPACK_IMPORTED_MODULE_0__["app"].loader.add(name, path);
-        _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["blocks"].register(name, block);
-        return _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["blocks"].get(name);
+        _main__WEBPACK_IMPORTED_MODULE_1__["app"].loader.add(name, path);
+        _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["blocks"].register(name, block);
+        return _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["blocks"].get(name);
     }
 }
 
@@ -43641,6 +43654,39 @@ class VoidBlock extends _SimpleBlock__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
+/***/ "./client/renderer/Tile.ts":
+/*!*********************************!*\
+  !*** ./client/renderer/Tile.ts ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Tile; });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "../node_modules/pixi.js/lib/pixi.es.js");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../ressources/GameData */ "./ressources/GameData.ts");
+
+
+class Tile {
+    constructor(block, position) {
+        this.block = block;
+        this.position = position;
+        this.sprite = null;
+        this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"].from(block.texture);
+    }
+    getAsSprite() {
+        this.sprite.setTransform(this.position.x * _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"], this.position.y * _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"], _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"] / 16, _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"] / 16);
+        return this.sprite;
+    }
+    addToApplication(app) {
+        app.stage.addChild(this.getAsSprite());
+    }
+}
+
+
+/***/ }),
+
 /***/ "./main.ts":
 /*!*****************!*\
   !*** ./main.ts ***!
@@ -43653,30 +43699,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "app", function() { return app; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "game", function() { return game; });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "../node_modules/pixi.js/lib/pixi.es.js");
-/* harmony import */ var _blocks_Blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/Blocks */ "./blocks/Blocks.ts");
-/* harmony import */ var _Game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Game */ "./Game.ts");
-/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
-/* harmony import */ var _utils_Position__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/Position */ "./utils/Position.ts");
+/* harmony import */ var _Game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Game */ "./Game.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _utils_Position__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/Position */ "./utils/Position.ts");
 
 
 
 
-
+function putBlockWhereClicked() {
+    if (game.loaded) {
+        const position = new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](Math.round((app.renderer.plugins.interaction.mouse.global.x - (_ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"] / 2)) / _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"]), Math.round((app.renderer.plugins.interaction.mouse.global.y - (_ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"] / 2)) / _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"]));
+        game.world.addBlock(game.gameData.blocks.get('dirt'), position);
+    }
+}
+let clicking = false;
 const app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"]({
     width: window.innerWidth,
     height: window.innerHeight
 });
-const game = new _Game__WEBPACK_IMPORTED_MODULE_2__["default"](app);
+// Game
+const game = new _Game__WEBPACK_IMPORTED_MODULE_1__["default"](app);
 game.preInit();
 game.init();
+// Events
 app.ticker.add(() => {
     if (game.loaded) {
-        game.world.addBlock(_blocks_Blocks__WEBPACK_IMPORTED_MODULE_1__["default"].VOID, new _utils_Position__WEBPACK_IMPORTED_MODULE_4__["default"](0, 0));
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                game.world.addBlock(game.gameData.blocks.get('void'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](i, j));
+            }
+        }
+        game.world.addBlock(game.gameData.blocks.get('dirt'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](15, 2));
     }
 });
+// Mouse Events
+app.renderer.plugins.interaction.on('mousemove', () => {
+    if (clicking) {
+        putBlockWhereClicked();
+    }
+});
+app.renderer.plugins.interaction.on('mouseup', () => {
+    clicking = false;
+});
+app.renderer.plugins.interaction.on('mousedown', () => {
+    clicking = true;
+    putBlockWhereClicked();
+});
+// Global objects
 Object.defineProperties(window, {
+    app: {
+        value: app
+    },
     blocks: {
-        value: _ressources_GameData__WEBPACK_IMPORTED_MODULE_3__["blocks"]
+        value: game.gameData.blocks
+    },
+    game: {
+        value: game
     }
 });
 
@@ -43687,15 +43765,19 @@ Object.defineProperties(window, {
 /*!********************************!*\
   !*** ./ressources/GameData.ts ***!
   \********************************/
-/*! exports provided: blocks */
+/*! exports provided: blocks, resolution */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "blocks", function() { return blocks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolution", function() { return resolution; });
 /* harmony import */ var _SimpleRegistry__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SimpleRegistry */ "./ressources/SimpleRegistry.ts");
 
 const blocks = new _SimpleRegistry__WEBPACK_IMPORTED_MODULE_0__["default"]();
+let resolution = 32;
+// fixme: dynamic resolution not working
+// flou
 
 
 /***/ }),
@@ -43717,9 +43799,7 @@ class Registry extends Map {
     get(key) {
         return super.get(key);
     }
-    ;
 }
-// especially a subclass type
 
 
 /***/ }),
@@ -43743,38 +43823,6 @@ class SimpleRegistry extends _Registry__WEBPACK_IMPORTED_MODULE_0__["default"] {
     register(key, value) {
         this.set(key, value);
         return this;
-    }
-}
-
-
-/***/ }),
-
-/***/ "./tiles/Tile.ts":
-/*!***********************!*\
-  !*** ./tiles/Tile.ts ***!
-  \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Tile; });
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "../node_modules/pixi.js/lib/pixi.es.js");
-
-class Tile {
-    constructor(block, position) {
-        this.block = block;
-        this.position = position;
-        this.sprite = null;
-        this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__["Sprite"].from(block.texture);
-    }
-    getAsSprite() {
-        this.sprite.transform.position.x = this.position.x;
-        this.sprite.transform.position.y = this.position.y;
-        return this.sprite;
-    }
-    addToApplication(app) {
-        app.stage.addChild(this.getAsSprite());
     }
 }
 
@@ -43823,6 +43871,9 @@ class ChunkPosition {
         this.x = x;
         this.y = y;
     }
+    toString() {
+        return `[x: ${this.x}, y: ${this.y}]`;
+    }
 }
 
 
@@ -43838,18 +43889,23 @@ class ChunkPosition {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Position; });
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./types.ts");
-/* harmony import */ var _ChunkPosition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChunkPosition */ "./utils/ChunkPosition.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./types.ts");
+/* harmony import */ var _ChunkPosition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ChunkPosition */ "./utils/ChunkPosition.ts");
+
 
 
 class Position {
-    constructor(x, y, layer = _types__WEBPACK_IMPORTED_MODULE_0__["Layer"].TILE_FRONT) {
+    constructor(x, y, layer = _types__WEBPACK_IMPORTED_MODULE_1__["Layer"].TILE_FRONT) {
         this.x = x;
         this.y = y;
         this.layer = layer;
     }
     getAsChunkPosition() {
-        return new _ChunkPosition__WEBPACK_IMPORTED_MODULE_1__["default"](Math.round(this.x / 16), Math.round(this.y / 16));
+        return new _ChunkPosition__WEBPACK_IMPORTED_MODULE_2__["default"](Math.round(this.x / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]), Math.round(this.y / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]));
+    }
+    toString() {
+        return `[x: ${this.x}, y: ${this.y}, layer: ${this.layer}]`;
     }
 }
 
@@ -43869,11 +43925,13 @@ __webpack_require__.r(__webpack_exports__);
 class Chunk {
     constructor(position) {
         this.position = position;
-        this.loaded = false;
         this.blocks = new Map();
     }
     clear() {
         this.blocks.clear();
+    }
+    getBlockAt(position) {
+        return [...this.blocks.values()].find(tile => tile.position.x === position.x && tile.position.y === position.y && tile.position.layer === position.layer) || null;
     }
 }
 
@@ -43890,7 +43948,7 @@ class Chunk {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return World; });
-/* harmony import */ var _tiles_Tile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tiles/Tile */ "./tiles/Tile.ts");
+/* harmony import */ var _client_renderer_Tile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../client/renderer/Tile */ "./client/renderer/Tile.ts");
 /* harmony import */ var _utils_ChunkPosition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/ChunkPosition */ "./utils/ChunkPosition.ts");
 /* harmony import */ var _Chunk__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Chunk */ "./world/Chunk.ts");
 
@@ -43904,23 +43962,23 @@ class World {
     }
     addTile(tile) {
         const chunkPosition = tile.position.getAsChunkPosition();
-        if (!this.chunks.has(chunkPosition)) {
+        if (!this.getChunkAt(chunkPosition)) {
             this.addBlankChunk(chunkPosition);
         }
-        this.chunks.get(chunkPosition).blocks.set(tile.position, tile);
-        tile.addToApplication(this.app);
+        if (!this.getChunkAt(chunkPosition).getBlockAt(tile.position)) {
+            this.getChunkAt(chunkPosition).blocks.set(tile.position, tile);
+            tile.addToApplication(this.app);
+        }
     }
     addBlock(block, position) {
-        const chunkPosition = position.getAsChunkPosition();
-        if (!this.chunks.has(chunkPosition)) {
-            this.addBlankChunk(chunkPosition);
-        }
-        const tile = new _tiles_Tile__WEBPACK_IMPORTED_MODULE_0__["default"](block, position);
-        this.chunks.get(chunkPosition).blocks.set(position, tile);
-        tile.addToApplication(this.app);
+        const tile = new _client_renderer_Tile__WEBPACK_IMPORTED_MODULE_0__["default"](block, position);
+        this.addTile(tile);
     }
     addBlankChunk(chunkPosition) {
         this.chunks.set(chunkPosition, new _Chunk__WEBPACK_IMPORTED_MODULE_2__["default"](chunkPosition));
+    }
+    getChunkAt(position) {
+        return [...this.chunks.values()].find(chunk => chunk.position.x === position.x && chunk.position.y === position.y) || null;
     }
     clear() {
         this.chunks.forEach(chunk => chunk.clear());

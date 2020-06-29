@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
-import Block from '../blocks/Block';
-import Position from '../utils/Position';
+import Block from '../../blocks/Block';
+import {resolution} from '../../ressources/GameData';
+import Position from '../../utils/Position';
 
 export default class Tile {
 	private readonly sprite: PIXI.Sprite = null;
@@ -10,8 +11,12 @@ export default class Tile {
 	}
 	
 	public getAsSprite(): PIXI.Sprite {
-		this.sprite.transform.position.x = this.position.x;
-		this.sprite.transform.position.y = this.position.y;
+		this.sprite.setTransform(
+			this.position.x * resolution,
+			this.position.y * resolution,
+			resolution / 16,
+			resolution / 16
+		);
 		return this.sprite;
 	}
 	
