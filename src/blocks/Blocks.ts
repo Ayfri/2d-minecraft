@@ -18,6 +18,7 @@ export default class Blocks {
 	public static registerBlocks() {
 		Blocks.register('void', new VoidBlock());
 		Blocks.register('dirt', new SimpleBlock('dirt'));
+		Blocks.register('stone', new SimpleBlock('stone'));
 	}
 	
 	public static register<T extends Block>(name: string, block: T): Block | T {

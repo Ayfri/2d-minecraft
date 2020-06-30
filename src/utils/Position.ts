@@ -1,5 +1,5 @@
 import {resolution} from '../ressources/GameData';
-import {Layer} from '../types';
+import {Layer, StringPosition} from '../types';
 import ChunkPosition from './ChunkPosition';
 
 export default class Position {
@@ -8,6 +8,10 @@ export default class Position {
 	
 	public getAsChunkPosition(): ChunkPosition {
 		return new ChunkPosition(Math.round(this.x / resolution), Math.round(this.y / resolution));
+	}
+	
+	public stringify(): StringPosition {
+		return JSON.stringify(this);
 	}
 	
 	public toString(): string {

@@ -9,7 +9,7 @@ function putBlockWhereClicked(): void {
 			Math.round((app.renderer.plugins.interaction.mouse.global.x - (resolution / 2)) / resolution),
 			Math.round((app.renderer.plugins.interaction.mouse.global.y - (resolution / 2)) / resolution)
 		);
-		game.world.addBlock(game.gameData.blocks.get('dirt'), position);
+		game.world.replaceBlock(game.player.blockSelected, position);
 	}
 }
 
@@ -30,26 +30,31 @@ app.ticker.add(() => {
 	if (game.loaded) {
 		for (let i = 0; i < 8; i++) {
 			for (let j = 0; j < 8; j++) {
-				game.world.addBlock(game.gameData.blocks.get('void'), new Position(i, j));
+				game.world.placeBlock(game.gameData.blocks.get('void'), new Position(i, j));
 			}
 		}
 		
-		game.world.addBlock(game.gameData.blocks.get('dirt'), new Position(15, 2));
+		game.world.placeBlock(game.gameData.blocks.get('dirt'), new Position(15, 2));
 	}
 });
 
+game.eventHandler.on('launch', () => {
+	console.log("Game launched.");
+});
+
 // Mouse Events
-app.renderer.plugins.interaction.on('mousemove', () => {
+game.eventHandler.on('mousemove', () => {
 	if (clicking) {
 		putBlockWhereClicked();
 	}
 });
 
-app.renderer.plugins.interaction.on('mouseup', () => {
+
+game.eventHandler.on('mouseup', () => {
 	clicking = false;
 });
 
-app.renderer.plugins.interaction.on('mousedown', () => {
+game.eventHandler.on('mousedown', () => {
 	clicking = true;
 	putBlockWhereClicked();
 });

@@ -36901,6 +36901,464 @@ if (true) {
 
 /***/ }),
 
+/***/ "../node_modules/events/events.js":
+/*!****************************************!*\
+  !*** ../node_modules/events/events.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+var R = typeof Reflect === 'object' ? Reflect : null
+var ReflectApply = R && typeof R.apply === 'function'
+  ? R.apply
+  : function ReflectApply(target, receiver, args) {
+    return Function.prototype.apply.call(target, receiver, args);
+  }
+
+var ReflectOwnKeys
+if (R && typeof R.ownKeys === 'function') {
+  ReflectOwnKeys = R.ownKeys
+} else if (Object.getOwnPropertySymbols) {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target)
+      .concat(Object.getOwnPropertySymbols(target));
+  };
+} else {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target);
+  };
+}
+
+function ProcessEmitWarning(warning) {
+  if (console && console.warn) console.warn(warning);
+}
+
+var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
+  return value !== value;
+}
+
+function EventEmitter() {
+  EventEmitter.init.call(this);
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._eventsCount = 0;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+var defaultMaxListeners = 10;
+
+function checkListener(listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+}
+
+Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+  enumerable: true,
+  get: function() {
+    return defaultMaxListeners;
+  },
+  set: function(arg) {
+    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
+      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
+    }
+    defaultMaxListeners = arg;
+  }
+});
+
+EventEmitter.init = function() {
+
+  if (this._events === undefined ||
+      this._events === Object.getPrototypeOf(this)._events) {
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+  }
+
+  this._maxListeners = this._maxListeners || undefined;
+};
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
+    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
+  }
+  this._maxListeners = n;
+  return this;
+};
+
+function _getMaxListeners(that) {
+  if (that._maxListeners === undefined)
+    return EventEmitter.defaultMaxListeners;
+  return that._maxListeners;
+}
+
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return _getMaxListeners(this);
+};
+
+EventEmitter.prototype.emit = function emit(type) {
+  var args = [];
+  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+  var doError = (type === 'error');
+
+  var events = this._events;
+  if (events !== undefined)
+    doError = (doError && events.error === undefined);
+  else if (!doError)
+    return false;
+
+  // If there is no 'error' event listener then throw.
+  if (doError) {
+    var er;
+    if (args.length > 0)
+      er = args[0];
+    if (er instanceof Error) {
+      // Note: The comments on the `throw` lines are intentional, they show
+      // up in Node's output if this results in an unhandled exception.
+      throw er; // Unhandled 'error' event
+    }
+    // At least give some kind of context to the user
+    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
+    err.context = er;
+    throw err; // Unhandled 'error' event
+  }
+
+  var handler = events[type];
+
+  if (handler === undefined)
+    return false;
+
+  if (typeof handler === 'function') {
+    ReflectApply(handler, this, args);
+  } else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      ReflectApply(listeners[i], this, args);
+  }
+
+  return true;
+};
+
+function _addListener(target, type, listener, prepend) {
+  var m;
+  var events;
+  var existing;
+
+  checkListener(listener);
+
+  events = target._events;
+  if (events === undefined) {
+    events = target._events = Object.create(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener !== undefined) {
+      target.emit('newListener', type,
+                  listener.listener ? listener.listener : listener);
+
+      // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+      events = target._events;
+    }
+    existing = events[type];
+  }
+
+  if (existing === undefined) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] =
+        prepend ? [listener, existing] : [existing, listener];
+      // If we've already got an array, just append.
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    }
+
+    // Check for listener leak
+    m = _getMaxListeners(target);
+    if (m > 0 && existing.length > m && !existing.warned) {
+      existing.warned = true;
+      // No error code for this since it is a Warning
+      // eslint-disable-next-line no-restricted-syntax
+      var w = new Error('Possible EventEmitter memory leak detected. ' +
+                          existing.length + ' ' + String(type) + ' listeners ' +
+                          'added. Use emitter.setMaxListeners() to ' +
+                          'increase limit');
+      w.name = 'MaxListenersExceededWarning';
+      w.emitter = target;
+      w.type = type;
+      w.count = existing.length;
+      ProcessEmitWarning(w);
+    }
+  }
+
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.prependListener =
+    function prependListener(type, listener) {
+      return _addListener(this, type, listener, true);
+    };
+
+function onceWrapper() {
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    if (arguments.length === 0)
+      return this.listener.call(this.target);
+    return this.listener.apply(this.target, arguments);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
+  var wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
+
+EventEmitter.prototype.once = function once(type, listener) {
+  checkListener(listener);
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
+
+EventEmitter.prototype.prependOnceListener =
+    function prependOnceListener(type, listener) {
+      checkListener(listener);
+      this.prependListener(type, _onceWrap(this, type, listener));
+      return this;
+    };
+
+// Emits a 'removeListener' event if and only if the listener was removed.
+EventEmitter.prototype.removeListener =
+    function removeListener(type, listener) {
+      var list, events, position, i, originalListener;
+
+      checkListener(listener);
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      list = events[type];
+      if (list === undefined)
+        return this;
+
+      if (list === listener || list.listener === listener) {
+        if (--this._eventsCount === 0)
+          this._events = Object.create(null);
+        else {
+          delete events[type];
+          if (events.removeListener)
+            this.emit('removeListener', type, list.listener || listener);
+        }
+      } else if (typeof list !== 'function') {
+        position = -1;
+
+        for (i = list.length - 1; i >= 0; i--) {
+          if (list[i] === listener || list[i].listener === listener) {
+            originalListener = list[i].listener;
+            position = i;
+            break;
+          }
+        }
+
+        if (position < 0)
+          return this;
+
+        if (position === 0)
+          list.shift();
+        else {
+          spliceOne(list, position);
+        }
+
+        if (list.length === 1)
+          events[type] = list[0];
+
+        if (events.removeListener !== undefined)
+          this.emit('removeListener', type, originalListener || listener);
+      }
+
+      return this;
+    };
+
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+
+EventEmitter.prototype.removeAllListeners =
+    function removeAllListeners(type) {
+      var listeners, events, i;
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      // not listening for removeListener, no need to emit
+      if (events.removeListener === undefined) {
+        if (arguments.length === 0) {
+          this._events = Object.create(null);
+          this._eventsCount = 0;
+        } else if (events[type] !== undefined) {
+          if (--this._eventsCount === 0)
+            this._events = Object.create(null);
+          else
+            delete events[type];
+        }
+        return this;
+      }
+
+      // emit removeListener for all listeners on all events
+      if (arguments.length === 0) {
+        var keys = Object.keys(events);
+        var key;
+        for (i = 0; i < keys.length; ++i) {
+          key = keys[i];
+          if (key === 'removeListener') continue;
+          this.removeAllListeners(key);
+        }
+        this.removeAllListeners('removeListener');
+        this._events = Object.create(null);
+        this._eventsCount = 0;
+        return this;
+      }
+
+      listeners = events[type];
+
+      if (typeof listeners === 'function') {
+        this.removeListener(type, listeners);
+      } else if (listeners !== undefined) {
+        // LIFO order
+        for (i = listeners.length - 1; i >= 0; i--) {
+          this.removeListener(type, listeners[i]);
+        }
+      }
+
+      return this;
+    };
+
+function _listeners(target, type, unwrap) {
+  var events = target._events;
+
+  if (events === undefined)
+    return [];
+
+  var evlistener = events[type];
+  if (evlistener === undefined)
+    return [];
+
+  if (typeof evlistener === 'function')
+    return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+
+  return unwrap ?
+    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+}
+
+EventEmitter.prototype.listeners = function listeners(type) {
+  return _listeners(this, type, true);
+};
+
+EventEmitter.prototype.rawListeners = function rawListeners(type) {
+  return _listeners(this, type, false);
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
+};
+
+EventEmitter.prototype.listenerCount = listenerCount;
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events !== undefined) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener !== undefined) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
+}
+
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+};
+
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+  for (var i = 0; i < n; ++i)
+    copy[i] = arr[i];
+  return copy;
+}
+
+function spliceOne(list, index) {
+  for (; index + 1 < list.length; index++)
+    list[index] = list[index + 1];
+  list.pop();
+}
+
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+  return ret;
+}
+
+
+/***/ }),
+
 /***/ "../node_modules/ismobilejs/esm/index.js":
 /*!***********************************************!*\
   !*** ../node_modules/ismobilejs/esm/index.js ***!
@@ -43504,8 +43962,12 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
 /* harmony import */ var _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/Blocks */ "./blocks/Blocks.ts");
-/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
-/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./world/World */ "./world/World.ts");
+/* harmony import */ var _utils_EventHandler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/EventHandler */ "./utils/EventHandler.ts");
+/* harmony import */ var _client_Player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./client/Player */ "./client/Player.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./world/World */ "./world/World.ts");
+
+
 
 
 
@@ -43513,14 +43975,17 @@ class Game {
     constructor(app) {
         this.app = app;
         this.loaded = false;
-        this.gameData = _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__;
-        this.world = new _world_World__WEBPACK_IMPORTED_MODULE_2__["default"](app);
+        this.gameData = _ressources_GameData__WEBPACK_IMPORTED_MODULE_3__;
+        this.world = new _world_World__WEBPACK_IMPORTED_MODULE_4__["default"](app);
+        this.eventHandler = new _utils_EventHandler__WEBPACK_IMPORTED_MODULE_1__["default"]();
     }
     init() {
         _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__["default"].registerBlocks();
         this.app.loader.load((loader, resources) => {
             _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__["default"].setTexturesOfBlocks(resources);
+            this.player = new _client_Player__WEBPACK_IMPORTED_MODULE_2__["default"]();
             this.loaded = true;
+            this.eventHandler.emit('launch', undefined);
         });
     }
     preInit() {
@@ -43531,6 +43996,10 @@ class Game {
         this.app.renderer.view.style.display = 'block';
         this.app.renderer.autoDensity = true;
         this.app.renderer.resize(window.innerWidth - 50, window.innerHeight - 50);
+        this.app.renderer.plugins.interaction.on('mouseup', (event) => this.eventHandler.emit('mouseup', event));
+        this.app.renderer.plugins.interaction.on('mousedown', (event) => this.eventHandler.emit('mousedown', event));
+        this.app.renderer.plugins.interaction.on('mousemove', (event) => this.eventHandler.emit('mousemove', event));
+        this.app.renderer.plugins.interaction.on('click', (event) => this.eventHandler.emit('click', event));
         document.body.appendChild(this.app.view);
     }
 }
@@ -43598,6 +44067,7 @@ class Blocks {
     static registerBlocks() {
         Blocks.register('void', new _VoidBlock__WEBPACK_IMPORTED_MODULE_4__["default"]());
         Blocks.register('dirt', new _SimpleBlock__WEBPACK_IMPORTED_MODULE_3__["default"]('dirt'));
+        Blocks.register('stone', new _SimpleBlock__WEBPACK_IMPORTED_MODULE_3__["default"]('stone'));
     }
     static register(name, block) {
         const path = `http://localhost:3000/assets/sprites/${name}.png`;
@@ -43648,6 +44118,27 @@ __webpack_require__.r(__webpack_exports__);
 class VoidBlock extends _SimpleBlock__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor() {
         super('void');
+    }
+}
+
+
+/***/ }),
+
+/***/ "./client/Player.ts":
+/*!**************************!*\
+  !*** ./client/Player.ts ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Player; });
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../main */ "./main.ts");
+
+class Player {
+    constructor() {
+        this.blockSelected = _main__WEBPACK_IMPORTED_MODULE_0__["game"].gameData.blocks.get('dirt');
     }
 }
 
@@ -43709,7 +44200,7 @@ __webpack_require__.r(__webpack_exports__);
 function putBlockWhereClicked() {
     if (game.loaded) {
         const position = new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](Math.round((app.renderer.plugins.interaction.mouse.global.x - (_ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"] / 2)) / _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"]), Math.round((app.renderer.plugins.interaction.mouse.global.y - (_ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"] / 2)) / _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"]));
-        game.world.addBlock(game.gameData.blocks.get('dirt'), position);
+        game.world.replaceBlock(game.player.blockSelected, position);
     }
 }
 let clicking = false;
@@ -43726,22 +44217,25 @@ app.ticker.add(() => {
     if (game.loaded) {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                game.world.addBlock(game.gameData.blocks.get('void'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](i, j));
+                game.world.placeBlock(game.gameData.blocks.get('void'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](i, j));
             }
         }
-        game.world.addBlock(game.gameData.blocks.get('dirt'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](15, 2));
+        game.world.placeBlock(game.gameData.blocks.get('dirt'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](15, 2));
     }
 });
+game.eventHandler.on('launch', () => {
+    console.log("Game launched.");
+});
 // Mouse Events
-app.renderer.plugins.interaction.on('mousemove', () => {
+game.eventHandler.on('mousemove', () => {
     if (clicking) {
         putBlockWhereClicked();
     }
 });
-app.renderer.plugins.interaction.on('mouseup', () => {
+game.eventHandler.on('mouseup', () => {
     clicking = false;
 });
-app.renderer.plugins.interaction.on('mousedown', () => {
+game.eventHandler.on('mousedown', () => {
     clicking = true;
     putBlockWhereClicked();
 });
@@ -43777,7 +44271,6 @@ __webpack_require__.r(__webpack_exports__);
 const blocks = new _SimpleRegistry__WEBPACK_IMPORTED_MODULE_0__["default"]();
 let resolution = 32;
 // fixme: dynamic resolution not working
-// flou
 
 
 /***/ }),
@@ -43871,8 +44364,42 @@ class ChunkPosition {
         this.x = x;
         this.y = y;
     }
+    stringify() {
+        return JSON.stringify(this);
+    }
     toString() {
         return `[x: ${this.x}, y: ${this.y}]`;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./utils/EventHandler.ts":
+/*!*******************************!*\
+  !*** ./utils/EventHandler.ts ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EventHandler; });
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);
+
+class EventHandler {
+    constructor() {
+        this.emitter = new events__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    on(eventName, fn) {
+        this.emitter.on(eventName, fn);
+    }
+    off(eventName, fn) {
+        this.emitter.off(eventName, fn);
+    }
+    emit(eventName, params) {
+        this.emitter.emit(eventName, params);
     }
 }
 
@@ -43904,6 +44431,9 @@ class Position {
     getAsChunkPosition() {
         return new _ChunkPosition__WEBPACK_IMPORTED_MODULE_2__["default"](Math.round(this.x / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]), Math.round(this.y / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]));
     }
+    stringify() {
+        return JSON.stringify(this);
+    }
     toString() {
         return `[x: ${this.x}, y: ${this.y}, layer: ${this.layer}]`;
     }
@@ -43931,7 +44461,7 @@ class Chunk {
         this.blocks.clear();
     }
     getBlockAt(position) {
-        return [...this.blocks.values()].find(tile => tile.position.x === position.x && tile.position.y === position.y && tile.position.layer === position.layer) || null;
+        return this.blocks.get(position.stringify());
     }
 }
 
@@ -43960,28 +44490,46 @@ class World {
         this.chunks = new Map();
         this.addBlankChunk(new _utils_ChunkPosition__WEBPACK_IMPORTED_MODULE_1__["default"](0, 0));
     }
-    addTile(tile) {
+    placeTile(tile) {
         const chunkPosition = tile.position.getAsChunkPosition();
         if (!this.getChunkAt(chunkPosition)) {
             this.addBlankChunk(chunkPosition);
         }
         if (!this.getChunkAt(chunkPosition).getBlockAt(tile.position)) {
-            this.getChunkAt(chunkPosition).blocks.set(tile.position, tile);
+            this.getChunkAt(chunkPosition).blocks.set(tile.position.stringify(), tile);
             tile.addToApplication(this.app);
         }
     }
-    addBlock(block, position) {
+    placeBlock(block, position) {
         const tile = new _client_renderer_Tile__WEBPACK_IMPORTED_MODULE_0__["default"](block, position);
-        this.addTile(tile);
+        this.placeTile(tile);
+    }
+    replaceTile(tile) {
+        this.removeBlock(tile.position);
+        this.placeTile(tile);
+    }
+    replaceBlock(block, position) {
+        this.removeBlock(position);
+        this.placeTile(new _client_renderer_Tile__WEBPACK_IMPORTED_MODULE_0__["default"](block, position));
+    }
+    removeBlock(position) {
+        const chunk = this.getChunkAt(position.getAsChunkPosition());
+        if (chunk) {
+            const tile = chunk.getBlockAt(position);
+            if (tile) {
+                chunk.blocks.delete(position.stringify());
+            }
+            return tile;
+        }
     }
     addBlankChunk(chunkPosition) {
-        this.chunks.set(chunkPosition, new _Chunk__WEBPACK_IMPORTED_MODULE_2__["default"](chunkPosition));
+        this.chunks.set(chunkPosition.stringify(), new _Chunk__WEBPACK_IMPORTED_MODULE_2__["default"](chunkPosition));
     }
     getChunkAt(position) {
-        return [...this.chunks.values()].find(chunk => chunk.position.x === position.x && chunk.position.y === position.y) || null;
+        return this.chunks.get(position.stringify());
     }
     clear() {
-        this.chunks.forEach(chunk => chunk.clear());
+        this.chunks.forEach((chunk) => chunk.clear());
     }
 }
 
