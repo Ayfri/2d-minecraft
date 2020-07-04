@@ -1,26 +1,14 @@
 import * as PIXI from 'pixi.js';
 import Game from './Game';
-import {resolution} from './ressources/GameData';
-import Position from './utils/Position';
 
-function putBlockWhereClicked(): void {
-	if (game.loaded) {
-		const position: Position = new Position(
-			Math.round((app.renderer.plugins.interaction.mouse.global.x - (resolution / 2)) / resolution),
-			Math.round((app.renderer.plugins.interaction.mouse.global.y - (resolution / 2)) / resolution)
-		);
-		game.world.replaceBlock(game.player.blockSelected, position);
-	}
-}
-
-let clicking = false;
+// app
 export const app = new PIXI.Application({
 	width : window.innerWidth,
 	height: window.innerHeight
 });
-
 // Game
 export const game: Game = new Game(app);
+let clicking = false;
 
 game.preInit();
 game.init();
@@ -28,27 +16,25 @@ game.init();
 // Events
 app.ticker.add(() => {
 	if (game.loaded) {
-		for (let i = 0; i < 8; i++) {
-			for (let j = 0; j < 8; j++) {
-				game.world.placeBlock(game.gameData.blocks.get('void'), new Position(i, j));
-			}
-		}
-		
-		game.world.placeBlock(game.gameData.blocks.get('dirt'), new Position(15, 2));
+		game.update();
 	}
 });
 
-game.eventHandler.on('launch', () => {
-	console.log("Game launched.");
+game.eventHandler.once('launch', () => {
+	game.postInit();
+	console.log('Game launched.');
 });
 
 // Mouse Events
 game.eventHandler.on('mousemove', () => {
-	if (clicking) {
-		putBlockWhereClicked();
+	if (game.loaded) {
+		if (clicking) {
+			game.player.putBlockWhereClicked();
+		}
+		
+		game.gui.updateTilePlacingPreview();
 	}
 });
-
 
 game.eventHandler.on('mouseup', () => {
 	clicking = false;
@@ -56,7 +42,25 @@ game.eventHandler.on('mouseup', () => {
 
 game.eventHandler.on('mousedown', () => {
 	clicking = true;
-	putBlockWhereClicked();
+	game.player.putBlockWhereClicked();
+});
+
+game.eventHandler.on('keydown', (key) => {
+	switch (key.name) {
+		case '²':
+			// fixme: régler le block d'air qui remplace pas les blocks :/
+			game.player.blockSelected = game.gameData.blocks.get('air');
+			break;
+		case '&':
+			game.player.blockSelected = game.gameData.blocks.get('dirt');
+			break;
+		case 'é':
+			game.player.blockSelected = game.gameData.blocks.get('stone');
+			break;
+	}
+	
+	game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
+	
 });
 
 // Global objects

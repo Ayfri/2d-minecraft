@@ -1,10 +1,10 @@
 import Tile from '../client/renderer/Tile';
-import {StringPosition} from '../types';
+import {StringTilePosition} from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
-import Position from '../utils/Position';
+import TilePosition from '../utils/TilePosition';
 
 export default class Chunk {
-	public readonly blocks: Map<StringPosition, Tile> = new Map<StringPosition, Tile>();
+	public readonly blocks: Map<StringTilePosition, Tile> = new Map<StringTilePosition, Tile>();
 	
 	constructor(public position: ChunkPosition) {
 	}
@@ -13,7 +13,7 @@ export default class Chunk {
 		this.blocks.clear();
 	}
 	
-	public getBlockAt(position: Position) {
+	public getBlockAt(position: TilePosition) {
 		return this.blocks.get(position.stringify());
 	}
 }

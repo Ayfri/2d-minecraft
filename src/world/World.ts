@@ -3,7 +3,7 @@ import Block from '../blocks/Block';
 import Tile from '../client/renderer/Tile';
 import {StringChunkPosition} from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
-import Position from '../utils/Position';
+import TilePosition from '../utils/TilePosition';
 import Chunk from './Chunk';
 
 export default class World {
@@ -25,7 +25,7 @@ export default class World {
 		}
 	}
 	
-	public placeBlock(block: Block, position: Position): void {
+	public placeBlock(block: Block, position: TilePosition): void {
 		const tile: Tile = new Tile(block, position);
 		this.placeTile(tile);
 	}
@@ -35,16 +35,17 @@ export default class World {
 		this.placeTile(tile);
 	}
 	
-	public replaceBlock(block: Block, position: Position): void {
+	public replaceBlock(block: Block, position: TilePosition): void {
 		this.removeBlock(position);
 		this.placeTile(new Tile(block, position));
 	}
 	
-	public removeBlock(position: Position): Tile {
+	public removeBlock(position: TilePosition): Tile {
 		const chunk: Chunk = this.getChunkAt(position.getAsChunkPosition());
 		if (chunk) {
 			const tile: Tile = chunk.getBlockAt(position);
 			if (tile) {
+				tile.destroy();
 				chunk.blocks.delete(position.stringify());
 			}
 			return tile;

@@ -43962,10 +43962,18 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
 /* harmony import */ var _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/Blocks */ "./blocks/Blocks.ts");
-/* harmony import */ var _utils_EventHandler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/EventHandler */ "./utils/EventHandler.ts");
-/* harmony import */ var _client_Player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./client/Player */ "./client/Player.ts");
-/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
-/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./world/World */ "./world/World.ts");
+/* harmony import */ var _client_Gui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./client/Gui */ "./client/Gui.ts");
+/* harmony import */ var _client_input_EventHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./client/input/EventHandler */ "./client/input/EventHandler.ts");
+/* harmony import */ var _client_input_Key__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./client/input/Key */ "./client/input/Key.ts");
+/* harmony import */ var _client_input_MouseManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./client/input/MouseManager */ "./client/input/MouseManager.ts");
+/* harmony import */ var _client_Player__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./client/Player */ "./client/Player.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _utils_TilePosition__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/TilePosition */ "./utils/TilePosition.ts");
+/* harmony import */ var _world_World__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./world/World */ "./world/World.ts");
+
+
+
+
 
 
 
@@ -43974,18 +43982,23 @@ __webpack_require__.r(__webpack_exports__);
 class Game {
     constructor(app) {
         this.app = app;
+        this.gameData = _ressources_GameData__WEBPACK_IMPORTED_MODULE_6__;
         this.loaded = false;
-        this.gameData = _ressources_GameData__WEBPACK_IMPORTED_MODULE_3__;
-        this.world = new _world_World__WEBPACK_IMPORTED_MODULE_4__["default"](app);
-        this.eventHandler = new _utils_EventHandler__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        this.world = new _world_World__WEBPACK_IMPORTED_MODULE_8__["default"](app);
+        this.eventHandler = new _client_input_EventHandler__WEBPACK_IMPORTED_MODULE_2__["default"]();
+        this.mouseManager = new _client_input_MouseManager__WEBPACK_IMPORTED_MODULE_4__["default"](app);
     }
     init() {
         _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__["default"].registerBlocks();
         this.app.loader.load((loader, resources) => {
-            _blocks_Blocks__WEBPACK_IMPORTED_MODULE_0__["default"].setTexturesOfBlocks(resources);
-            this.player = new _client_Player__WEBPACK_IMPORTED_MODULE_2__["default"]();
+            for (let [name, block] of this.gameData.blocks) {
+                const texture = resources[name].texture;
+                block.setTexture(texture);
+            }
+            this.player = new _client_Player__WEBPACK_IMPORTED_MODULE_5__["default"]();
+            this.gui = new _client_Gui__WEBPACK_IMPORTED_MODULE_1__["default"](this.app);
             this.loaded = true;
-            this.eventHandler.emit('launch', undefined);
+            this.eventHandler.emit('launch');
         });
     }
     preInit() {
@@ -43995,12 +44008,55 @@ class Game {
         this.app.renderer.view.style.position = 'absolute';
         this.app.renderer.view.style.display = 'block';
         this.app.renderer.autoDensity = true;
-        this.app.renderer.resize(window.innerWidth - 50, window.innerHeight - 50);
+        this.app.renderer.resize(window.innerWidth, window.innerHeight);
         this.app.renderer.plugins.interaction.on('mouseup', (event) => this.eventHandler.emit('mouseup', event));
         this.app.renderer.plugins.interaction.on('mousedown', (event) => this.eventHandler.emit('mousedown', event));
         this.app.renderer.plugins.interaction.on('mousemove', (event) => this.eventHandler.emit('mousemove', event));
         this.app.renderer.plugins.interaction.on('click', (event) => this.eventHandler.emit('click', event));
+        document.addEventListener('keydown', (event) => {
+            const key = new _client_input_Key__WEBPACK_IMPORTED_MODULE_3__["default"](event.key);
+            key.isDown = true;
+            this.eventHandler.emit('keydown', key, event);
+        });
+        document.addEventListener('keyup', (event) => {
+            const key = new _client_input_Key__WEBPACK_IMPORTED_MODULE_3__["default"](event.key);
+            key.isUp = true;
+            this.eventHandler.emit('keyup', key, event);
+        });
         document.body.appendChild(this.app.view);
+    }
+    postInit() {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                this.world.placeBlock(this.gameData.blocks.get('void'), new _utils_TilePosition__WEBPACK_IMPORTED_MODULE_7__["default"](i, j));
+            }
+        }
+        this.world.placeBlock(this.gameData.blocks.get('dirt'), new _utils_TilePosition__WEBPACK_IMPORTED_MODULE_7__["default"](15, 2));
+    }
+    update() {
+    }
+}
+
+
+/***/ }),
+
+/***/ "./blocks/AirBlock.ts":
+/*!****************************!*\
+  !*** ./blocks/AirBlock.ts ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AirBlock; });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./types.ts");
+/* harmony import */ var _Block__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Block */ "./blocks/Block.ts");
+
+
+class AirBlock extends _Block__WEBPACK_IMPORTED_MODULE_1__["default"] {
+    constructor() {
+        super('air', _types__WEBPACK_IMPORTED_MODULE_0__["BlockType"].AIR);
     }
 }
 
@@ -44017,19 +44073,29 @@ class Game {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Block; });
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./types.ts");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "../node_modules/pixi.js/lib/pixi.es.js");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types */ "./types.ts");
+
+
 
 class Block {
-    constructor(name, type = _types__WEBPACK_IMPORTED_MODULE_0__["BlockType"].PLAIN) {
+    constructor(name, type = _types__WEBPACK_IMPORTED_MODULE_2__["BlockType"].PLAIN) {
         this.name = name;
         this.type = type;
         this.texture = null;
     }
     setTexture(texture) {
-        if (texture.height !== 16 || texture.width !== 16) {
-            return console.error(`Texture for ${this.name} block has not the right size (16 x 16).\nSize : ${texture.height} x ${texture.width}`);
+        if (texture) {
+            if (texture.height !== 16 || texture.width !== 16) {
+                return console.error(`Texture for ${this.name} block has not the right size (16 x 16).\nSize : ${texture.height} x ${texture.width}`);
+            }
+            this.texture = texture;
         }
-        this.texture = texture;
+        else {
+            this.texture = this.type === _types__WEBPACK_IMPORTED_MODULE_2__["BlockType"].AIR ? _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["blocks"].get('air').texture : _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["blocks"].get('void').texture;
+        }
+        this.texture.baseTexture.scaleMode = pixi_js__WEBPACK_IMPORTED_MODULE_0__["SCALE_MODES"].NEAREST;
     }
 }
 
@@ -44046,9 +44112,9 @@ class Block {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Blocks; });
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "../node_modules/pixi.js/lib/pixi.es.js");
-/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../main */ "./main.ts");
-/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../main */ "./main.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _AirBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AirBlock */ "./blocks/AirBlock.ts");
 /* harmony import */ var _SimpleBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SimpleBlock */ "./blocks/SimpleBlock.ts");
 /* harmony import */ var _VoidBlock__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./VoidBlock */ "./blocks/VoidBlock.ts");
 
@@ -44057,23 +44123,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Blocks {
-    static setTexturesOfBlocks(resources) {
-        for (let [name, block] of _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["blocks"]) {
-            const texture = resources[name].texture;
-            texture.baseTexture.scaleMode = pixi_js__WEBPACK_IMPORTED_MODULE_0__["SCALE_MODES"].NEAREST;
-            block.setTexture(texture);
-        }
-    }
     static registerBlocks() {
         Blocks.register('void', new _VoidBlock__WEBPACK_IMPORTED_MODULE_4__["default"]());
+        Blocks.register('air', new _AirBlock__WEBPACK_IMPORTED_MODULE_2__["default"]());
         Blocks.register('dirt', new _SimpleBlock__WEBPACK_IMPORTED_MODULE_3__["default"]('dirt'));
         Blocks.register('stone', new _SimpleBlock__WEBPACK_IMPORTED_MODULE_3__["default"]('stone'));
     }
     static register(name, block) {
         const path = `http://localhost:3000/assets/sprites/${name}.png`;
-        _main__WEBPACK_IMPORTED_MODULE_1__["app"].loader.add(name, path);
-        _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["blocks"].register(name, block);
-        return _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["blocks"].get(name);
+        _main__WEBPACK_IMPORTED_MODULE_0__["app"].loader.add(name, path);
+        _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["blocks"].register(name, block);
+        return _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["blocks"].get(name);
     }
 }
 
@@ -44090,13 +44150,11 @@ class Blocks {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SimpleBlock; });
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./types.ts");
-/* harmony import */ var _Block__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Block */ "./blocks/Block.ts");
+/* harmony import */ var _Block__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Block */ "./blocks/Block.ts");
 
-
-class SimpleBlock extends _Block__WEBPACK_IMPORTED_MODULE_1__["default"] {
+class SimpleBlock extends _Block__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(name) {
-        super(name, _types__WEBPACK_IMPORTED_MODULE_0__["BlockType"].PLAIN);
+        super(name);
     }
 }
 
@@ -44124,6 +44182,44 @@ class VoidBlock extends _SimpleBlock__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
+/***/ "./client/Gui.ts":
+/*!***********************!*\
+  !*** ./client/Gui.ts ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Gui; });
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../main */ "./main.ts");
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _utils_TilePosition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/TilePosition */ "./utils/TilePosition.ts");
+/* harmony import */ var _renderer_Tile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./renderer/Tile */ "./client/renderer/Tile.ts");
+
+
+
+
+class Gui {
+    constructor(app) {
+        this.app = app;
+        this.tilePlacingPreview = new _renderer_Tile__WEBPACK_IMPORTED_MODULE_3__["default"](_main__WEBPACK_IMPORTED_MODULE_0__["game"].player.blockSelected, _utils_TilePosition__WEBPACK_IMPORTED_MODULE_2__["default"].fromPositionToShortTilePosition(_main__WEBPACK_IMPORTED_MODULE_0__["game"].mouseManager.getMousePosition())).getAsSprite();
+        this.tilePlacingPreview.alpha = 0.4;
+        app.stage.addChild(this.tilePlacingPreview);
+    }
+    updateTilePlacingPreview() {
+        const position = _utils_TilePosition__WEBPACK_IMPORTED_MODULE_2__["default"].fromPositionToShortTilePosition(_main__WEBPACK_IMPORTED_MODULE_0__["game"].mouseManager.getMousePosition()).multiply(_ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"]);
+        this.tilePlacingPreview.position.x = position.x;
+        this.tilePlacingPreview.position.y = position.y;
+    }
+    setTextureTilePlacingPreview(texture) {
+        this.tilePlacingPreview.texture = texture;
+    }
+}
+
+
+/***/ }),
+
 /***/ "./client/Player.ts":
 /*!**************************!*\
   !*** ./client/Player.ts ***!
@@ -44135,10 +44231,96 @@ class VoidBlock extends _SimpleBlock__WEBPACK_IMPORTED_MODULE_0__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Player; });
 /* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../main */ "./main.ts");
+/* harmony import */ var _utils_TilePosition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/TilePosition */ "./utils/TilePosition.ts");
+
 
 class Player {
     constructor() {
         this.blockSelected = _main__WEBPACK_IMPORTED_MODULE_0__["game"].gameData.blocks.get('dirt');
+    }
+    putBlockWhereClicked() {
+        const position = _utils_TilePosition__WEBPACK_IMPORTED_MODULE_1__["default"].fromPositionToShortTilePosition(_main__WEBPACK_IMPORTED_MODULE_0__["game"].mouseManager.getMousePosition());
+        _main__WEBPACK_IMPORTED_MODULE_0__["game"].world.replaceBlock(this.blockSelected, position);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./client/input/EventHandler.ts":
+/*!**************************************!*\
+  !*** ./client/input/EventHandler.ts ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EventHandler; });
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);
+
+class EventHandler {
+    constructor() {
+        this.emitter = new events__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    on(eventName, fn) {
+        this.emitter.on(eventName, fn);
+    }
+    once(eventName, fn) {
+        this.emitter.once(eventName, fn);
+    }
+    off(eventName, fn) {
+        this.emitter.off(eventName, fn);
+    }
+    emit(eventName, ...params) {
+        this.emitter.emit(eventName, ...params);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./client/input/Key.ts":
+/*!*****************************!*\
+  !*** ./client/input/Key.ts ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Key; });
+class Key {
+    constructor(name) {
+        this.name = name;
+        this.isDown = false;
+        this.isUp = false;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./client/input/MouseManager.ts":
+/*!**************************************!*\
+  !*** ./client/input/MouseManager.ts ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MouseManager; });
+/* harmony import */ var _utils_Position__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/Position */ "./utils/Position.ts");
+
+class MouseManager {
+    constructor(app) {
+        this.app = app;
+        this.mouse = app.renderer.plugins.interaction.mouse;
+    }
+    getMousePosition() {
+        return new _utils_Position__WEBPACK_IMPORTED_MODULE_0__["default"](this.mouse.global.x, this.mouse.global.y);
     }
 }
 
@@ -44170,6 +44352,9 @@ class Tile {
         this.sprite.setTransform(this.position.x * _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"], this.position.y * _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"], _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"] / 16, _ressources_GameData__WEBPACK_IMPORTED_MODULE_1__["resolution"] / 16);
         return this.sprite;
     }
+    destroy() {
+        this.sprite.destroy();
+    }
     addToApplication(app) {
         app.stage.addChild(this.getAsSprite());
     }
@@ -44191,45 +44376,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "game", function() { return game; });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "../node_modules/pixi.js/lib/pixi.es.js");
 /* harmony import */ var _Game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Game */ "./Game.ts");
-/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ressources/GameData */ "./ressources/GameData.ts");
-/* harmony import */ var _utils_Position__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/Position */ "./utils/Position.ts");
 
 
-
-
-function putBlockWhereClicked() {
-    if (game.loaded) {
-        const position = new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](Math.round((app.renderer.plugins.interaction.mouse.global.x - (_ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"] / 2)) / _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"]), Math.round((app.renderer.plugins.interaction.mouse.global.y - (_ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"] / 2)) / _ressources_GameData__WEBPACK_IMPORTED_MODULE_2__["resolution"]));
-        game.world.replaceBlock(game.player.blockSelected, position);
-    }
-}
-let clicking = false;
+// app
 const app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"]({
     width: window.innerWidth,
     height: window.innerHeight
 });
 // Game
 const game = new _Game__WEBPACK_IMPORTED_MODULE_1__["default"](app);
+let clicking = false;
 game.preInit();
 game.init();
 // Events
 app.ticker.add(() => {
     if (game.loaded) {
-        for (let i = 0; i < 8; i++) {
-            for (let j = 0; j < 8; j++) {
-                game.world.placeBlock(game.gameData.blocks.get('void'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](i, j));
-            }
-        }
-        game.world.placeBlock(game.gameData.blocks.get('dirt'), new _utils_Position__WEBPACK_IMPORTED_MODULE_3__["default"](15, 2));
+        game.update();
     }
 });
-game.eventHandler.on('launch', () => {
-    console.log("Game launched.");
+game.eventHandler.once('launch', () => {
+    game.postInit();
+    console.log('Game launched.');
 });
 // Mouse Events
 game.eventHandler.on('mousemove', () => {
-    if (clicking) {
-        putBlockWhereClicked();
+    if (game.loaded) {
+        if (clicking) {
+            game.player.putBlockWhereClicked();
+        }
+        game.gui.updateTilePlacingPreview();
     }
 });
 game.eventHandler.on('mouseup', () => {
@@ -44237,7 +44412,22 @@ game.eventHandler.on('mouseup', () => {
 });
 game.eventHandler.on('mousedown', () => {
     clicking = true;
-    putBlockWhereClicked();
+    game.player.putBlockWhereClicked();
+});
+game.eventHandler.on('keydown', (key) => {
+    switch (key.name) {
+        case '²':
+            // fixme: régler le block d'air qui remplace pas les blocks :/
+            game.player.blockSelected = game.gameData.blocks.get('air');
+            break;
+        case '&':
+            game.player.blockSelected = game.gameData.blocks.get('dirt');
+            break;
+        case 'é':
+            game.player.blockSelected = game.gameData.blocks.get('stone');
+            break;
+    }
+    game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
 });
 // Global objects
 Object.defineProperties(window, {
@@ -44336,8 +44526,8 @@ __webpack_require__.r(__webpack_exports__);
 var Layer;
 (function (Layer) {
     Layer[Layer["BACKGROUND"] = 0] = "BACKGROUND";
-    Layer[Layer["TILE_BACK"] = 1] = "TILE_BACK";
-    Layer[Layer["TILE_FRONT"] = 2] = "TILE_FRONT";
+    Layer[Layer["BACK_TILE"] = 1] = "BACK_TILE";
+    Layer[Layer["FRONT_TILE"] = 2] = "FRONT_TILE";
     Layer[Layer["SPRITE"] = 3] = "SPRITE";
 })(Layer || (Layer = {}));
 var BlockType;
@@ -44359,47 +44549,16 @@ var BlockType;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ChunkPosition; });
-class ChunkPosition {
+/* harmony import */ var _Position__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Position */ "./utils/Position.ts");
+
+class ChunkPosition extends _Position__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(x, y) {
+        super(x, y);
         this.x = x;
         this.y = y;
     }
     stringify() {
         return JSON.stringify(this);
-    }
-    toString() {
-        return `[x: ${this.x}, y: ${this.y}]`;
-    }
-}
-
-
-/***/ }),
-
-/***/ "./utils/EventHandler.ts":
-/*!*******************************!*\
-  !*** ./utils/EventHandler.ts ***!
-  \*******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EventHandler; });
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);
-
-class EventHandler {
-    constructor() {
-        this.emitter = new events__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-    }
-    on(eventName, fn) {
-        this.emitter.on(eventName, fn);
-    }
-    off(eventName, fn) {
-        this.emitter.off(eventName, fn);
-    }
-    emit(eventName, params) {
-        this.emitter.emit(eventName, params);
     }
 }
 
@@ -44416,26 +44575,91 @@ class EventHandler {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Position; });
-/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./types.ts");
-/* harmony import */ var _ChunkPosition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ChunkPosition */ "./utils/ChunkPosition.ts");
-
-
-
 class Position {
-    constructor(x, y, layer = _types__WEBPACK_IMPORTED_MODULE_1__["Layer"].TILE_FRONT) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.layer = layer;
     }
-    getAsChunkPosition() {
-        return new _ChunkPosition__WEBPACK_IMPORTED_MODULE_2__["default"](Math.round(this.x / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]), Math.round(this.y / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]));
+    add(x, y) {
+        return new Position(this.x + x, this.y + y);
+    }
+    multiply(ratio) {
+        return new Position(this.x * ratio, this.y * ratio);
+    }
+    subtract(x = 0, y = 0) {
+        return this.add(-x, -y);
+    }
+    round() {
+        return new Position(Math.round(this.x), Math.round(this.y));
+    }
+    divide(ratio) {
+        return new Position(this.x / ratio, this.y / ratio);
     }
     stringify() {
         return JSON.stringify(this);
     }
     toString() {
+        return `[x: ${this.x}, y: ${this.y}]`;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./utils/TilePosition.ts":
+/*!*******************************!*\
+  !*** ./utils/TilePosition.ts ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TilePosition; });
+/* harmony import */ var _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../ressources/GameData */ "./ressources/GameData.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./types.ts");
+/* harmony import */ var _ChunkPosition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ChunkPosition */ "./utils/ChunkPosition.ts");
+/* harmony import */ var _Position__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Position */ "./utils/Position.ts");
+
+
+
+
+class TilePosition extends _Position__WEBPACK_IMPORTED_MODULE_3__["default"] {
+    constructor(x, y, layer = _types__WEBPACK_IMPORTED_MODULE_1__["Layer"].FRONT_TILE) {
+        super(x, y);
+        this.x = x;
+        this.y = y;
+        this.layer = layer;
+    }
+    static from(position) {
+        return new TilePosition(position.x, position.y, _types__WEBPACK_IMPORTED_MODULE_1__["Layer"].FRONT_TILE);
+    }
+    static fromPositionToShortTilePosition(position) {
+        return TilePosition.from(position.subtract(_ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"] / 2, _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"] / 2).divide(_ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]).round());
+    } // Fonction pour remplacer Position#toTilePosition
+    getAsChunkPosition() {
+        return new _ChunkPosition__WEBPACK_IMPORTED_MODULE_2__["default"](Math.round(this.x / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]), Math.round(this.y / _ressources_GameData__WEBPACK_IMPORTED_MODULE_0__["resolution"]));
+    }
+    add(x, y) {
+        return TilePosition.from(super.add(x, y));
+    }
+    multiply(ratio) {
+        return TilePosition.from(super.multiply(ratio));
+    }
+    subtract(x, y) {
+        return this.add(-x, -y);
+    }
+    round() {
+        return TilePosition.from(super.round());
+    }
+    divide(ratio) {
+        return TilePosition.from(super.divide(ratio));
+    }
+    toString() {
         return `[x: ${this.x}, y: ${this.y}, layer: ${this.layer}]`;
+    }
+    stringify() {
+        return JSON.stringify(this);
     }
 }
 
@@ -44517,6 +44741,7 @@ class World {
         if (chunk) {
             const tile = chunk.getBlockAt(position);
             if (tile) {
+                tile.destroy();
                 chunk.blocks.delete(position.stringify());
             }
             return tile;

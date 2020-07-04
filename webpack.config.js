@@ -2,7 +2,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const ROOT = path.resolve(__dirname, 'src');
-const DESTINATION = path.resolve(__dirname, 'out');
+const DESTINATION = path.resolve(__dirname, 'dist');
 
 module.exports = {
 	context: ROOT,
@@ -60,7 +60,7 @@ module.exports = {
 			{
 				test   : /\.ts$/i,
 				exclude: [/node_modules/],
-				use    : 'awesome-typescript-loader'
+				use    : 'ts-loader'
 			},
 			{
 				test   : /\.(?:png|svg|jpg|gif)$/i,
@@ -79,7 +79,7 @@ module.exports = {
 	
 	// serveur local
 	devServer: {
-		contentBase: 'out',
+		contentBase: 'dist',
 		port       : 3000,
 		headers    : {
 			'Access-Control-Allow-Origin' : '*',

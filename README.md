@@ -7,4 +7,7 @@ This game does not have a site where to play it although you can download the fi
 Run the `start` script (in the `package.json`) then open the `index.html` file (in the `out` dir).
 
 ### Features
-For the moment you can only add dirt blocks on the screen.
+You can place blocks with the left click.
+You can change block selected with the 1-9 keys (for now there is only the dirt block and the stone block).
+
+You can also place air blocks with the ² key.
