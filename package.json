@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"dependencies": {
-		"pixi.js": "^5.3.0"
+		"pixi.js": "^5.3.2"
 	},
 	"devDependencies": {
 		"@types/pixi.js": "^5.0.0",
