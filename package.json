@@ -12,6 +12,7 @@
 		"file-loader": "^6.1.0",
 		"html-loader": "^1.3.0",
 		"html-webpack-plugin": "^4.4.1",
+		"prettier": "^2.1.1",
 		"source-map-loader": "^1.1.0",
 		"ts-loader": "^8.0.3",
 		"typescript": "^4.0.2",
@@ -25,5 +26,13 @@
 	},
 	"author": "Ayfri",
 	"license": "ISC",
-	"repository": "https://github.com/Ayfri/2d-minecraft"
+	"repository": "https://github.com/Ayfri/2d-minecraft",
+	"prettier": {
+		"endOfLine": "lf",
+		"useTabs": true,
+		"trailingComma": "es5",
+		"semi": true,
+		"singleQuote": true,
+		"tabWidth": 4
+	}
 }
