@@ -1,5 +1,6 @@
 import {resolution} from '../../ressources/GameData';
 import Position from '../../utils/Position';
+import * as PIXI from 'pixi.js';
 
 export default abstract class Sprite {
 	public position: Position;
