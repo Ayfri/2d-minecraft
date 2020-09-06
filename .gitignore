@@ -3,3 +3,6 @@ node_modules
 
 # Idea
 .idea
+
+# Webpack
+dist

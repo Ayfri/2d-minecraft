@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import Block from '../blocks/Block';
+import AbstractBlock from '../blocks/AbstractBlock';
 import Tile from '../client/renderer/Tile';
 import {StringChunkPosition} from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
@@ -15,17 +15,17 @@ export default class World {
 	
 	public placeTile(tile: Tile): void {
 		const chunkPosition: ChunkPosition = tile.position.getAsChunkPosition();
-		if ( !this.getChunkAt(chunkPosition)) {
+		if (!this.getChunkAt(chunkPosition)) {
 			this.addBlankChunk(chunkPosition);
 		}
 		
-		if ( !this.getChunkAt(chunkPosition).getBlockAt(tile.position)) {
+		if (!this.getChunkAt(chunkPosition).getBlockAt(tile.position)) {
 			this.getChunkAt(chunkPosition).blocks.set(tile.position.stringify(), tile);
 			tile.addToApplication(this.app);
 		}
 	}
 	
-	public placeBlock(block: Block, position: TilePosition): void {
+	public placeBlock(block: AbstractBlock, position: TilePosition): void {
 		const tile: Tile = new Tile(block, position);
 		this.placeTile(tile);
 	}
@@ -35,7 +35,7 @@ export default class World {
 		this.placeTile(tile);
 	}
 	
-	public replaceBlock(block: Block, position: TilePosition): void {
+	public replaceBlock(block: AbstractBlock, position: TilePosition): void {
 		this.removeBlock(position);
 		this.placeTile(new Tile(block, position));
 	}

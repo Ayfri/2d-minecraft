@@ -1,8 +1,6 @@
-import {app} from '../main';
 import {blocks} from '../ressources/GameData';
-import {BlockType, Path} from '../types';
+import AbstractBlock from './AbstractBlock';
 import AirBlock from './AirBlock';
-import Block from './Block';
 import SimpleBlock from './SimpleBlock';
 import VoidBlock from './VoidBlock';
 
@@ -14,12 +12,8 @@ export default class Blocks {
 		Blocks.register('stone', new SimpleBlock('stone'));
 	}
 	
-	public static register<T extends Block>(name: string, block: T): Block | T {
-		const path: Path = `http://localhost:3000/assets/sprites/${name}.png`;
-		
-		app.loader.add(name, path);
+	public static register<T extends AbstractBlock>(name: string, block: T): AbstractBlock | T {
 		blocks.register(name, block);
-		
 		return blocks.get(name);
 	}
 }

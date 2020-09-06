@@ -1,7 +1,6 @@
-import {BlockType} from '../types';
-import Block from './Block';
+import AbstractBlock from './AbstractBlock';
 
-export default class SimpleBlock extends Block {
+export default class SimpleBlock extends AbstractBlock {
 	constructor(name: string) {
 		super(name);
 	}

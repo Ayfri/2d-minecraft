@@ -3,8 +3,8 @@ import Game from './Game';
 
 // app
 export const app = new PIXI.Application({
-	width : window.innerWidth,
-	height: window.innerHeight
+	width:  window.innerWidth,
+	height: window.innerHeight,
 });
 // Game
 export const game: Game = new Game(app);
@@ -46,33 +46,34 @@ game.eventHandler.on('mousedown', () => {
 });
 
 game.eventHandler.on('keydown', (key) => {
-	switch (key.name) {
-		case '²':
-			// fixme: régler le block d'air qui remplace pas les blocks :/
-			game.player.blockSelected = game.gameData.blocks.get('air');
-			break;
-		case '&':
-			game.player.blockSelected = game.gameData.blocks.get('dirt');
-			break;
-		case 'é':
-			game.player.blockSelected = game.gameData.blocks.get('stone');
-			break;
+	if (game.loaded) {
+		switch (key.name) {
+			case '²':
+				// fixme: régler le block d'air qui remplace pas les blocks :/
+				game.player.blockSelected = game.gameData.blocks.get('air');
+				break;
+			case '&':
+				game.player.blockSelected = game.gameData.blocks.get('dirt');
+				break;
+			case 'é':
+				game.player.blockSelected = game.gameData.blocks.get('stone');
+				break;
+		}
+		
+		game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
 	}
-	
-	game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
-	
 });
 
 // Global objects
 Object.defineProperties(window, {
-	app   : {
-		value: app
+	app:    {
+		value: app,
 	},
 	blocks: {
-		value: game.gameData.blocks
+		value: game.gameData.blocks,
 	},
-	game  : {
-		value: game
-	}
+	game:   {
+		value: game,
+	},
 });
 

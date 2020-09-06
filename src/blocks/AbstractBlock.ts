@@ -2,12 +2,12 @@ import * as PIXI from 'pixi.js';
 import {blocks} from '../ressources/GameData';
 import {BlockType} from '../types';
 
-export default abstract class Block {
+export default abstract class AbstractBlock {
 	public texture: PIXI.Texture = null;
 	
 	protected constructor(
 		public name: string,
-		public type: BlockType = BlockType.PLAIN
+		public type: BlockType = BlockType.PLAIN,
 	) {
 	}
 	
