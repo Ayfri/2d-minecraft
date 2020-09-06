@@ -1,12 +1,12 @@
 import * as PIXI from 'pixi.js';
-import Block from '../../blocks/Block';
+import AbstractBlock from '../../blocks/AbstractBlock';
 import {resolution} from '../../ressources/GameData';
 import TilePosition from '../../utils/TilePosition';
+import Sprite from './Sprite';
 
-export default class Tile {
-	private readonly sprite: PIXI.Sprite = null;
-	
-	constructor(public block: Block, public position: TilePosition) {
+export default class Tile extends Sprite {
+	constructor(public block: AbstractBlock, public position: TilePosition) {
+		super();
 		this.sprite = PIXI.Sprite.from(block.texture);
 	}
 	
@@ -18,13 +18,5 @@ export default class Tile {
 			resolution / 16
 		);
 		return this.sprite;
-	}
-	
-	public destroy(): void {
-		this.sprite.destroy();
-	}
-	
-	public addToApplication(app: PIXI.Application) {
-		app.stage.addChild(this.getAsSprite());
 	}
 }

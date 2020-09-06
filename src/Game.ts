@@ -4,9 +4,9 @@ import Gui from './client/Gui';
 import EventHandler from './client/input/EventHandler';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
-import Player from './client/Player';
+import Player from './entities/Player';
 import * as GameData from './ressources/GameData';
-import {GameEvents} from './types';
+import {GameEvents, Path} from './types';
 import TilePosition from './utils/TilePosition';
 import World from './world/World';
 
@@ -27,13 +27,21 @@ export default class Game {
 	
 	public init() {
 		Blocks.registerBlocks();
+		this.gameData.blocks.forEach(block => {
+			const path: Path = `./assets/sprites/${block.name}.png`;
+			this.app.loader.add(`block:${block.name}`, path);
+		});
+//		this.app.loader.add('entity:player', './assets/sprites/void.png');
+		
 		this.app.loader.load((loader, resources) => {
 			for (let [name, block] of this.gameData.blocks) {
-				const texture: PIXI.Texture = resources[name].texture;
+				const texture: PIXI.Texture = resources[`block:${name}`].texture;
 				block.setTexture(texture);
 			}
-			
+
 			this.player = new Player();
+//			this.player.setTexture(resources['entity:player'].texture);
+			this.player.setTexture(resources['block:void'].texture);
 			this.gui = new Gui(this.app);
 			this.loaded = true;
 			this.eventHandler.emit('launch');
@@ -81,6 +89,6 @@ export default class Game {
 	}
 	
 	public update() {
-	
+		this.player.update();
 	}
 }

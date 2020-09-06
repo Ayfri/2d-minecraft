@@ -46,21 +46,22 @@ game.eventHandler.on('mousedown', () => {
 });
 
 game.eventHandler.on('keydown', (key) => {
-	switch (key.name) {
-		case '²':
-			// fixme: régler le block d'air qui remplace pas les blocks :/
-			game.player.blockSelected = game.gameData.blocks.get('air');
-			break;
-		case '&':
-			game.player.blockSelected = game.gameData.blocks.get('dirt');
-			break;
-		case 'é':
-			game.player.blockSelected = game.gameData.blocks.get('stone');
-			break;
+	if(game.loaded) {
+		switch (key.name) {
+			case '²':
+				// fixme: régler le block d'air qui remplace pas les blocks :/
+				game.player.blockSelected = game.gameData.blocks.get('air');
+				break;
+			case '&':
+				game.player.blockSelected = game.gameData.blocks.get('dirt');
+				break;
+			case 'é':
+				game.player.blockSelected = game.gameData.blocks.get('stone');
+				break;
+		}
+		
+		game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
 	}
-	
-	game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
-	
 });
 
 // Global objects

@@ -5,7 +5,7 @@ import IPosition from './IPosition';
 import TilePosition from './TilePosition';
 
 export default class Position implements IPosition {
-	constructor(public x: number, public y: number) {
+	constructor(public x: number = 0, public y: number = 0) {
 	}
 	
 	public add(x: number, y: number): Position {

@@ -1,7 +1,7 @@
 import {BlockType} from '../types';
-import Block from './Block';
+import AbstractBlock from './AbstractBlock';
 
-export default class AirBlock extends Block {
+export default class AirBlock extends AbstractBlock {
 	constructor() {
 		super('air', BlockType.AIR);
 	}
