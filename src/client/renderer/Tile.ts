@@ -15,7 +15,7 @@ export default class Tile extends Sprite {
 			this.position.x * resolution,
 			this.position.y * resolution,
 			resolution / 16,
-			resolution / 16
+			resolution / 16,
 		);
 		return this.sprite;
 	}

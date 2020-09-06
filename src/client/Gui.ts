@@ -5,10 +5,11 @@ import Tile from './renderer/Tile';
 
 export default class Gui {
 	public tilePlacingPreview: PIXI.Sprite;
+	
 	constructor(public readonly app: PIXI.Application) {
 		this.tilePlacingPreview = new Tile(
 			game.player.blockSelected,
-			TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition())
+			TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition()),
 		).getAsSprite();
 		
 		this.tilePlacingPreview.alpha = 0.4;

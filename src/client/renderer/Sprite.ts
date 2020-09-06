@@ -2,8 +2,8 @@ import {resolution} from '../../ressources/GameData';
 import Position from '../../utils/Position';
 
 export default abstract class Sprite {
-	protected sprite: PIXI.Sprite;
 	public position: Position;
+	protected sprite: PIXI.Sprite;
 	
 	protected constructor() {
 		this.position = new Position();
@@ -15,7 +15,7 @@ export default abstract class Sprite {
 			this.position.x,
 			this.position.y,
 			resolution / 16,
-			resolution / 16
+			resolution / 16,
 		);
 		return this.sprite;
 	}
@@ -24,7 +24,7 @@ export default abstract class Sprite {
 		this.sprite.destroy();
 	}
 	
-	public setTexture(texture: PIXI.Texture ): void {
+	public setTexture(texture: PIXI.Texture): void {
 		this.sprite.texture = texture;
 	}
 	

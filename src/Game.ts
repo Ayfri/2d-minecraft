@@ -38,7 +38,7 @@ export default class Game {
 				const texture: PIXI.Texture = resources[`block:${name}`].texture;
 				block.setTexture(texture);
 			}
-
+			
 			this.player = new Player();
 //			this.player.setTexture(resources['entity:player'].texture);
 			this.player.setTexture(resources['block:void'].texture);

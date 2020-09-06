@@ -15,11 +15,11 @@ export default class World {
 	
 	public placeTile(tile: Tile): void {
 		const chunkPosition: ChunkPosition = tile.position.getAsChunkPosition();
-		if ( !this.getChunkAt(chunkPosition)) {
+		if (!this.getChunkAt(chunkPosition)) {
 			this.addBlankChunk(chunkPosition);
 		}
 		
-		if ( !this.getChunkAt(chunkPosition).getBlockAt(tile.position)) {
+		if (!this.getChunkAt(chunkPosition).getBlockAt(tile.position)) {
 			this.getChunkAt(chunkPosition).blocks.set(tile.position.stringify(), tile);
 			tile.addToApplication(this.app);
 		}

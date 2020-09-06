@@ -1,8 +1,5 @@
-import {game} from '../main';
-import {resolution} from '../ressources/GameData';
 import {StringPosition} from '../types';
 import IPosition from './IPosition';
-import TilePosition from './TilePosition';
 
 export default class Position implements IPosition {
 	constructor(public x: number = 0, public y: number = 0) {

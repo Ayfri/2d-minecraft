@@ -40,11 +40,11 @@ export default class TilePosition extends Position {
 		return TilePosition.from(super.divide(ratio));
 	}
 	
-	public toString(): string {
-		return `[x: ${this.x}, y: ${this.y}, layer: ${this.layer}]`;
-	}
-	
 	public stringify(): StringTilePosition {
 		return JSON.stringify(this);
+	}
+	
+	public toString(): string {
+		return `[x: ${this.x}, y: ${this.y}, layer: ${this.layer}]`;
 	}
 }

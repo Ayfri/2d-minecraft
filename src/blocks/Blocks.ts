@@ -1,6 +1,6 @@
 import {blocks} from '../ressources/GameData';
-import AirBlock from './AirBlock';
 import AbstractBlock from './AbstractBlock';
+import AirBlock from './AirBlock';
 import SimpleBlock from './SimpleBlock';
 import VoidBlock from './VoidBlock';
 

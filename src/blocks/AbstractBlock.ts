@@ -7,7 +7,7 @@ export default abstract class AbstractBlock {
 	
 	protected constructor(
 		public name: string,
-		public type: BlockType = BlockType.PLAIN
+		public type: BlockType = BlockType.PLAIN,
 	) {
 	}
 	

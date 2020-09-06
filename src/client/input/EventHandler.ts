@@ -1,5 +1,5 @@
-import {EventKey, EventMap, EventReceiver} from '../../types';
 import {EventEmitter} from 'events';
+import {EventKey, EventMap, EventReceiver} from '../../types';
 import IEmitter from '../../utils/IEmitter';
 
 export default class EventHandler<T extends EventMap> implements IEmitter<T> {
