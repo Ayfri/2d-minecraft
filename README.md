@@ -1,3 +1,8 @@
+<!-- Badges-->
+![Codacy grade](https://img.shields.io/codacy/grade/1abacd35dbe04806bf5c54192874930e?logo=codacy&style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/ayfri/2d-minecraft?style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/ayfri/2d-minecraft?logo=typescript&logoColor=%2329f&style=for-the-badge)
+
 # 2d-Minecraft
 This is a 2d-game made in TypeScript with the PIXI.js library and WebPack.
 
