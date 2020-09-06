@@ -2,7 +2,7 @@
 	"name": "minecraft-2d",
 	"version": "0.0.1",
 	"description": "",
-	"main": "src/Game.ts",
+	"main": "src/main.ts",
 	"dependencies": {
 		"pixi.js": "^5.3.3"
 	},
