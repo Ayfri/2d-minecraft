@@ -6,15 +6,15 @@ const DESTINATION = path.resolve(__dirname, 'dist');
 
 module.exports = {
 	context: ROOT,
-	mode   : 'development',
-	target : 'web',
+	devtool  : 'cheap-module-source-map',
 	
 	// IO :
 	entry : {
 		main: './main.ts'
 	},
+	
 	output: {
-		filename: '[name].bundle.js',
+		filename: 'game.min.js',
 		path    : DESTINATION
 	},
 	
@@ -22,8 +22,8 @@ module.exports = {
 	plugins: [
 		new CopyWebpackPlugin({
 			patterns: [{
-				from: 'assets',
-				to  : 'assets'
+				from: 'assets/',
+				to  : 'assets/'
 			}]
 		}),
 		new HtmlWebpackPlugin({
@@ -36,6 +36,7 @@ module.exports = {
 	resolve: {
 		extensions: ['.ts', '.js'],
 		modules   : [
+			ROOT,
 			'node_modules'
 		]
 	},
@@ -48,12 +49,6 @@ module.exports = {
 				enforce: 'pre',
 				test   : /\.js$/,
 				use    : 'source-map-loader'
-			},
-			{
-				enforce: 'pre',
-				test   : /\.ts$/,
-				exclude: /node_modules/,
-				use    : 'tslint-loader'
 			},
 			
 			// loaders :
@@ -79,13 +74,12 @@ module.exports = {
 	
 	// serveur local
 	devServer: {
-		contentBase: 'dist',
+		contentBase: DESTINATION,
 		port       : 3000,
 		headers    : {
 			'Access-Control-Allow-Origin' : '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
 		}
-	},
-	devtool  : 'cheap-module-source-map'
+	}
 };
