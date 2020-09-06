@@ -3,7 +3,7 @@ import Game from './Game';
 
 // app
 export const app = new PIXI.Application({
-	width:  window.innerWidth,
+	width: window.innerWidth,
 	height: window.innerHeight,
 });
 // Game
@@ -31,7 +31,7 @@ game.eventHandler.on('mousemove', () => {
 		if (clicking) {
 			game.player.putBlockWhereClicked();
 		}
-		
+
 		game.gui.updateTilePlacingPreview();
 	}
 });
@@ -59,21 +59,20 @@ game.eventHandler.on('keydown', (key) => {
 				game.player.blockSelected = game.gameData.blocks.get('stone');
 				break;
 		}
-		
+
 		game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
 	}
 });
 
 // Global objects
 Object.defineProperties(window, {
-	app:    {
+	app: {
 		value: app,
 	},
 	blocks: {
 		value: game.gameData.blocks,
 	},
-	game:   {
+	game: {
 		value: game,
 	},
 });
-

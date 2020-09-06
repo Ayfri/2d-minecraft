@@ -1,7 +1,3 @@
 export default class TextureManager {
-	
-	
-	constructor() {
-	
-	}
+	constructor() {}
 }

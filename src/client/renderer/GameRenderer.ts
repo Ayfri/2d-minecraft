@@ -1,5 +1,3 @@
 export default class GameRenderer {
-	constructor() {
-	
-	}
+	constructor() {}
 }

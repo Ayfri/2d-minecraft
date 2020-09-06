@@ -7,7 +7,5 @@
 		"noImplicitAny": false,
 		"moduleResolution": "Node"
 	},
-	"include": [
-		"src/**/*"
-	]
+	"include": ["src/**/*"]
 }
