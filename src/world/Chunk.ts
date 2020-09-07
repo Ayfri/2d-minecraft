@@ -9,6 +9,7 @@ export default class Chunk {
 	constructor(public position: ChunkPosition) {}
 
 	public clear(): void {
+		this.blocks.forEach((t) => t.destroy());
 		this.blocks.clear();
 	}
 
