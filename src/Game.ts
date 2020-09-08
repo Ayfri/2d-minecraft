@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import Blocks from './blocks/Blocks';
-import Gui from './client/Gui';
+import Button from './client/Button';
+import { Gui } from './client/Gui';
+import TilePlacementGui from './client/TilePlacementGui';
 import EventHandler from './client/input/EventHandler';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
@@ -13,11 +15,12 @@ import World from './world/World';
 export default class Game {
 	public eventHandler: EventHandler<GameEvents>;
 	public gameData = GameData;
-	public gui: Gui;
+	public tilePlacementGui: TilePlacementGui;
 	public loaded: boolean = false;
 	public mouseManager: MouseManager;
 	public player: Player;
 	public world: World;
+	private mainGui: Gui;
 
 	constructor(public app: PIXI.Application) {
 		this.world = new World(app);
@@ -31,7 +34,6 @@ export default class Game {
 			const path: Path = `./assets/sprites/${block.name}.png`;
 			this.app.loader.add(`block:${block.name}`, path);
 		});
-		//		this.app.loader.add('entity:player', './assets/sprites/void.png');
 
 		this.app.loader.load((loader, resources) => {
 			for (let [name, block] of this.gameData.blocks) {
@@ -40,9 +42,9 @@ export default class Game {
 			}
 
 			this.player = new Player();
-			//			this.player.setTexture(resources['entity:player'].texture);
 			this.player.setTexture(resources['block:void'].texture);
-			this.gui = new Gui(this.app);
+			this.tilePlacementGui = new TilePlacementGui(this.app);
+			this.mainGui = new Gui(this.app);
 			this.loaded = true;
 			this.eventHandler.emit('launch');
 		});
@@ -86,6 +88,14 @@ export default class Game {
 		}
 
 		this.world.placeBlock(this.gameData.blocks.get('dirt'), new TilePosition(15, 2));
+		/*let resetButton: Button = new Button('reset');
+		resetButton.on('click', (): void => {
+			this.world.clear();
+		});
+		this.mainGui.addSprite('resetButton', resetButton);
+		*/
+		this.mainGui.show();
+		this.tilePlacementGui.show();
 	}
 
 	public update() {

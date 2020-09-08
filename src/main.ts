@@ -32,7 +32,7 @@ game.eventHandler.on('mousemove', () => {
 			game.player.putBlockWhereClicked();
 		}
 
-		game.gui.updateTilePlacingPreview();
+		game.tilePlacementGui.updateTilePlacingPreview();
 	}
 });
 
@@ -49,7 +49,7 @@ game.eventHandler.on('keydown', (key) => {
 	if (game.loaded) {
 		switch (key.name) {
 			case '²':
-				// fixme: régler le block d'air qui remplace pas les blocks :/
+				// fixme: fix the air block which does not replace the blocks :/
 				game.player.blockSelected = game.gameData.blocks.get('air');
 				break;
 			case '&':
@@ -60,7 +60,7 @@ game.eventHandler.on('keydown', (key) => {
 				break;
 		}
 
-		game.gui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
+		game.tilePlacementGui.setTextureTilePlacingPreview(game.player.blockSelected.texture);
 	}
 });
 
@@ -74,5 +74,11 @@ Object.defineProperties(window, {
 	},
 	game: {
 		value: game,
+	},
+	PIXI: {
+		value: PIXI,
+	},
+	world: {
+		value: game.world,
 	},
 });

@@ -1,4 +1,5 @@
 import Key from './client/input/Key';
+import * as PIXI from 'pixi.js';
 
 export type EventMap = Record<string, any[]>;
 export type EventKey<T extends EventMap> = string & keyof T;
@@ -12,6 +13,13 @@ export type GameEvents = {
 	launch: [];
 	keyup: [Key, KeyboardEvent];
 	keydown: [Key, KeyboardEvent];
+};
+
+export type ButtonEvents = {
+	click: [PIXI.InteractionEvent?];
+	release: [PIXI.InteractionEvent];
+	hold: [PIXI.InteractionEvent];
+	hover: [PIXI.InteractionEvent];
 };
 
 export type Path = string;

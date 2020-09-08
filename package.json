@@ -17,26 +17,27 @@
 		"ts-loader": "^8.0.3",
 		"typescript": "^4.0.2",
 		"webpack": "^4.44.1",
+		"webpack-cli": "^3.3.12",
 		"webpack-dev-server": "^3.11.0"
 	},
 	"scripts": {
-		"start": "webpack-dev-server --config webpack.config.js --color && npm run build:prod",
 		"build:dev": "webpack --mode development --config webpack.config.js && npm run prettier",
 		"build:prod": "webpack --mode production --config webpack.config.js && npm run prettier",
-		"prettier": "prettier --config package.json src package.json webpack.config.js tsconfig.json --write"
+		"prettier": "prettier src package.json webpack.config.js tsconfig.json --write",
+		"start": "webpack-dev-server --config webpack.config.js --color && npm run build:prod"
 	},
 	"author": "Ayfri",
 	"license": "ISC",
 	"repository": "https://github.com/Ayfri/2d-minecraft",
 	"prettier": {
+		"arrowParens": "always",
 		"endOfLine": "lf",
-		"useTabs": true,
-		"trailingComma": "es5",
+		"printWidth": 200,
+		"quoteProps": "consistent",
 		"semi": true,
 		"singleQuote": true,
 		"tabWidth": 4,
-		"printWidth": 200,
-		"quoteProps": "consistent",
-		"arrowParens": "always"
+		"trailingComma": "es5",
+		"useTabs": true
 	}
 }

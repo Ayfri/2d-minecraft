@@ -1,18 +1,18 @@
 import { game } from '../main';
 import { resolution } from '../ressources/GameData';
 import TilePosition from '../utils/TilePosition';
-import Sprite from './renderer/Sprite';
+import { Gui } from './Gui';
 import Tile from './renderer/Tile';
 
-export default class Gui {
+export default class TilePlacementGui extends Gui {
 	public tilePlacingPreview: PIXI.Sprite;
-	private sprites: Map<string, PIXI.Sprite> = new Map();
 
-	constructor(public readonly app: PIXI.Application) {
+	constructor(app: PIXI.Application) {
+		super(app);
 		this.tilePlacingPreview = new Tile(game.player.blockSelected, TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
 
 		this.tilePlacingPreview.alpha = 0.4;
-		app.stage.addChild(this.tilePlacingPreview);
+		this.addPIXISprite('tilePlacementPreview', this.tilePlacingPreview);
 	}
 
 	public updateTilePlacingPreview() {
