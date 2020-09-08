@@ -15,8 +15,16 @@ export type GameEvents = {
 	keydown: [Key, KeyboardEvent];
 };
 
+export type ColorEvents = {
+	change: [red: number, green: number, blue: number, alpha: number];
+	redChange: [number];
+	greenChange: [number];
+	blueChange: [number];
+	alphaChange: [number];
+};
+
 export type ButtonEvents = {
-	click: [PIXI.InteractionEvent?];
+	click: [PIXI.InteractionEvent];
 	release: [PIXI.InteractionEvent];
 	hold: [PIXI.InteractionEvent];
 	hover: [PIXI.InteractionEvent];

@@ -1,4 +1,4 @@
-import { resolution } from '../../ressources/GameData';
+import { game } from '../../main';
 import Position from '../../utils/Position';
 import * as PIXI from 'pixi.js';
 
@@ -12,7 +12,7 @@ export default abstract class Sprite {
 	}
 
 	public getAsSprite(): PIXI.Sprite {
-		this.sprite.setTransform(this.position.x, this.position.y, resolution / 16, resolution / 16);
+		this.sprite.setTransform(this.position.x, this.position.y, game.renderer.resolution / 16, game.renderer.resolution / 16);
 		return this.sprite;
 	}
 

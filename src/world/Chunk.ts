@@ -1,4 +1,5 @@
 import Tile from '../client/renderer/Tile';
+import { game } from '../main';
 import { StringTilePosition } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
 import TilePosition from '../utils/TilePosition';
@@ -15,5 +16,13 @@ export default class Chunk {
 
 	public getBlockAt(position: TilePosition) {
 		return this.blocks.get(position.stringify());
+	}
+
+	public update(): void {
+		this.blocks.forEach((t) => {
+			t.resolution = game.renderer.resolution;
+			game.app.stage.removeChild(t.getAsSprite());
+			game.app.stage.addChild(t.getAsSprite());
+		});
 	}
 }

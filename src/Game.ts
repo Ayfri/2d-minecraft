@@ -2,8 +2,9 @@ import * as PIXI from 'pixi.js';
 import Blocks from './blocks/Blocks';
 import Button from './client/Button';
 import { Gui } from './client/Gui';
+import GameRenderer from './client/renderer/GameRenderer';
 import TilePlacementGui from './client/TilePlacementGui';
-import EventHandler from './client/input/EventHandler';
+import EventHandler from './utils/EventHandler';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
 import Player from './entities/Player';
@@ -20,15 +21,16 @@ export default class Game {
 	public mouseManager: MouseManager;
 	public player: Player;
 	public world: World;
+	public renderer: GameRenderer;
 	private mainGui: Gui;
 
 	constructor(public app: PIXI.Application) {
 		this.world = new World(app);
 		this.eventHandler = new EventHandler<GameEvents>();
-		this.mouseManager = new MouseManager(app);
 	}
 
 	public init() {
+		this.mouseManager = new MouseManager(this.app);
 		Blocks.registerBlocks();
 		this.gameData.blocks.forEach((block) => {
 			const path: Path = `./assets/sprites/${block.name}.png`;
@@ -36,7 +38,7 @@ export default class Game {
 		});
 
 		this.app.loader.load((loader, resources) => {
-			for (let [name, block] of this.gameData.blocks) {
+			for (const [name, block] of this.gameData.blocks) {
 				const texture: PIXI.Texture = resources[`block:${name}`].texture;
 				block.setTexture(texture);
 			}
@@ -78,6 +80,8 @@ export default class Game {
 		});
 
 		document.body.appendChild(this.app.view);
+
+		this.renderer = new GameRenderer();
 	}
 
 	public postInit() {
@@ -88,12 +92,11 @@ export default class Game {
 		}
 
 		this.world.placeBlock(this.gameData.blocks.get('dirt'), new TilePosition(15, 2));
-		/*let resetButton: Button = new Button('reset');
+		const resetButton: Button = new Button('reset', 50, 30);
 		resetButton.on('click', (): void => {
 			this.world.clear();
 		});
-		this.mainGui.addSprite('resetButton', resetButton);
-		*/
+		this.mainGui.addPIXISprite('resetButton', resetButton);
 		this.mainGui.show();
 		this.tilePlacementGui.show();
 	}

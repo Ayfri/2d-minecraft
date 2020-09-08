@@ -63,4 +63,8 @@ export default class World {
 	public clear(): void {
 		this.chunks.forEach((chunk): void => chunk.clear());
 	}
+
+	public update(): void {
+		this.chunks.forEach((chunk) => chunk.update());
+	}
 }

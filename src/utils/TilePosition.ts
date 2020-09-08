@@ -1,4 +1,4 @@
-import { resolution } from '../ressources/GameData';
+import { game } from '../main';
 import { Layer, StringTilePosition } from '../types';
 import ChunkPosition from './ChunkPosition';
 import Position from './Position';
@@ -15,14 +15,14 @@ export default class TilePosition extends Position {
 	public static fromPositionToShortTilePosition(position: Position): TilePosition {
 		return TilePosition.from(
 			position
-				.subtract(resolution / 2, resolution / 2)
-				.divide(resolution)
+				.subtract(game.renderer.resolution / 2, game.renderer.resolution / 2)
+				.divide(game.renderer.resolution)
 				.round()
 		);
 	} // Fonction pour remplacer Position#toTilePosition
 
 	public getAsChunkPosition(): ChunkPosition {
-		return new ChunkPosition(Math.round(this.x / resolution), Math.round(this.y / resolution));
+		return new ChunkPosition(Math.round(this.x / game.renderer.resolution), Math.round(this.y / game.renderer.resolution));
 	}
 
 	public add(x: number, y?: number): TilePosition {
