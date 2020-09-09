@@ -63,7 +63,15 @@ export default class Color extends EventHandler<ColorEvents> {
 	}
 
 	public static toNumber(color: Color): number {
-		return color._red * 256 * color._green * 256 * color._blue * 256 - 1;
+		return ((color.red * 255) << 16) + ((color.green * 255) << 8) + ((color.blue * 255) | 0);
+	}
+
+	public static toHexString(color: Color): string {
+		return `#${color.toNumber().toString(16)}`;
+	}
+
+	public toHexString(): string {
+		return Color.toHexString(this);
 	}
 
 	public toNumber(): number {
