@@ -18,6 +18,8 @@ export default class TilePlacementGui extends Gui {
 
 	public updateTilePlacingPreview() {
 		const position: TilePosition = TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition()).multiply(game.renderer.resolution);
+		this.tilePreview.width = game.renderer.resolution;
+		this.tilePreview.height = game.renderer.resolution;
 		this.tilePreview.position.x = position.x;
 		this.tilePreview.position.y = position.y;
 	}

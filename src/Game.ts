@@ -59,13 +59,8 @@ export default class Game {
 
 	public preInit() {
 		this.app.loader.onError.add((params) => {
-			console.log(params);
+			console.warn(params);
 		});
-
-		this.app.renderer.view.style.position = 'absolute';
-		this.app.renderer.view.style.display = 'block';
-		this.app.renderer.autoDensity = true;
-		this.app.renderer.resize(window.innerWidth, window.innerHeight);
 
 		this.app.renderer.plugins.interaction.on('mouseup', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseup', event));
 		this.app.renderer.plugins.interaction.on('mousedown', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mousedown', event));
