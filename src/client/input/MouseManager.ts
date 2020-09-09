@@ -35,7 +35,6 @@ export default class MouseManager {
 			if (game.loaded) {
 				switch (key.name) {
 					case '²':
-						// fixme: fix the air block which does not replace the blocks :/
 						game.player.blockSelected = game.gameData.blocks.get('air');
 						break;
 					case '&':
@@ -43,6 +42,12 @@ export default class MouseManager {
 						break;
 					case 'é':
 						game.player.blockSelected = game.gameData.blocks.get('stone');
+						break;
+					case '"':
+						game.player.blockSelected = game.gameData.blocks.get('grass');
+						break;
+					case "'":
+						game.player.blockSelected = game.gameData.blocks.get('sand');
 						break;
 					default:
 						break;

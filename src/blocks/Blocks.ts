@@ -1,6 +1,7 @@
 import { blocks } from '../ressources/GameData';
 import AbstractBlock from './AbstractBlock';
 import AirBlock from './AirBlock';
+import FallingBlock from './FallingBlock';
 import SimpleBlock from './SimpleBlock';
 import VoidBlock from './VoidBlock';
 
@@ -9,7 +10,9 @@ export default class Blocks {
 		Blocks.register('void', new VoidBlock());
 		Blocks.register('air', new AirBlock());
 		Blocks.register('dirt', new SimpleBlock('dirt'));
+		Blocks.register('grass', new SimpleBlock('grass'));
 		Blocks.register('stone', new SimpleBlock('stone'));
+		Blocks.register('sand', new FallingBlock('sand'));
 	}
 
 	public static register<T extends AbstractBlock>(name: string, block: T): AbstractBlock | T {

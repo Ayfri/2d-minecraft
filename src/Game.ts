@@ -1,8 +1,11 @@
 import * as PIXI from 'pixi.js';
 import Blocks from './blocks/Blocks';
 import Button from './client/Button';
+import DebugGui from './client/DebugGui';
 import { Gui } from './client/Gui';
+import FallingTile from './client/renderer/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
+import Tile from './client/renderer/Tile';
 import TilePlacementGui from './client/TilePlacementGui';
 import TextureManager from './ressources/TextureManager';
 import EventHandler from './utils/EventHandler';
@@ -13,6 +16,7 @@ import * as GameData from './ressources/GameData';
 import { GameEvents, Path } from './types';
 import TilePosition from './utils/TilePosition';
 import World from './world/World';
+import { inspect } from 'util';
 
 export default class Game {
 	public eventHandler: EventHandler<GameEvents>;
@@ -25,6 +29,8 @@ export default class Game {
 	public renderer: GameRenderer;
 	public textureManager: TextureManager;
 	private mainGui: Gui;
+	private debugGui: DebugGui;
+	private sandTile;
 
 	constructor(public app: PIXI.Application) {
 		this.world = new World(app);
@@ -36,6 +42,7 @@ export default class Game {
 		this.textureManager = new TextureManager(this.app);
 		this.mouseManager = new MouseManager(this.app);
 		this.mainGui = new Gui(this.app);
+		this.debugGui = new DebugGui(this.app);
 
 		Blocks.registerBlocks();
 		this.gameData.blocks.forEach((block) => {
@@ -89,7 +96,15 @@ export default class Game {
 			}
 		}
 
-		this.world.placeBlock(this.gameData.blocks.get('dirt'), new TilePosition(15, 2));
+		// todo: Fix fallingTiles not falling
+		const sandTilePosition: TilePosition = new TilePosition(15, 2);
+		this.sandTile = new FallingTile(this.gameData.blocks.get('sand'), sandTilePosition);
+		this.world.placeTile(this.sandTile);
+
+		/*const sandTileText = new PIXI.Text(`${inspect(this.sandTile.canFall)}`, { fill: '#ffffff', fontSize: 10 });
+		sandTileText.position.set(20, 50);
+		this.debugGui.addPIXISprite('sandTile', sandTileText);*/
+
 		const resetButton: Button = new Button('reset', 50, 30);
 		resetButton.position.set(10, 10);
 		resetButton.on('click', (): void => {
@@ -97,10 +112,12 @@ export default class Game {
 		});
 		this.mainGui.addPIXISprite('resetButton', resetButton);
 		this.mainGui.show();
+		this.debugGui.show();
 		this.tilePlacementGui.show();
 	}
 
 	public update() {
 		this.player.update();
+		this.debugGui.update();
 	}
 }

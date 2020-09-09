@@ -39,7 +39,7 @@ app.ticker.add(() => {
 function resize(app: PIXI.Application) {
 	return function () {
 		const vpw = window.innerWidth;
-		const vph = window.innerHeight;
+		const vph = window.innerHeight + 1000;
 		let nvw;
 		let nvh;
 

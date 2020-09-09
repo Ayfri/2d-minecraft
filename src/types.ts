@@ -1,5 +1,7 @@
+import AbstractBlock from './blocks/AbstractBlock';
 import Key from './client/input/Key';
 import * as PIXI from 'pixi.js';
+import Position from './utils/Position';
 
 export type EventMap = Record<string, any[]>;
 export type EventKey<T extends EventMap> = string & keyof T;
@@ -23,11 +25,9 @@ export type ColorEvents = {
 	alphaChange: [number];
 };
 
-export type ButtonEvents = {
-	click: [PIXI.InteractionEvent];
-	release: [PIXI.InteractionEvent];
-	hold: [PIXI.InteractionEvent];
-	hover: [PIXI.InteractionEvent];
+export type BlockEvents = {
+	place: [Position];
+	replace: [Position, replacer: AbstractBlock];
 };
 
 export type Path = string;
@@ -44,6 +44,7 @@ export enum Layer {
 }
 
 export enum BlockType {
-	AIR,
-	PLAIN,
+	AIR = 'air',
+	PLAIN = 'plain',
+	FALLING = 'falling',
 }

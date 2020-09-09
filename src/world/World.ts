@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js';
 import AbstractBlock from '../blocks/AbstractBlock';
+import FallingTile from '../client/renderer/FallingTile';
 import Tile from '../client/renderer/Tile';
-import { StringChunkPosition } from '../types';
+import { BlockType, StringChunkPosition } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
 import TilePosition from '../utils/TilePosition';
 import Chunk from './Chunk';
@@ -9,19 +10,28 @@ import Chunk from './Chunk';
 export default class World {
 	public chunks: Map<StringChunkPosition, Chunk> = new Map<StringChunkPosition, Chunk>();
 
-	constructor(public app: PIXI.Application) {
+	public constructor(public app: PIXI.Application) {
 		this.addBlankChunk(new ChunkPosition(0, 0));
+	}
+	public getTileAt(position: TilePosition): Tile {
+		const chunkPosition: ChunkPosition = position.getAsChunkPosition();
+		this.ensureChunkAt(chunkPosition);
+		return this.getChunkAt(chunkPosition).getTileAt(position);
 	}
 
 	public placeTile(tile: Tile): void {
 		const chunkPosition: ChunkPosition = tile.position.getAsChunkPosition();
-		if (!this.getChunkAt(chunkPosition)) {
-			this.addBlankChunk(chunkPosition);
-		}
+		this.ensureChunkAt(chunkPosition);
 
-		if (!this.getChunkAt(chunkPosition).getBlockAt(tile.position)) {
-			this.getChunkAt(chunkPosition).blocks.set(tile.position.stringify(), tile);
+		if (!this.getChunkAt(chunkPosition).getTileAt(tile.position)) {
+			this.getChunkAt(chunkPosition).tiles.set(tile.position.stringify(), tile);
 			tile.addToApplication(this.app);
+		}
+	}
+
+	private ensureChunkAt(position: ChunkPosition): void {
+		if (!this.getChunkAt(position)) {
+			this.addBlankChunk(position);
 		}
 	}
 
@@ -37,16 +47,17 @@ export default class World {
 
 	public replaceBlock(block: AbstractBlock, position: TilePosition): void {
 		this.removeBlock(position);
-		this.placeTile(new Tile(block, position));
+		if (block.type === BlockType.FALLING) this.placeTile(new FallingTile(block, position));
+		else this.placeTile(new Tile(block, position));
 	}
 
 	public removeBlock(position: TilePosition): Tile {
 		const chunk: Chunk = this.getChunkAt(position.getAsChunkPosition());
 		if (chunk) {
-			const tile: Tile = chunk.getBlockAt(position);
+			const tile: Tile = chunk.getTileAt(position);
 			if (tile) {
 				tile.destroy();
-				chunk.blocks.delete(position.stringify());
+				chunk.tiles.delete(position.stringify());
 			}
 			return tile;
 		}

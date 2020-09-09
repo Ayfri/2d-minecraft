@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import * as PIXIFilters from 'pixi-filters';
 import { game } from '../main';
+import ColorableSprite from './ColorableSprite';
 import Color from './renderer/Color';
 
-export default class Button extends PIXI.Sprite {
+export default class Button extends ColorableSprite {
 	public get showBorder(): boolean {
 		return this._showBorder;
 	}
@@ -14,7 +15,6 @@ export default class Button extends PIXI.Sprite {
 		this.filters = value ? [this.border] : [];
 	}
 
-	public readonly color: Color;
 	public readonly text: PIXI.Text;
 	private _showBorder: boolean = false;
 	public borderColor: Color = new Color(0, 0, 1);
@@ -22,11 +22,11 @@ export default class Button extends PIXI.Sprite {
 
 	constructor(public rawText: string = '', public width: number, public height: number) {
 		super();
-		this.color = new Color(1, 1, 1, 1);
 		this.texture = PIXI.Texture.WHITE;
 		this.interactive = true;
 		this.buttonMode = true;
 		this.position.set(this.position.x, this.position.y);
+		// fixme: fix borders
 		this.border.color = this.borderColor.toNumber();
 
 		const text: PIXI.Text = new PIXI.Text(this.rawText);
@@ -35,10 +35,6 @@ export default class Button extends PIXI.Sprite {
 		this.text = text;
 		this.addChild(text);
 
-		this.color.on('change', (red, green, blue, alpha) => {
-			this.tint = new Color(red, green, blue).toNumber();
-			this.alpha = alpha;
-		});
 		this.on('click', () => {
 			this.showBorder = true;
 		});
