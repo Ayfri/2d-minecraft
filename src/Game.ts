@@ -4,6 +4,7 @@ import Button from './client/Button';
 import { Gui } from './client/Gui';
 import GameRenderer from './client/renderer/GameRenderer';
 import TilePlacementGui from './client/TilePlacementGui';
+import TextureManager from './ressources/TextureManager';
 import EventHandler from './utils/EventHandler';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
@@ -22,6 +23,7 @@ export default class Game {
 	public player: Player;
 	public world: World;
 	public renderer: GameRenderer;
+	public textureManager: TextureManager;
 	private mainGui: Gui;
 
 	constructor(public app: PIXI.Application) {
@@ -30,26 +32,29 @@ export default class Game {
 	}
 
 	public init() {
+		this.renderer = new GameRenderer();
+		this.textureManager = new TextureManager(this.app);
 		this.mouseManager = new MouseManager(this.app);
+		this.mainGui = new Gui(this.app);
+
 		Blocks.registerBlocks();
 		this.gameData.blocks.forEach((block) => {
 			const path: Path = `./assets/sprites/${block.name}.png`;
-			this.app.loader.add(`block:${block.name}`, path);
+			this.textureManager.preLoadTexture(path, `block:${block.name}`);
 		});
 
-		this.app.loader.load((loader, resources) => {
+		this.app.loader.onComplete.add(() => {
 			for (const [name, block] of this.gameData.blocks) {
-				const texture: PIXI.Texture = resources[`block:${name}`].texture;
-				block.setTexture(texture);
+				block.setTexture(this.textureManager.getTexture(`block:${name}`));
 			}
-
 			this.player = new Player();
-			this.player.setTexture(resources['block:void'].texture);
+			this.player.setTexture(this.textureManager.getTexture('block:void'));
 			this.tilePlacementGui = new TilePlacementGui(this.app);
-			this.mainGui = new Gui(this.app);
 			this.loaded = true;
 			this.eventHandler.emit('launch');
 		});
+
+		this.app.loader.load();
 	}
 
 	public preInit() {
@@ -80,8 +85,6 @@ export default class Game {
 		});
 
 		document.body.appendChild(this.app.view);
-
-		this.renderer = new GameRenderer();
 	}
 
 	public postInit() {

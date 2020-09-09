@@ -54,7 +54,15 @@ module.exports = {
 			{
 				test: /\.ts$/i,
 				exclude: [/node_modules/],
-				use: 'ts-loader',
+				loader: 'ts-loader',
+				options: {
+					compilerOptions: {
+						types: ['node', 'pixi.js'],
+						module: 'ESNext',
+						target: 'ES2019',
+						include: ['src/**/*'],
+					},
+				},
 			},
 			{
 				test: /\.(?:png|svg|jpg|gif)$/i,
