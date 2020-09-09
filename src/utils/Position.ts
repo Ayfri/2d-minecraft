@@ -4,6 +4,13 @@ import IPosition from './IPosition';
 export default class Position implements IPosition {
 	constructor(public x: number = 0, public y: number = 0) {}
 
+	public set(x: number, y: number): this {
+		this.x = x;
+		this.y = y;
+
+		return this;
+	}
+
 	public add(x: number, y: number): Position {
 		return new Position(this.x + x, this.y + y);
 	}

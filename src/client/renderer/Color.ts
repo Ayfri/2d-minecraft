@@ -74,6 +74,13 @@ export default class Color extends EventHandler<ColorEvents> {
 		return Color.toHexString(this);
 	}
 
+	public set(red?: number, green?: number, blue?: number, alpha?: number) {
+		if (red) this.red = red;
+		if (green) this.green = green;
+		if (blue) this.blue = blue;
+		if (alpha) this.alpha = alpha;
+	}
+
 	public toNumber(): number {
 		return Color.toNumber(this);
 	}
