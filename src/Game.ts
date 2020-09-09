@@ -91,6 +91,7 @@ export default class Game {
 
 		this.world.placeBlock(this.gameData.blocks.get('dirt'), new TilePosition(15, 2));
 		const resetButton: Button = new Button('reset', 50, 30);
+		resetButton.position.set(10, 10);
 		resetButton.on('click', (): void => {
 			this.world.clear();
 		});
