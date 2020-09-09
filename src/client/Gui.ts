@@ -1,5 +1,3 @@
-import { game } from '../main';
-import Button from './Button';
 import Sprite from './renderer/Sprite';
 import * as PIXI from 'pixi.js';
 
