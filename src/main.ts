@@ -1,5 +1,14 @@
 import * as PIXI from 'pixi.js';
+import * as filters from 'pixi-filters';
+import SimpleBlock from './blocks/SimpleBlock';
+import Button from './client/Button';
+import { Gui } from './client/Gui';
+import Color from './client/renderer/Color';
+import Sprite from './client/renderer/Sprite';
+import Entity from './entities/Entity';
 import Game from './Game';
+import SimpleRegistry from './ressources/SimpleRegistry';
+import Position from './utils/Position';
 
 // app
 export const app = new PIXI.Application({
@@ -63,11 +72,23 @@ Object.defineProperties(window, {
 	blocks: {
 		value: game.gameData.blocks,
 	},
+	gameClasses: {
+		value: {
+			Color,
+			Position,
+			SimpleRegistry,
+			Entity,
+			Button,
+			Gui,
+			Sprite,
+			SimpleBlock,
+		},
+	},
 	game: {
 		value: game,
 	},
 	PIXI: {
-		value: PIXI,
+		value: { ...PIXI, filters: { ...filters, ...PIXI.filters } },
 	},
 	world: {
 		value: game.world,
