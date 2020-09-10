@@ -15,8 +15,9 @@ export default class Position implements IPosition {
 		return new Position(this.x + x, this.y + y);
 	}
 
-	public multiply(ratio: number): Position {
-		return new Position(this.x * ratio, this.y * ratio);
+	public multiply(ratio: number, y?: number): Position;
+	public multiply(x: number, y: number): Position {
+		return y ? new Position(this.x * x, this.y * y) : new Position(this.x * x, this.y * x);
 	}
 
 	public subtract(x: number = 0, y: number = 0): Position {

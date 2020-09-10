@@ -29,8 +29,9 @@ export default class TilePosition extends Position {
 		return TilePosition.from(super.add(x, y));
 	}
 
-	public multiply(ratio: number): TilePosition {
-		return TilePosition.from(super.multiply(ratio));
+	public multiply(ratio: number, y?: number): TilePosition;
+	public multiply(x: number, y: number): TilePosition {
+		return y ? TilePosition.from(super.multiply(x, y)) : TilePosition.from(super.multiply(x));
 	}
 
 	public subtract(x: number, y?: number): TilePosition {
