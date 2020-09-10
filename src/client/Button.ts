@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
 import * as PIXIFilters from 'pixi-filters';
+import * as PIXI from 'pixi.js';
 import { game } from '../main';
 import ColorableSprite from './ColorableSprite';
 import Color from './renderer/Color';

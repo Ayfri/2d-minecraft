@@ -1,6 +1,6 @@
+import * as PIXI from 'pixi.js';
 import AbstractBlock from './blocks/AbstractBlock';
 import Key from './client/input/Key';
-import * as PIXI from 'pixi.js';
 import Position from './utils/Position';
 
 export type EventMap = Record<string, any[]>;

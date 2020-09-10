@@ -1,7 +1,7 @@
+import * as PIXI from 'pixi.js';
 import { game } from '../main';
 import TilePosition from '../utils/TilePosition';
 import { Gui } from './Gui';
-import * as PIXI from 'pixi.js';
 
 export default class DebugGui extends Gui {
 	public mouseCoordsText: PIXI.Text;

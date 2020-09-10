@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
 import * as filters from 'pixi-filters';
+import * as PIXI from 'pixi.js';
 import SimpleBlock from './blocks/SimpleBlock';
 import Button from './client/Button';
 import { Gui } from './client/Gui';

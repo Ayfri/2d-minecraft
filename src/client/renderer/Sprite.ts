@@ -1,6 +1,6 @@
+import * as PIXI from 'pixi.js';
 import { game } from '../../main';
 import Position from '../../utils/Position';
-import * as PIXI from 'pixi.js';
 
 export default abstract class Sprite {
 	public position: Position;

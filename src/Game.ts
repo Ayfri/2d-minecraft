@@ -3,20 +3,19 @@ import Blocks from './blocks/Blocks';
 import Button from './client/Button';
 import DebugGui from './client/DebugGui';
 import { Gui } from './client/Gui';
+import Key from './client/input/Key';
+import MouseManager from './client/input/MouseManager';
 import FallingTile from './client/renderer/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
 import Tile from './client/renderer/Tile';
 import TilePlacementGui from './client/TilePlacementGui';
-import TextureManager from './ressources/TextureManager';
-import EventHandler from './utils/EventHandler';
-import Key from './client/input/Key';
-import MouseManager from './client/input/MouseManager';
 import Player from './entities/Player';
 import * as GameData from './ressources/GameData';
+import TextureManager from './ressources/TextureManager';
 import { GameEvents, Path } from './types';
+import EventHandler from './utils/EventHandler';
 import TilePosition from './utils/TilePosition';
 import World from './world/World';
-import { inspect } from 'util';
 
 export default class Game {
 	public eventHandler: EventHandler<GameEvents>;
@@ -100,10 +99,6 @@ export default class Game {
 		this.sandTile = new FallingTile(this.gameData.blocks.get('sand'), sandTilePosition);
 		this.world.placeTile(this.sandTile);
 		this.world.placeTile(new Tile(this.gameData.blocks.get('dirt'), sandTilePosition.add(0, 1)));
-
-		const sandTileText = new PIXI.Text(`${inspect(this.sandTile.position)}`, { fill: '#ffffff', fontSize: 20 });
-		sandTileText.position.set(20, 50);
-		this.debugGui.addPIXISprite('sandTile', sandTileText);
 
 		const resetButton: Button = new Button('reset', 50, 30);
 		resetButton.position.set(10, 10);

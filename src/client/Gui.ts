@@ -1,5 +1,5 @@
-import Sprite from './renderer/Sprite';
 import * as PIXI from 'pixi.js';
+import Sprite from './renderer/Sprite';
 
 export class Gui {
 	private readonly container: PIXI.Container;
