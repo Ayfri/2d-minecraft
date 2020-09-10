@@ -11,7 +11,7 @@ export default class FallingTile extends Tile {
 	}
 
 	public fall(): void {
-		this.position.y--;
+		this.position.y -= 1;
 		this.updateState();
 	}
 

@@ -3,12 +3,11 @@ import AbstractBlock from './AbstractBlock';
 import AirBlock from './AirBlock';
 import FallingBlock from './FallingBlock';
 import SimpleBlock from './SimpleBlock';
-import VoidBlock from './VoidBlock';
 
 export default class Blocks {
 	public static registerBlocks() {
-		Blocks.register('void', new VoidBlock());
-		Blocks.register('air', new AirBlock());
+		Blocks.register('void', new SimpleBlock('void'));
+		Blocks.register('air', new AirBlock('air'));
 		Blocks.register('dirt', new SimpleBlock('dirt'));
 		Blocks.register('grass', new SimpleBlock('grass'));
 		Blocks.register('stone', new SimpleBlock('stone'));
