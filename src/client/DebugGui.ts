@@ -18,7 +18,7 @@ export default class DebugGui extends Gui {
 	}
 
 	public update(): void {
-		const mousePosition = TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition());
+		const mousePosition = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition());
 		this.mouseCoordsText.text = `x: ${mousePosition.x}, y: ${mousePosition.y}`;
 		this.fpsCounter.text = `FPS: ${game.app.ticker.FPS.toFixed()}`;
 	}

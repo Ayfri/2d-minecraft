@@ -9,7 +9,7 @@ export default class TilePlacementGui extends Gui {
 
 	constructor(app: PIXI.Application) {
 		super(app);
-		this.tilePreview = new Tile(game.player.blockSelected, TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
+		this.tilePreview = new Tile(game.player.blockSelected, TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
 
 		this.tilePreview.alpha = 0.4;
 		this.tilePreview.zIndex = 1000;
@@ -17,11 +17,10 @@ export default class TilePlacementGui extends Gui {
 	}
 
 	public updateTilePlacingPreview() {
-		const position: TilePosition = TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition()).multiply(game.renderer.resolution);
+		const position: TilePosition = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition()).multiply(game.renderer.resolution);
 		this.tilePreview.width = game.renderer.resolution;
 		this.tilePreview.height = game.renderer.resolution;
-		this.tilePreview.position.x = position.x;
-		this.tilePreview.position.y = position.y;
+		this.tilePreview.position.set(position.x, position.y);
 	}
 
 	public setTextureTilePlacingPreview(texture: PIXI.Texture) {

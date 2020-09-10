@@ -4,6 +4,10 @@ import IPosition from './IPosition';
 export default class Position implements IPosition {
 	constructor(public x: number = 0, public y: number = 0) {}
 
+	public static fromPosition(position: Position): Position {
+		return new Position(position.x, position.y);
+	}
+
 	public set(x: number, y: number): this {
 		this.x = x;
 		this.y = y;
@@ -11,13 +15,17 @@ export default class Position implements IPosition {
 		return this;
 	}
 
+	public addPosition(position: Position): Position {
+		return this.add(position.x, position.y);
+	}
+
 	public add(x: number, y: number): Position {
 		return new Position(this.x + x, this.y + y);
 	}
 
-	public multiply(ratio: number, y?: number): Position;
-	public multiply(x: number, y: number): Position {
-		return y ? new Position(this.x * x, this.y * y) : new Position(this.x * x, this.y * x);
+	public multiply(ratio: number): Position;
+	public multiply(x: number, y?: number): Position {
+		return typeof y === 'undefined' ? new Position(this.x * x, this.y * x) : new Position(this.x * x, this.y * y);
 	}
 
 	public subtract(x: number = 0, y: number = 0): Position {

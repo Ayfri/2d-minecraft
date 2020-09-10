@@ -18,7 +18,7 @@ export default class Tile extends Sprite {
 	}
 
 	public getAsSprite(): PIXI.Sprite {
-		this.sprite.setTransform(this.position.x * this.resolution, this.position.y * this.resolution, this.resolution / 16, this.resolution / 16);
+		this.sprite.setTransform(this.position.toPosition().x, this.position.toPosition().y, this.resolution / 16, this.resolution / 16);
 		return this.sprite;
 	}
 

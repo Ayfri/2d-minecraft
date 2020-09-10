@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js';
 
 export default abstract class Sprite {
 	public position: Position;
-	protected sprite: PIXI.Sprite;
+	public sprite: PIXI.Sprite;
 
 	protected constructor() {
 		this.position = new Position();

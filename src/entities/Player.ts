@@ -12,7 +12,8 @@ export default class Player extends Entity {
 	}
 
 	public putBlockWhereClicked(): void {
-		const position: TilePosition = TilePosition.fromPositionToShortTilePosition(game.mouseManager.getMousePosition());
-		game.world.replaceBlock(this.blockSelected, position);
+		const position: TilePosition = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition());
+
+		if (game.world.getTileAt(position).block.name !== this.blockSelected.name) game.world.replaceBlock(this.blockSelected, position);
 	}
 }

@@ -8,7 +8,9 @@ import Sprite from './client/renderer/Sprite';
 import Entity from './entities/Entity';
 import Game from './Game';
 import SimpleRegistry from './ressources/SimpleRegistry';
+import ChunkPosition from './utils/ChunkPosition';
 import Position from './utils/Position';
+import TilePosition from './utils/TilePosition';
 
 // app
 export const app = new PIXI.Application({
@@ -82,6 +84,8 @@ Object.defineProperties(window, {
 			Gui,
 			Sprite,
 			SimpleBlock,
+			TilePosition,
+			ChunkPosition,
 		},
 	},
 	game: {

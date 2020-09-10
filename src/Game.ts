@@ -33,7 +33,6 @@ export default class Game {
 	private sandTile;
 
 	constructor(public app: PIXI.Application) {
-		this.world = new World(app);
 		this.eventHandler = new EventHandler<GameEvents>();
 	}
 
@@ -54,6 +53,7 @@ export default class Game {
 			for (const [name, block] of this.gameData.blocks) {
 				block.setTexture(this.textureManager.getTexture(`block:${name}`));
 			}
+			this.world = new World(this.app);
 			this.player = new Player();
 			this.player.setTexture(this.textureManager.getTexture('block:void'));
 			this.tilePlacementGui = new TilePlacementGui(this.app);
@@ -96,14 +96,14 @@ export default class Game {
 			}
 		}
 
-		// todo: Fix fallingTiles not falling
 		const sandTilePosition: TilePosition = new TilePosition(15, 2);
 		this.sandTile = new FallingTile(this.gameData.blocks.get('sand'), sandTilePosition);
 		this.world.placeTile(this.sandTile);
+		this.world.placeTile(new Tile(this.gameData.blocks.get('dirt'), sandTilePosition.add(0, 1)));
 
-		/*const sandTileText = new PIXI.Text(`${inspect(this.sandTile.canFall)}`, { fill: '#ffffff', fontSize: 10 });
+		const sandTileText = new PIXI.Text(`${inspect(this.sandTile.position)}`, { fill: '#ffffff', fontSize: 20 });
 		sandTileText.position.set(20, 50);
-		this.debugGui.addPIXISprite('sandTile', sandTileText);*/
+		this.debugGui.addPIXISprite('sandTile', sandTileText);
 
 		const resetButton: Button = new Button('reset', 50, 30);
 		resetButton.position.set(10, 10);
@@ -119,5 +119,6 @@ export default class Game {
 	public update() {
 		this.player.update();
 		this.debugGui.update();
+		this.world.update();
 	}
 }
