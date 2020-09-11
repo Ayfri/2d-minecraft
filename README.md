@@ -10,7 +10,7 @@ This is a 2d-game made in TypeScript with the PIXI.js library and WebPack.
 
 This game does not have a site where to play it although you can download the files and launch it locally.
 
-### How to play it ?
+### How to play it
 
 Clone the repo.
 

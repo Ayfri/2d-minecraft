@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { game } from '../main';
-import TilePosition from '../utils/TilePosition';
+import { game } from '../../main';
+import TilePosition from '../../utils/TilePosition';
 import { Gui } from './Gui';
 
 export default class DebugGui extends Gui {

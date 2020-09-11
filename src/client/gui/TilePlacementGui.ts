@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
-import { game } from '../main';
-import TilePosition from '../utils/TilePosition';
+import { game } from '../../main';
+import TilePosition from '../../utils/TilePosition';
 import { Gui } from './Gui';
-import Tile from './renderer/Tile';
+import Tile from '../renderer/Tile';
 
 export default class TilePlacementGui extends Gui {
 	public tilePreview: PIXI.Sprite;

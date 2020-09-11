@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js';
-import Sprite from './renderer/Sprite';
+import IShowable from '../IShowable';
+import Sprite from '../renderer/Sprite';
 
-export class Gui {
+export class Gui implements IShowable {
+	public isShow: boolean;
 	private readonly container: PIXI.Container;
 	private sprites: Map<string, PIXI.Sprite> = new Map();
 
@@ -26,10 +28,12 @@ export class Gui {
 	}
 
 	public show(): void {
+		this.isShow = true;
 		this.app.stage.addChild(this.container);
 	}
 
 	public hide(): void {
+		this.isShow = false;
 		this.app.stage.removeChild(this.container);
 	}
 }

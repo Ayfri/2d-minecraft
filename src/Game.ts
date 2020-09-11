@@ -1,14 +1,14 @@
 import * as PIXI from 'pixi.js';
 import Blocks from './blocks/Blocks';
-import Button from './client/Button';
-import DebugGui from './client/DebugGui';
-import { Gui } from './client/Gui';
+import Button from './client/gui/Button';
+import DebugGui from './client/gui/DebugGui';
+import { Gui } from './client/gui/Gui';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
 import FallingTile from './client/renderer/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
 import Tile from './client/renderer/Tile';
-import TilePlacementGui from './client/TilePlacementGui';
+import TilePlacementGui from './client/gui/TilePlacementGui';
 import Player from './entities/Player';
 import * as GameData from './ressources/GameData';
 import TextureManager from './ressources/TextureManager';
@@ -42,7 +42,6 @@ export default class Game {
 		this.mainGui = new Gui(this.app);
 		this.debugGui = new DebugGui(this.app);
 
-		Blocks.registerBlocks();
 		this.gameData.blocks.forEach((block) => {
 			const path: Path = `./assets/sprites/${block.name}.png`;
 			this.textureManager.preLoadTexture(path, `block:${block.name}`);
@@ -91,14 +90,14 @@ export default class Game {
 	public postInit() {
 		for (let i = 0; i < 8; i++) {
 			for (let j = 0; j < 8; j++) {
-				this.world.placeBlock(this.gameData.blocks.get('void'), new TilePosition(i, j));
+				this.world.placeBlock(Blocks.VOID, new TilePosition(i, j));
 			}
 		}
 
 		const sandTilePosition: TilePosition = new TilePosition(15, 2);
-		this.sandTile = new FallingTile(this.gameData.blocks.get('sand'), sandTilePosition);
+		this.sandTile = new FallingTile(Blocks.SAND, sandTilePosition);
 		this.world.placeTile(this.sandTile);
-		this.world.placeTile(new Tile(this.gameData.blocks.get('dirt'), sandTilePosition.add(0, 1)));
+		this.world.placeTile(new Tile(Blocks.DIRT, sandTilePosition.add(0, 1)));
 
 		const resetButton: Button = new Button('reset', 50, 30);
 		resetButton.position.set(10, 10);

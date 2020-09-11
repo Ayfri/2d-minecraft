@@ -1,14 +1,38 @@
+import * as PIXI from 'pixi.js';
+import IShowable from '../client/IShowable';
 import Tile from '../client/renderer/Tile';
 import { game } from '../main';
 import { blocks } from '../ressources/GameData';
 import { StringTilePosition } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
+import Position from '../utils/Position';
 import TilePosition from '../utils/TilePosition';
 
-export default class Chunk {
-	public readonly tiles: Map<StringTilePosition, Tile> = new Map<StringTilePosition, Tile>();
+export default class Chunk implements IShowable {
+	public isShow: boolean;
 
-	constructor(public position: ChunkPosition) {
+	public show(): void {
+		if (this.isShow) return;
+		this.isShow = true;
+		this.tiles.forEach((t) => {
+			game.app.stage.removeChild(t.getAsSprite());
+			game.app.stage.addChild(t.getAsSprite());
+		});
+	}
+
+	public hide(): void {
+		if (!this.isShow) return;
+		this.isShow = false;
+		this.tiles.forEach((t) => {
+			game.app.stage.removeChild(t.getAsSprite());
+		});
+	}
+
+	public readonly tiles: Map<StringTilePosition, Tile> = new Map<StringTilePosition, Tile>();
+	private container: PIXI.Container;
+
+	public constructor(public position: ChunkPosition) {
+		this.container = new PIXI.Container();
 		this.fillWithAir();
 	}
 
@@ -39,12 +63,31 @@ export default class Chunk {
 	}
 
 	public update(): void {
+		const canHide = this.canHide();
+		if (canHide) {
+			this.hide();
+		} else {
+			this.show();
+		}
+
 		this.tiles.forEach((t) => {
-			t.resolution = game.renderer.resolution;
-			game.app.stage.removeChild(t.getAsSprite());
-			game.app.stage.addChild(t.getAsSprite());
+			if (this.isShow) {
+				game.app.stage.removeChild(t.getAsSprite());
+				game.app.stage.addChild(t.getAsSprite());
+			}
+
 			t.update();
 		});
+	}
+
+	private canHide(): boolean {
+		const position: Position = this.position.toTilePosition().toPosition();
+		return (
+			position.x < game.player.position.x - game.renderer.resolution * 20 ||
+			position.x > game.player.position.x + game.renderer.resolution * 20 ||
+			position.y < game.player.position.y - game.renderer.resolution * 10 ||
+			position.y > game.player.position.y + game.renderer.resolution * 10
+		);
 	}
 
 	private fillWithAir(): void {

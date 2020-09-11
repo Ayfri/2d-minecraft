@@ -1,5 +1,6 @@
 import AbstractBlock from '../blocks/AbstractBlock';
 import { game } from '../main';
+import Position from '../utils/Position';
 import TilePosition from '../utils/TilePosition';
 import Entity from './Entity';
 
@@ -8,6 +9,7 @@ export default class Player extends Entity {
 
 	constructor() {
 		super();
+		this.position = new Position(0, 0);
 		this.blockSelected = game.gameData.blocks.get('dirt');
 	}
 
