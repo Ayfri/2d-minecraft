@@ -5,19 +5,10 @@ import ColorableSprite from '../ColorableSprite';
 import Color from '../renderer/Color';
 
 export default class Button extends ColorableSprite {
-	public get showBorder(): boolean {
-		return this._showBorder;
-	}
-
-	public set showBorder(value: boolean) {
-		this._showBorder = value;
-		this.border.enabled = true;
-		this.filters = value ? [this.border] : [];
-	}
-
 	public readonly text: PIXI.Text;
-	private _showBorder: boolean = false;
 	public borderColor: Color = new Color(0, 0, 1);
+	public borderPadding: number = 2;
+	private _showBorder: boolean = false;
 	private border = new PIXIFilters.OutlineFilter(10, this.borderColor.toNumber(), 2);
 
 	constructor(public rawText: string = '', public width: number, public height: number) {
@@ -26,7 +17,7 @@ export default class Button extends ColorableSprite {
 		this.interactive = true;
 		this.buttonMode = true;
 		this.position.set(this.position.x, this.position.y);
-		// fixme: fix borders
+		this.border.padding = this.borderPadding;
 		this.border.color = this.borderColor.toNumber();
 
 		const text: PIXI.Text = new PIXI.Text(this.rawText);
@@ -35,8 +26,11 @@ export default class Button extends ColorableSprite {
 		this.text = text;
 		this.addChild(text);
 
-		this.on('click', () => {
-			this.showBorder = true;
+		this.on('pointerdown', () => {
+			this.tint = new Color(0.8, 0.8, 0.8).toNumber();
+		});
+		this.on('pointerup', () => {
+			this.tint = new Color(1, 1, 1).toNumber();
 		});
 		this.on('mouseover', () => {
 			game.tilePlacementGui.hide();
@@ -44,5 +38,12 @@ export default class Button extends ColorableSprite {
 		this.on('mouseout', () => {
 			game.tilePlacementGui.show();
 		});
+	}
+
+	public showBorder() {
+		this._showBorder = true;
+		this.border.color = this.borderColor.toNumber();
+		this.border.enabled = true;
+		this.filters = [this.border];
 	}
 }

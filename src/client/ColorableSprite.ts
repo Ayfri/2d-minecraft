@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import Color from './renderer/Color';
 
 export default class ColorableSprite extends PIXI.Sprite {
-	public readonly color: Color = new Color(1, 1, 1, 1);
+	public color: Color = new Color(1, 1, 1, 1);
 
 	public constructor() {
 		super();

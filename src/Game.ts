@@ -5,6 +5,7 @@ import DebugGui from './client/gui/DebugGui';
 import Gui from './client/gui/Gui';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
+import Color from './client/renderer/Color';
 import FallingTile from './client/renderer/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
 import Tile from './client/renderer/Tile';
@@ -109,6 +110,10 @@ export default class Game {
 
 		const resetButton: Button = new Button('reset', 50, 30);
 		resetButton.position.set(10, 10);
+		resetButton.borderPadding = 3;
+		resetButton.color = new Color(0.9, 0, 0.9);
+		resetButton.borderColor = new Color(0.2, 0.2, 0.2);
+		resetButton.showBorder();
 		resetButton.on('click', (): void => {
 			this.world.clear();
 		});
