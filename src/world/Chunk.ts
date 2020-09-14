@@ -1,10 +1,12 @@
 import * as PIXI from 'pixi.js';
+import AbstractBlock from '../blocks/AbstractBlock';
+import Blocks from '../blocks/Blocks';
 import IShowable from '../client/IShowable';
 import Tile from '../client/renderer/Tile';
 import { game } from '../main';
-import { blocks } from '../ressources/GameData';
 import { StringTilePosition } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
+import Collection from '../utils/Collection';
 import Position from '../utils/Position';
 import TilePosition from '../utils/TilePosition';
 
@@ -28,18 +30,18 @@ export default class Chunk implements IShowable {
 		});
 	}
 
-	public readonly tiles: Map<StringTilePosition, Tile> = new Map<StringTilePosition, Tile>();
+	public readonly tiles: Collection<StringTilePosition, Tile> = new Collection<StringTilePosition, Tile>();
 	private container: PIXI.Container;
 
 	public constructor(public position: ChunkPosition) {
 		this.container = new PIXI.Container();
-		this.fillWithAir();
+		this.fill(Blocks.AIR);
 	}
 
 	public setTile(tile: Tile): Tile {
 		const stringTilePosition: StringTilePosition = tile.position.stringify();
 		if (this.tiles.has(stringTilePosition)) {
-			game.app.stage.removeChild(this.tiles.get(stringTilePosition).sprite);
+			game.app.stage.removeChild(this.tiles.get(stringTilePosition).getAsSprite());
 			this.tiles.delete(stringTilePosition);
 		}
 
@@ -51,7 +53,7 @@ export default class Chunk implements IShowable {
 	public clear(): void {
 		this.tiles.forEach((t) => t.destroy());
 		this.tiles.clear();
-		this.fillWithAir();
+		this.fill(Blocks.AIR);
 	}
 
 	public getTileAt(position: TilePosition): Tile | null {
@@ -63,39 +65,30 @@ export default class Chunk implements IShowable {
 	}
 
 	public update(): void {
-		const canHide = this.canHide();
-		if (canHide) {
-			this.hide();
-		} else {
-			this.show();
-		}
-
-		this.tiles.forEach((t) => {
+		for (const tile of this.tiles.values()) {
+			game.app.stage.removeChild(tile.getAsSprite());
 			if (this.isShow) {
-				game.app.stage.removeChild(t.getAsSprite());
-				game.app.stage.addChild(t.getAsSprite());
+				game.app.stage.addChild(tile.getAsSprite());
 			}
-
-			t.update();
-		});
+			tile.update();
+		}
 	}
 
-	private canHide(): boolean {
-		const position: Position = this.position.toTilePosition().toPosition();
-		return (
-			position.x < game.player.position.x - game.renderer.resolution * 20 ||
-			position.x > game.player.position.x + game.renderer.resolution * 20 ||
-			position.y < game.player.position.y - game.renderer.resolution * 10 ||
-			position.y > game.player.position.y + game.renderer.resolution * 10
-		);
+	public updateRendering(): void {
+		this.canHide() ? this.hide() : this.show();
 	}
 
-	private fillWithAir(): void {
+	public fill(block: AbstractBlock): void {
 		for (let i = 0; i < 16; i++) {
 			for (let j = 0; j < 16; j++) {
 				const position = new TilePosition(i, j).addTilePosition(this.position.toTilePosition());
-				this.setTile(new Tile(blocks.get('air'), position));
+				this.setTile(new Tile(block, position));
 			}
 		}
+	}
+
+	public canHide(): boolean {
+		const position: Position = this.position.toTilePosition().toPosition();
+		return position.distanceFrom(game.player.tileOn.toPosition()) > 64 * 32;
 	}
 }

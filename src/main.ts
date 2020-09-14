@@ -1,8 +1,8 @@
-import * as filters from 'pixi-filters';
+import * as filters from '@pixi/filter-outline';
 import * as PIXI from 'pixi.js';
 import SimpleBlock from './blocks/SimpleBlock';
 import Button from './client/gui/Button';
-import { Gui } from './client/gui/Gui';
+import Gui from './client/gui/Gui';
 import Color from './client/renderer/Color';
 import Sprite from './client/renderer/Sprite';
 import Entity from './entities/Entity';
@@ -24,11 +24,6 @@ export const game: Game = new Game(app);
 app.stage.sortableChildren = true;
 game.preInit();
 game.init();
-
-game.eventHandler.once('launch', () => {
-	game.postInit();
-	console.log('Game launched.');
-});
 
 // Events
 app.ticker.add(() => {

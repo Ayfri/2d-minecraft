@@ -5,7 +5,18 @@
 		"sourceMap": true,
 		"module": "esnext",
 		"noImplicitAny": false,
-		"moduleResolution": "Node"
+		"moduleResolution": "Node",
+		"pretty": true,
+		"typeRoots": [
+			"node_modules/@types",
+			"./typings"
+		]
 	},
-	"include": ["src/**/*"]
+	"include": [
+		"src/**/*",
+		"typings/*"
+	],
+	"typeAcquisition": {
+		"enable": true
+	}
 }

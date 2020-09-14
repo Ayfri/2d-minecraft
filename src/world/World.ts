@@ -5,11 +5,12 @@ import Tile from '../client/renderer/Tile';
 import { blocks } from '../ressources/GameData';
 import { BlockType, StringChunkPosition } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
+import Collection from '../utils/Collection';
 import TilePosition from '../utils/TilePosition';
 import Chunk from './Chunk';
 
 export default class World {
-	public chunks: Map<StringChunkPosition, Chunk> = new Map<StringChunkPosition, Chunk>();
+	public chunks: Collection<StringChunkPosition, Chunk> = new Collection<StringChunkPosition, Chunk>();
 
 	public constructor(public app: PIXI.Application) {
 		this.init();
@@ -30,7 +31,7 @@ export default class World {
 	}
 
 	public ensureChunkAt(position: ChunkPosition): void {
-		if (!this.chunks.has(position.stringify()) || !this.chunks.get(position.stringify())?.tiles) {
+		if (!this.chunks.has(position.stringify())) {
 			this.addBlankChunk(position);
 		}
 	}
@@ -61,11 +62,21 @@ export default class World {
 	}
 
 	public clear(): void {
-		this.chunks.forEach((chunk): void => chunk.clear());
+		for (const chunk of this.chunks.values()) {
+			chunk.clear();
+		}
 	}
 
-	public update(): void {
-		this.chunks.forEach((chunk) => chunk.update());
+	public async update(): Promise<void> {
+		for (const chunk of this.chunks.values()) {
+			if (chunk.isShow) chunk.update();
+		}
+	}
+
+	public updateRendering(): void {
+		for (const chunk of this.chunks.values()) {
+			chunk.updateRendering();
+		}
 	}
 
 	private init() {

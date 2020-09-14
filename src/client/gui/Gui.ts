@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import IShowable from '../IShowable';
 import Sprite from '../renderer/Sprite';
 
-export class Gui implements IShowable {
+export default class Gui implements IShowable {
 	public isShow: boolean;
 	private readonly container: PIXI.Container;
 	private sprites: Map<string, PIXI.Sprite> = new Map();

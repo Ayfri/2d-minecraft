@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import Blocks from './blocks/Blocks';
 import Button from './client/gui/Button';
 import DebugGui from './client/gui/DebugGui';
-import { Gui } from './client/gui/Gui';
+import Gui from './client/gui/Gui';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
 import FallingTile from './client/renderer/FallingTile';
@@ -13,12 +13,15 @@ import Player from './entities/Player';
 import * as GameData from './ressources/GameData';
 import TextureManager from './ressources/TextureManager';
 import { GameEvents, Path } from './types';
-import EventHandler from './utils/EventHandler';
+import ChunkPosition from './utils/ChunkPosition';
+import EventEmitter from './utils/EventEmitter';
 import TilePosition from './utils/TilePosition';
 import World from './world/World';
 
+import { inspect } from 'util';
+
 export default class Game {
-	public eventHandler: EventHandler<GameEvents>;
+	public eventHandler: EventEmitter<GameEvents>;
 	public gameData = GameData;
 	public tilePlacementGui: TilePlacementGui;
 	public loaded: boolean = false;
@@ -28,11 +31,16 @@ export default class Game {
 	public renderer: GameRenderer;
 	public textureManager: TextureManager;
 	private mainGui: Gui;
-	private debugGui: DebugGui;
-	private sandTile;
+	public debugGui: DebugGui;
+	public sandTile;
 
 	constructor(public app: PIXI.Application) {
-		this.eventHandler = new EventHandler<GameEvents>();
+		this.eventHandler = new EventEmitter<GameEvents>();
+
+		this.eventHandler.once('launch', () => {
+			this.postInit();
+			console.log('Game launched.');
+		});
 	}
 
 	public init() {
@@ -108,11 +116,17 @@ export default class Game {
 		this.mainGui.show();
 		this.debugGui.show();
 		this.tilePlacementGui.show();
+
+		this.player.eventEmitter.on('changeChunk', (position: ChunkPosition) => {
+			this.world.ensureChunkAt(position);
+			this.world.updateRendering();
+		});
 	}
 
 	public update() {
 		this.player.update();
 		this.debugGui.update();
+		//noinspection JSIgnoredPromiseFromCall
 		this.world.update();
 	}
 }

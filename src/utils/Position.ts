@@ -8,6 +8,18 @@ export default class Position implements IPosition {
 		return new Position(position.x, position.y);
 	}
 
+	public equals(position: IPosition): boolean {
+		return this.x === position.x && this.y === position.y;
+	}
+
+	public stringify(): StringPosition {
+		return JSON.stringify(this);
+	}
+
+	public toString(): string {
+		return `[x: ${this.x}, y: ${this.y}]`;
+	}
+
 	public set(x: number, y: number): this {
 		this.x = x;
 		this.y = y;
@@ -15,16 +27,23 @@ export default class Position implements IPosition {
 		return this;
 	}
 
-	public addPosition(position: Position): Position {
-		return this.add(position.x, position.y);
+	public addPosition(position: Position): this {
+		this.x += position.x;
+		this.y += position.y;
+		return this;
 	}
 
 	public add(x: number, y: number): Position {
 		return new Position(this.x + x, this.y + y);
 	}
 
-	public multiply(ratio: number): Position;
-	public multiply(x: number, y?: number): Position {
+	public copy(): Position {
+		return new Position(this.x, this.y);
+	}
+
+	public multiply(ratio: number, y?: number): Position;
+
+	public multiply(x: number, y: number): Position {
 		return typeof y === 'undefined' ? new Position(this.x * x, this.y * x) : new Position(this.x * x, this.y * y);
 	}
 
@@ -40,11 +59,7 @@ export default class Position implements IPosition {
 		return new Position(this.x / ratio, this.y / ratio);
 	}
 
-	public stringify(): StringPosition {
-		return JSON.stringify(this);
-	}
-
-	public toString(): string {
-		return `[x: ${this.x}, y: ${this.y}]`;
+	public distanceFrom(position: Position) {
+		return Math.abs(position.x - this.x) + Math.abs(position.y - this.y);
 	}
 }

@@ -1,4 +1,4 @@
-import * as PIXIFilters from 'pixi-filters';
+import * as PIXIFilters from '@pixi/filter-outline';
 import * as PIXI from 'pixi.js';
 import { game } from '../../main';
 import ColorableSprite from '../ColorableSprite';

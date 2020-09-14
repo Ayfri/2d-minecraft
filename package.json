@@ -4,8 +4,11 @@
 	"description": "",
 	"main": "src/main.ts",
 	"dependencies": {
-		"pixi-filters": "^3.1.1",
-		"pixi.js": "^5.3.3"
+		"@pixi/app": "^5.3.3",
+		"@pixi/filter-outline": "^3.1.1",
+		"@pixi/loaders": "^5.3.3",
+		"@pixi/sprite": "^5.3.3",
+		"@pixi/text": "^5.3.3"
 	},
 	"devDependencies": {
 		"@types/pixi.js": "^5.0.0",

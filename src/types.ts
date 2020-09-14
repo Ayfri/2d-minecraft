@@ -1,7 +1,9 @@
-import * as PIXI from 'pixi.js';
-import AbstractBlock from './blocks/AbstractBlock';
-import Key from './client/input/Key';
-import Position from './utils/Position';
+import type * as PIXI from 'pixi.js';
+import type AbstractBlock from './blocks/AbstractBlock';
+import type Key from './client/input/Key';
+import type ChunkPosition from './utils/ChunkPosition';
+import type Position from './utils/Position';
+import TilePosition from './utils/TilePosition';
 
 export type EventMap = Record<string, any[]>;
 export type EventKey<T extends EventMap> = string & keyof T;
@@ -17,6 +19,11 @@ export type GameEvents = {
 	keydown: [Key, KeyboardEvent];
 };
 
+export type PlayerEvents = {
+	changeChunk: [ChunkPosition];
+	placeBlock: [AbstractBlock, TilePosition];
+};
+
 export type ColorEvents = {
 	change: [red: number, green: number, blue: number, alpha: number];
 	redChange: [number];
@@ -25,7 +32,14 @@ export type ColorEvents = {
 	alphaChange: [number];
 };
 
-export type BlockEvents = {
+export enum Directions {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+}
+
+export type TileEvents = {
 	place: [Position];
 	replace: [Position, replacer: AbstractBlock];
 };

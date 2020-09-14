@@ -21,6 +21,10 @@ export default class TilePosition extends Position {
 		);
 	}
 
+	public copy(): TilePosition {
+		return new TilePosition(this.x, this.y);
+	}
+
 	public toChunkPosition(): ChunkPosition {
 		return new ChunkPosition(Math.floor(this.x / 16), Math.floor(this.y / 16));
 	}

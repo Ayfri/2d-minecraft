@@ -1,7 +1,7 @@
 import { ColorEvents } from '../../types';
-import EventHandler from '../../utils/EventHandler';
+import EventEmitter from '../../utils/EventEmitter';
 
-export default class Color extends EventHandler<ColorEvents> {
+export default class Color extends EventEmitter<ColorEvents> {
 	constructor(red: number = 0, green: number = 0, blue: number = 0, alpha: number = 1) {
 		super();
 		this._alpha = alpha;

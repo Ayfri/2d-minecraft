@@ -35,26 +35,26 @@ export default class MouseManager {
 			if (game.loaded) {
 				switch (key.name) {
 					case '²':
-						game.player.blockSelected = game.gameData.blocks.get('air');
+						game.player.selectedBlock = game.gameData.blocks.get('air');
 						break;
 					case '&':
-						game.player.blockSelected = game.gameData.blocks.get('dirt');
+						game.player.selectedBlock = game.gameData.blocks.get('dirt');
 						break;
 					case 'é':
-						game.player.blockSelected = game.gameData.blocks.get('stone');
+						game.player.selectedBlock = game.gameData.blocks.get('stone');
 						break;
 					case '"':
-						game.player.blockSelected = game.gameData.blocks.get('grass');
+						game.player.selectedBlock = game.gameData.blocks.get('grass');
 						break;
 					case "'":
-						game.player.blockSelected = game.gameData.blocks.get('sand');
+						game.player.selectedBlock = game.gameData.blocks.get('sand');
 						break;
 					default:
 						break;
 				}
 
 				const blankTexture: PIXI.Texture = PIXI.Texture.from('./assets/sprites/null.png');
-				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.blockSelected.type === BlockType.AIR ? blankTexture : game.player.blockSelected.texture);
+				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.selectedBlock.type === BlockType.AIR ? blankTexture : game.player.selectedBlock.texture);
 			}
 		});
 	}

@@ -1,15 +1,15 @@
 import * as PIXI from 'pixi.js';
 import { game } from '../../main';
 import TilePosition from '../../utils/TilePosition';
-import { Gui } from './Gui';
 import Tile from '../renderer/Tile';
+import Gui from './Gui';
 
 export default class TilePlacementGui extends Gui {
 	public tilePreview: PIXI.Sprite;
 
 	constructor(app: PIXI.Application) {
 		super(app);
-		this.tilePreview = new Tile(game.player.blockSelected, TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
+		this.tilePreview = new Tile(game.player.selectedBlock, TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
 
 		this.tilePreview.alpha = 0.4;
 		this.tilePreview.zIndex = 1000;

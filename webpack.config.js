@@ -16,6 +16,7 @@ module.exports = {
 	output: {
 		filename: 'game.min.js',
 		path: DESTINATION,
+		globalObject: 'window',
 	},
 
 	// plugins :
@@ -73,7 +74,7 @@ module.exports = {
 				},
 			},
 			{
-				test: '/.html$/',
+				test: /.html$/,
 				use: 'html-loader',
 			},
 		],
