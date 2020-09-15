@@ -17,6 +17,8 @@ export default class World {
 		this.background = new PIXI.Sprite();
 		this.background.position.set(0, 0);
 		this.background.anchor.set(0, 0);
+		this.background.width = window.innerWidth;
+		this.background.height = window.innerHeight;
 		this.background.zIndex = -10000;
 	}
 
