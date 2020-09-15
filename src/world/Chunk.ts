@@ -86,7 +86,7 @@ export default class Chunk implements IShowable {
 	}
 
 	public canHide(): boolean {
-		const position: Position = this.position.toTilePosition().toPosition();
-		return position.distanceFrom(game.player.tileOn.toPosition()) > 64 * 32;
+		const position: Position = this.position.toTilePosition();
+		return position.distanceFrom(game.player.tileOn) > 96;
 	}
 }
