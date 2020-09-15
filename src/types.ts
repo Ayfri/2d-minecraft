@@ -11,9 +11,10 @@ export type EventReceiver<T extends readonly any[]> = (...params: T) => void;
 
 export type GameEvents = {
 	click: [PIXI.InteractionEvent];
-	mousemove: [PIXI.InteractionEvent];
-	mousedown: [PIXI.InteractionEvent];
-	mouseup: [PIXI.InteractionEvent];
+	mouseMove: [PIXI.InteractionEvent];
+	mouseDown: [PIXI.InteractionEvent];
+	mouseUp: [PIXI.InteractionEvent];
+	mouseUpOutside: [PIXI.InteractionEvent];
 	launch: [];
 	keyup: [Key, KeyboardEvent];
 	keydown: [Key, KeyboardEvent];

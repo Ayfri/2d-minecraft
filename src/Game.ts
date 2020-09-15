@@ -61,6 +61,8 @@ export default class Game {
 				block.setTexture(this.textureManager.getTexture(`block:${name}`));
 			}
 			this.world = new World(this.app);
+			this.world.background.texture = this.textureManager.getTexture('background');
+			this.app.stage.addChild(this.world.background);
 			this.player = new Player();
 			this.player.setTexture(this.textureManager.getTexture('block:void'));
 			this.tilePlacementGui = new TilePlacementGui(this.app);
@@ -76,9 +78,10 @@ export default class Game {
 			console.warn(params);
 		});
 
-		this.app.renderer.plugins.interaction.on('mouseup', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseup', event));
-		this.app.renderer.plugins.interaction.on('mousedown', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mousedown', event));
-		this.app.renderer.plugins.interaction.on('mousemove', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mousemove', event));
+		this.app.renderer.plugins.interaction.on('mouseup', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseUp', event));
+		this.app.renderer.plugins.interaction.on('mousedown', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseDown', event));
+		this.app.renderer.plugins.interaction.on('mousemove', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseMove', event));
+		this.app.renderer.plugins.interaction.on('mouseupoutside', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseUpOutside', event));
 		this.app.renderer.plugins.interaction.on('click', (event: PIXI.InteractionEvent) => this.eventHandler.emit('click', event));
 
 		document.addEventListener('keydown', (event: KeyboardEvent) => {

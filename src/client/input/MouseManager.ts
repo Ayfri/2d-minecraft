@@ -12,7 +12,7 @@ export default class MouseManager {
 		this.clicking = false;
 
 		// Mouse Events
-		game.eventHandler.on('mousemove', () => {
+		game.eventHandler.on('mouseMove', () => {
 			if (game.loaded) {
 				if (this.clicking) {
 					game.player.putBlockWhereClicked();
@@ -22,11 +22,15 @@ export default class MouseManager {
 			}
 		});
 
-		game.eventHandler.on('mouseup', () => {
+		game.eventHandler.on('mouseUp', () => {
 			this.clicking = false;
 		});
 
-		game.eventHandler.on('mousedown', () => {
+		game.eventHandler.on('mouseUpOutside', () => {
+			this.clicking = false;
+		});
+
+		game.eventHandler.on('mouseDown', () => {
 			this.clicking = true;
 			game.player.putBlockWhereClicked();
 		});
