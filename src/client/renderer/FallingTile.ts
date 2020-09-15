@@ -47,6 +47,6 @@ export default class FallingTile extends Tile {
 
 	public updateState(): void {
 		this.belowTile = this.getNeighbor(Directions.DOWN);
-		this.canFall = this.belowTile.isAir && this.position.y < 100;
+		this.canFall = this.belowTile.isAir && this.position.y < 50;
 	}
 }
