@@ -1,7 +1,7 @@
 {
 	"name": "minecraft-2d",
-	"version": "0.0.1",
-	"description": "",
+	"version": "0.1.0",
+	"description": "This is a 2d-minecraft like game (more like Terraria).",
 	"main": "src/main.ts",
 	"dependencies": {
 		"@pixi/app": "^5.3.3",
