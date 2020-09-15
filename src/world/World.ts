@@ -11,9 +11,13 @@ import Chunk from './Chunk';
 
 export default class World {
 	public chunks: Collection<StringChunkPosition, Chunk> = new Collection<StringChunkPosition, Chunk>();
+	public background: PIXI.Sprite;
 
 	public constructor(public app: PIXI.Application) {
-		this.init();
+		this.background = new PIXI.Sprite();
+		this.background.position.set(0, 0);
+		this.background.anchor.set(0, 0);
+		this.background.zIndex = -10000;
 	}
 
 	public getTileAt(position: TilePosition): Tile {
@@ -65,6 +69,8 @@ export default class World {
 		for (const chunk of this.chunks.values()) {
 			chunk.clear();
 		}
+		this.chunks.clear();
+		this.updateRendering();
 	}
 
 	public async update(): Promise<void> {
@@ -76,14 +82,6 @@ export default class World {
 	public updateRendering(): void {
 		for (const chunk of this.chunks.values()) {
 			chunk.updateRendering();
-		}
-	}
-
-	private init() {
-		for (let i = 0; i < 1; i++) {
-			for (let j = 0; j < 1; j++) {
-				this.addBlankChunk(new ChunkPosition(i, j));
-			}
 		}
 	}
 }

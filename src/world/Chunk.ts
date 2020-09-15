@@ -40,18 +40,16 @@ export default class Chunk implements IShowable {
 
 	public setTile(tile: Tile): Tile {
 		const stringTilePosition: StringTilePosition = tile.position.stringify();
-		if (this.tiles.has(stringTilePosition)) {
-			game.app.stage.removeChild(this.tiles.get(stringTilePosition).getAsSprite());
-			this.tiles.delete(stringTilePosition);
-		}
-
+		if (this.tiles.has(stringTilePosition)) game.app.stage.removeChild(this.tiles.get(stringTilePosition).getAsSprite());
 		this.tiles.set(stringTilePosition, tile);
 		tile.addToApplication(game.app);
 		return tile;
 	}
 
 	public clear(): void {
-		this.tiles.forEach((t) => t.destroy());
+		this.tiles.forEach((t) => {
+			game.app.stage.removeChild(t.getAsSprite());
+		});
 		this.tiles.clear();
 		this.fill(Blocks.AIR);
 	}

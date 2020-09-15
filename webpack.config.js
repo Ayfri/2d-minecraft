@@ -16,7 +16,6 @@ module.exports = {
 	output: {
 		filename: 'game.min.js',
 		path: DESTINATION,
-		globalObject: 'window',
 	},
 
 	// plugins :
