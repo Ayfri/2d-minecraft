@@ -23,10 +23,12 @@ You can place blocks with the left click.
 
 You can reset the world with the `reset` button on the up left corner.
 
-| Key      | Block |
-| -------- | ----- |
-| ²        | Air   |
-| & (or 1) | Dirt  |
-| é (or 2) | Stone |
-| " (or 3) | Grass |
-| ' (or 4) | Sand  |
+| Key          | Block     |
+| ------------ | --------- |
+| `²`          | Air       |
+| `&` (or `1`) | Dirt      |
+| `é` (or `2`) | Stone     |
+| `"` (or `3`) | Grass     |
+| `'` (or `4`) | Sand      |
+| `(` (or `5`) | Oak log   |
+| `-` (or `6`) | Oak leave |

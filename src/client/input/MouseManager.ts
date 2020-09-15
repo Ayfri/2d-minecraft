@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import Blocks from '../../blocks/Blocks';
 import { game } from '../../main';
 import { BlockType } from '../../types';
 import Position from '../../utils/Position';
@@ -39,20 +40,39 @@ export default class MouseManager {
 			if (game.loaded) {
 				switch (key.name) {
 					case '²':
-						game.player.selectedBlock = game.gameData.blocks.get('air');
+						game.player.selectedBlock = Blocks.AIR;
 						break;
+
+					case '1':
 					case '&':
-						game.player.selectedBlock = game.gameData.blocks.get('dirt');
+						game.player.selectedBlock = Blocks.DIRT;
 						break;
+
+					case '2':
 					case 'é':
-						game.player.selectedBlock = game.gameData.blocks.get('stone');
+						game.player.selectedBlock = Blocks.STONE;
 						break;
+
+					case '3':
 					case '"':
-						game.player.selectedBlock = game.gameData.blocks.get('grass');
+						game.player.selectedBlock = Blocks.GRASS;
 						break;
+
+					case '4':
 					case "'":
-						game.player.selectedBlock = game.gameData.blocks.get('sand');
+						game.player.selectedBlock = Blocks.SAND;
 						break;
+
+					case '5':
+					case '(':
+						game.player.selectedBlock = Blocks.OAK_LOG;
+						break;
+
+					case '6':
+					case '-':
+						game.player.selectedBlock = Blocks.OAK_LEAVE;
+						break;
+
 					default:
 						break;
 				}
