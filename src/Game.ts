@@ -16,6 +16,7 @@ import TextureManager from './ressources/TextureManager';
 import { GameEvents, Path } from './types';
 import ChunkPosition from './utils/ChunkPosition';
 import EventEmitter from './utils/EventEmitter';
+import Position from './utils/Position';
 import TilePosition from './utils/TilePosition';
 import World from './world/World';
 
@@ -111,16 +112,16 @@ export default class Game {
 		this.world.placeTile(this.sandTile);
 		this.world.placeTile(new Tile(Blocks.DIRT, sandTilePosition.add(0, 1)));
 
-		const resetButton: Button = new Button('reset', 50, 30);
-		resetButton.position.set(10, 10);
+		const resetButton: Button = new Button('reset', 60, 30, 30, 20);
 		resetButton.borderPadding = 3;
 		resetButton.color = new Color(0.9, 0, 0.9);
 		resetButton.borderColor = new Color(0.2, 0.2, 0.2);
 		resetButton.showBorder();
-		resetButton.on('click', (): void => {
+		resetButton.container.on('click', (): void => {
 			this.world.clear();
 		});
-		this.mainGui.addPIXISprite('resetButton', resetButton);
+
+		this.mainGui.addObject('resetButton', resetButton.container);
 		this.mainGui.show();
 		this.debugGui.show();
 		this.tilePlacementGui.show();
