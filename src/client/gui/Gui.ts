@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import PIXI from '../../PIXI';
 import Collection from '../../utils/Collection';
 import IShowable from '../IShowable';
 import Sprite from '../renderer/Sprite';

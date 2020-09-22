@@ -8,18 +8,23 @@
 		"@pixi/filter-outline": "^3.1.1",
 		"@pixi/loaders": "^5.3.3",
 		"@pixi/sprite": "^5.3.3",
-		"@pixi/text": "^5.3.3"
+		"@pixi/text": "^5.3.3",
+		"@pixi/unsafe-eval": "^5.3.3"
 	},
 	"devDependencies": {
 		"@types/pixi.js": "^5.0.0",
-		"copy-webpack-plugin": "^6.1.0",
+		"copy-webpack-plugin": "^6.1.1",
+		"express": "^4.17.1",
+		"express-rate-limit": "^5.1.3",
 		"file-loader": "^6.1.0",
-		"html-loader": "^1.3.0",
-		"html-webpack-plugin": "^4.4.1",
+		"helmet": "^4.1.1",
+		"html-loader": "^1.3.1",
+		"html-webpack-plugin": "^4.5.0",
+		"http-server": "^0.12.3",
 		"prettier": "^2.1.2",
 		"source-map-loader": "^1.1.0",
-		"ts-loader": "^8.0.3",
-		"typescript": "^4.0.2",
+		"ts-loader": "^8.0.4",
+		"typescript": "^4.0.3",
 		"webpack": "^4.44.2",
 		"webpack-cli": "^3.3.12",
 		"webpack-dev-server": "^3.11.0"
@@ -28,7 +33,8 @@
 		"build:dev": "webpack --mode development --config webpack.config.js && npm run prettier",
 		"build:prod": "webpack --mode production --config webpack.config.js && npm run prettier",
 		"prettier": "prettier src package.json webpack.config.js tsconfig.json --write",
-		"start": "npm run build:prod && webpack-dev-server --config webpack.config.js"
+		"start": "npm run build:prod && webpack-dev-server --config webpack.config.js",
+		"server": "http-server dist --cors --ip-log"
 	},
 	"author": "Ayfri",
 	"license": "ISC",

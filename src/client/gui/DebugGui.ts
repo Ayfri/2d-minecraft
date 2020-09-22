@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import PIXI from '../../PIXI';
 import { game } from '../../main';
 import TilePosition from '../../utils/TilePosition';
 import Gui from './Gui';

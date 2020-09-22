@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import PIXI from '../PIXI';
 import Color from './renderer/Color';
 
 export default class ColorableSprite extends PIXI.Sprite {

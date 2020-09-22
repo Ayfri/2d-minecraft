@@ -1,5 +1,5 @@
 import * as PIXIFilters from '@pixi/filter-outline';
-import * as PIXI from 'pixi.js';
+import PIXI from '../../PIXI';
 import { game } from '../../main';
 import Position from '../../utils/Position';
 import Color from '../renderer/Color';

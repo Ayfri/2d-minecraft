@@ -1,4 +1,4 @@
-import type * as PIXI from 'pixi.js';
+import type PIXI from './PIXI';
 import type AbstractBlock from './blocks/AbstractBlock';
 import type Key from './client/input/Key';
 import type ChunkPosition from './utils/ChunkPosition';

@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import PIXI from '../../PIXI';
 import { OutlineFilter } from '@pixi/filter-outline';
 import { game } from '../../main';
 import Position from '../../utils/Position';

@@ -1,5 +1,5 @@
 import * as filters from '@pixi/filter-outline';
-import * as PIXI from 'pixi.js';
+import PIXI from './PIXI';
 import SimpleBlock from './blocks/SimpleBlock';
 import Button from './client/gui/Button';
 import Gui from './client/gui/Gui';
@@ -86,9 +86,9 @@ Object.defineProperties(window, {
 	game: {
 		value: game,
 	},
-	PIXI: {
+	/*PIXI: {
 		value: { ...PIXI, filters: { ...filters, ...PIXI.filters } },
-	},
+	},*/
 	world: {
 		value: game.world,
 	},

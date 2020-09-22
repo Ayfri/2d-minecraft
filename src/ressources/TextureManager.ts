@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import PIXI from '../PIXI';
 import { Path } from '../types';
 
 export default class TextureManager {

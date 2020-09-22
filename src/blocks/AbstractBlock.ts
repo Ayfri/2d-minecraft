@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import PIXI from '../PIXI';
 import { blocks } from '../ressources/GameData';
 import { BlockType } from '../types';
 
