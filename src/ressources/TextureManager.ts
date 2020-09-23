@@ -8,6 +8,7 @@ export default class TextureManager {
 	public constructor(public app: PIXI.Application) {
 		this.savedTextures = new Collection();
 		this.preLoadTexture('./assets/sprites/background.png', 'background');
+		this.preLoadTexture('../assets/sprites/hotBar_slot.png', 'hotBarSlot');
 	}
 
 	public preLoadTexture(path: Path, name: string): void {

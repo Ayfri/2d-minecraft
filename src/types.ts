@@ -1,6 +1,6 @@
-import type PIXI from './PIXI';
 import type AbstractBlock from './blocks/AbstractBlock';
 import type Key from './client/input/Key';
+import type PIXI from './PIXI';
 import type ChunkPosition from './utils/ChunkPosition';
 import type Position from './utils/Position';
 import TilePosition from './utils/TilePosition';
@@ -66,4 +66,9 @@ export enum BlockType {
 
 export enum InventoryType {
 	HOTBAR,
+}
+
+export enum ItemType {
+	BLOCK,
+	NORMAL,
 }

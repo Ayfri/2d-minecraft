@@ -27,7 +27,7 @@ export default class Game {
 	public textureManager: TextureManager;
 	public debugGui: DebugGui;
 	public sandTile;
-	private mainGui: MainGui;
+	public mainGui: MainGui;
 
 	constructor(public app: PIXI.Application) {
 		this.eventHandler = new EventEmitter<GameEvents>();
@@ -122,6 +122,7 @@ export default class Game {
 	public update() {
 		this.player.update();
 		this.debugGui.update();
+		this.mainGui.update();
 		//noinspection JSIgnoredPromiseFromCall
 		this.world.update();
 	}

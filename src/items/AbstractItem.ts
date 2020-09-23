@@ -1,5 +1,6 @@
 import Blocks from '../blocks/Blocks';
 import PIXI from '../PIXI';
+import { ItemType } from '../types';
 import ITexturable from '../utils/ITexturable';
 
 export default abstract class AbstractItem implements ITexturable {
@@ -19,5 +20,5 @@ export default abstract class AbstractItem implements ITexturable {
 		this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 	}
 
-	protected constructor(public name: string) {}
+	protected constructor(public name: string, public type: ItemType) {}
 }

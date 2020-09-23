@@ -1,7 +1,8 @@
 import AbstractBlock from '../blocks/AbstractBlock';
 import Blocks from '../blocks/Blocks';
+import Inventory from '../inventory/Inventory';
 import { game } from '../main';
-import { PlayerEvents } from '../types';
+import { InventoryType, PlayerEvents } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
 import EventEmitter from '../utils/EventEmitter';
 import Position from '../utils/Position';
@@ -12,6 +13,7 @@ export default class Player extends Entity {
 	public selectedBlock: AbstractBlock;
 	public eventEmitter: EventEmitter<PlayerEvents>;
 	public tileOn: TilePosition;
+	public hotBar: Inventory;
 	private chunkIn: ChunkPosition;
 
 	constructor() {
@@ -21,6 +23,10 @@ export default class Player extends Entity {
 		this.eventEmitter = new EventEmitter();
 		this.tileOn = new TilePosition(0, 0);
 		this.chunkIn = new ChunkPosition(0, 0);
+		this.hotBar = new Inventory(9, 1, InventoryType.HOTBAR);
+		this.hotBar.container.position.set(window.innerWidth / 3, window.innerHeight - window.innerHeight / 6);
+
+		game.mainGui.addObject('hotbar', this.hotBar.container);
 	}
 
 	public putBlockWhereClicked(): void {
