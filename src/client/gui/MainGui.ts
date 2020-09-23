@@ -1,7 +1,6 @@
 import Inventory from '../../inventory/Inventory';
 import { game } from '../../main';
 import PIXI from '../../PIXI';
-import { InventoryType } from '../../types';
 import Color from '../renderer/Color';
 import Button from './Button';
 import Gui from './Gui';
@@ -22,9 +21,14 @@ export default class MainGui extends Gui {
 			game.world.clear();
 		});
 
-		this.hotbar = new Inventory(9, 1, InventoryType.HOTBAR);
-
-		this.addObject('hotbar', this.hotbar.container);
 		this.addObject('resetButton', this.resetButton.container);
+	}
+
+	public update() {
+		[...this.guiObjects.entries()].forEach((c) => {
+			this.removeObject(c[0]);
+			this.addObject(...c);
+		});
+		super.update();
 	}
 }

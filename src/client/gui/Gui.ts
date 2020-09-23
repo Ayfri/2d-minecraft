@@ -17,8 +17,8 @@ export default class Gui implements IShowable {
 	}
 
 	private readonly container: PIXI.Container;
-	private sprites: Collection<string, PIXI.DisplayObject> = new Collection();
-	private guiObjects: Collection<string, PIXI.Container> = new Collection();
+	protected sprites: Collection<string, PIXI.DisplayObject> = new Collection();
+	protected guiObjects: Collection<string, PIXI.Container> = new Collection();
 
 	constructor(public readonly app: PIXI.Application) {
 		this.container = new PIXI.Container();
@@ -38,10 +38,22 @@ export default class Gui implements IShowable {
 		this.addPIXISprite(name, sprite.getAsSprite());
 	}
 
+	public removeObject(name: string) {
+		if (this.guiObjects.has(name)) {
+			this.sprites.delete(name);
+			this.container.removeChild(this.guiObjects.get(name));
+		}
+	}
+
 	public removeSprite(name: string): void {
 		if (this.sprites.has(name)) {
 			this.container.removeChild(this.sprites.get(name));
 			this.sprites.delete(name);
 		}
+	}
+
+	public update() {
+		this.app.stage.removeChild(this.container);
+		this.app.stage.addChild(this.container);
 	}
 }
