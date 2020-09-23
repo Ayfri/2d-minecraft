@@ -1,30 +1,23 @@
-import PIXI from './PIXI';
 import Blocks from './blocks/Blocks';
-import Button from './client/gui/Button';
 import DebugGui from './client/gui/DebugGui';
-import Gui from './client/gui/Gui';
+import MainGui from './client/gui/MainGui';
+import TilePlacementGui from './client/gui/TilePlacementGui';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
-import Color from './client/renderer/Color';
 import FallingTile from './client/renderer/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
 import Tile from './client/renderer/Tile';
-import TilePlacementGui from './client/gui/TilePlacementGui';
 import Player from './entities/Player';
-import * as GameData from './ressources/GameData';
+import PIXI from './PIXI';
 import TextureManager from './ressources/TextureManager';
-import { GameEvents, Path } from './types';
+import { BlockType, GameEvents, Path } from './types';
 import ChunkPosition from './utils/ChunkPosition';
 import EventEmitter from './utils/EventEmitter';
-import Position from './utils/Position';
 import TilePosition from './utils/TilePosition';
 import World from './world/World';
 
-import { inspect } from 'util';
-
 export default class Game {
 	public eventHandler: EventEmitter<GameEvents>;
-	public gameData = GameData;
 	public tilePlacementGui: TilePlacementGui;
 	public loaded: boolean = false;
 	public mouseManager: MouseManager;
@@ -32,9 +25,9 @@ export default class Game {
 	public world: World;
 	public renderer: GameRenderer;
 	public textureManager: TextureManager;
-	private mainGui: Gui;
 	public debugGui: DebugGui;
 	public sandTile;
+	private mainGui: MainGui;
 
 	constructor(public app: PIXI.Application) {
 		this.eventHandler = new EventEmitter<GameEvents>();
@@ -49,18 +42,22 @@ export default class Game {
 		this.renderer = new GameRenderer();
 		this.textureManager = new TextureManager(this.app);
 		this.mouseManager = new MouseManager(this.app);
-		this.mainGui = new Gui(this.app);
+		this.mainGui = new MainGui(this.app);
 		this.debugGui = new DebugGui(this.app);
 
-		this.gameData.blocks.forEach((block) => {
+		Blocks.list.forEach((block) => {
 			const path: Path = `./assets/sprites/${block.name}.png`;
 			this.textureManager.preLoadTexture(path, `block:${block.name}`);
 		});
 
 		this.app.loader.onComplete.add(() => {
-			for (const [name, block] of this.gameData.blocks) {
-				block.setTexture(this.textureManager.getTexture(`block:${name}`));
+			for (const [name, block] of Blocks.list) {
+				block.setTexture(this.textureManager.getTexture(`block:${name}`) ?? this.textureManager.getTexture('block:void'));
+				if (block.type === BlockType.AIR) {
+					block.setTexture(this.textureManager.getTexture('block:air'));
+				}
 			}
+
 			this.world = new World(this.app);
 			this.world.background.texture = this.textureManager.getTexture('background');
 			this.app.stage.addChild(this.world.background);
@@ -112,16 +109,6 @@ export default class Game {
 		this.world.placeTile(this.sandTile);
 		this.world.placeTile(new Tile(Blocks.DIRT, sandTilePosition.add(0, 1)));
 
-		const resetButton: Button = new Button('reset', 60, 30, 30, 20);
-		resetButton.borderPadding = 3;
-		resetButton.color = new Color(0.9, 0, 0.9);
-		resetButton.borderColor = new Color(0.2, 0.2, 0.2);
-		resetButton.showBorder();
-		resetButton.container.on('click', (): void => {
-			this.world.clear();
-		});
-
-		this.mainGui.addObject('resetButton', resetButton.container);
 		this.mainGui.show();
 		this.debugGui.show();
 		this.tilePlacementGui.show();

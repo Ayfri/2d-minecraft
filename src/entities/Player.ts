@@ -1,4 +1,5 @@
 import AbstractBlock from '../blocks/AbstractBlock';
+import Blocks from '../blocks/Blocks';
 import { game } from '../main';
 import { PlayerEvents } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
@@ -16,7 +17,7 @@ export default class Player extends Entity {
 	constructor() {
 		super();
 		this.position = new Position(0, 0);
-		this.selectedBlock = game.gameData.blocks.get('dirt');
+		this.selectedBlock = Blocks.DIRT;
 		this.eventEmitter = new EventEmitter();
 		this.tileOn = new TilePosition(0, 0);
 		this.chunkIn = new ChunkPosition(0, 0);

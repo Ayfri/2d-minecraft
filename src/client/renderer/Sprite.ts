@@ -1,5 +1,5 @@
-import PIXI from '../../PIXI';
 import { game } from '../../main';
+import PIXI from '../../PIXI';
 import Position from '../../utils/Position';
 
 export default abstract class Sprite {

@@ -9,7 +9,8 @@
 		"@pixi/loaders": "^5.3.3",
 		"@pixi/sprite": "^5.3.3",
 		"@pixi/text": "^5.3.3",
-		"@pixi/unsafe-eval": "^5.3.3"
+		"@pixi/unsafe-eval": "^5.3.3",
+		"webpack-dev-server": "^3.11.0"
 	},
 	"devDependencies": {
 		"@types/pixi.js": "^5.0.0",
@@ -23,8 +24,8 @@
 		"ts-loader": "^8.0.4",
 		"typescript": "^4.0.3",
 		"webpack": "^4.44.2",
-		"webpack-cli": "^3.3.12",
-		"webpack-dev-server": "^3.11.0"
+		"webpack-dev-server": "^3.11.0",
+		"webpack-cli": "^3.3.12"
 	},
 	"scripts": {
 		"build:dev": "webpack --mode development --config webpack.config.js && npm run prettier",

@@ -7,5 +7,3 @@ node_modules
 # Webpack
 dist
 
-# testing
-server

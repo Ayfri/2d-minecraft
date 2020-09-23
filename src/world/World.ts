@@ -1,8 +1,8 @@
-import PIXI from '../PIXI';
 import AbstractBlock from '../blocks/AbstractBlock';
+import Blocks from '../blocks/Blocks';
 import FallingTile from '../client/renderer/FallingTile';
 import Tile from '../client/renderer/Tile';
-import { blocks } from '../ressources/GameData';
+import PIXI from '../PIXI';
 import { BlockType, StringChunkPosition } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
 import Collection from '../utils/Collection';
@@ -56,7 +56,7 @@ export default class World {
 	public removeBlock(position: TilePosition): Tile | undefined {
 		this.ensureChunkAt(position.toChunkPosition());
 		const chunk: Chunk = this.getChunkAt(position.toChunkPosition());
-		return chunk.setTile(new Tile(blocks.get('air'), position));
+		return chunk.setTile(new Tile(Blocks.AIR, position));
 	}
 
 	public addBlankChunk(chunkPosition: ChunkPosition): void {

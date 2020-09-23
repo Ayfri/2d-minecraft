@@ -1,9 +1,9 @@
-import PIXI from '../PIXI';
 import AbstractBlock from '../blocks/AbstractBlock';
 import Blocks from '../blocks/Blocks';
 import IShowable from '../client/IShowable';
 import Tile from '../client/renderer/Tile';
 import { game } from '../main';
+import PIXI from '../PIXI';
 import { StringTilePosition } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
 import Collection from '../utils/Collection';

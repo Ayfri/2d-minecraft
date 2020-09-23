@@ -1,5 +1,5 @@
-import PIXI from '../../PIXI';
 import { game } from '../../main';
+import PIXI from '../../PIXI';
 import TilePosition from '../../utils/TilePosition';
 import Gui from './Gui';
 
@@ -12,7 +12,13 @@ export default class DebugGui extends Gui {
 		super(app);
 		this.mouseCoordsText = new PIXI.Text('', new PIXI.TextStyle({ fill: '#ffffff' }));
 		this.fpsCounter = new PIXI.Text('', new PIXI.TextStyle({ fill: '#ffffff' }));
-		this.debugText = new PIXI.Text('', new PIXI.TextStyle({ fill: '#ffffff', fontSize: 16 }));
+		this.debugText = new PIXI.Text(
+			'',
+			new PIXI.TextStyle({
+				fill: '#ffffff',
+				fontSize: 16,
+			})
+		);
 		this.fpsCounter.position.set(window.innerWidth - 200, 20);
 		this.mouseCoordsText.position.set(window.innerWidth - 200, 50);
 		this.debugText.position.set(10, 50);

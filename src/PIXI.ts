@@ -1,4 +1,9 @@
 import * as PIXI from 'pixi.js';
-import { filter } from '@pixi/unsafe-eval';
-filter(PIXI);
+
+import('@pixi/unsafe-eval')
+	.then(({ filter }) => filter(PIXI))
+	.catch((e) => {
+		console.log(e.stack);
+	});
+
 export default PIXI;

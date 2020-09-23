@@ -1,5 +1,4 @@
-import * as filters from '@pixi/filter-outline';
-import PIXI from './PIXI';
+import Blocks from './blocks/Blocks';
 import SimpleBlock from './blocks/SimpleBlock';
 import Button from './client/gui/Button';
 import Gui from './client/gui/Gui';
@@ -7,6 +6,9 @@ import Color from './client/renderer/Color';
 import Sprite from './client/renderer/Sprite';
 import Entity from './entities/Entity';
 import Game from './Game';
+import Inventory from './inventory/Inventory';
+import Items from './items/Items';
+import PIXI from './PIXI';
 import SimpleRegistry from './ressources/SimpleRegistry';
 import ChunkPosition from './utils/ChunkPosition';
 import Position from './utils/Position';
@@ -67,7 +69,7 @@ Object.defineProperties(window, {
 		value: app,
 	},
 	blocks: {
-		value: game.gameData.blocks,
+		value: Blocks,
 	},
 	gameClasses: {
 		value: {
@@ -81,10 +83,14 @@ Object.defineProperties(window, {
 			SimpleBlock,
 			TilePosition,
 			ChunkPosition,
+			Inventory,
 		},
 	},
 	game: {
 		value: game,
+	},
+	items: {
+		value: Items,
 	},
 	/*PIXI: {
 		value: { ...PIXI, filters: { ...filters, ...PIXI.filters } },

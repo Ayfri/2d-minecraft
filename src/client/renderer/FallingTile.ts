@@ -8,8 +8,8 @@ import Tile from './Tile';
 export default class FallingTile extends Tile {
 	public canFall: boolean = false;
 	public motion: Position;
-	private isFalling: boolean = false;
 	public renderedPosition: TilePosition;
+	private isFalling: boolean = false;
 	private belowTile: Tile;
 
 	public constructor(public block: AbstractBlock, public position: TilePosition) {

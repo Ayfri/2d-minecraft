@@ -1,6 +1,10 @@
 import { game } from '../../main';
 
 export default class GameRenderer {
+	constructor() {}
+
+	private _resolution: number = 32;
+
 	public get resolution(): number {
 		return this._resolution;
 	}
@@ -9,7 +13,4 @@ export default class GameRenderer {
 		this._resolution = value;
 		game.world.update();
 	}
-	private _resolution: number = 32;
-
-	constructor() {}
 }

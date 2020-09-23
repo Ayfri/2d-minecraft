@@ -1,8 +1,8 @@
+import Blocks from '../blocks/Blocks';
 import PIXI from '../PIXI';
-import { BlockType } from '../types';
 import ITexturable from '../utils/ITexturable';
 
-export default abstract class AbstractBlock implements ITexturable {
+export default abstract class AbstractItem implements ITexturable {
 	public texture: PIXI.Texture = null;
 
 	public setTexture(texture: PIXI.Texture): void {
@@ -13,11 +13,11 @@ export default abstract class AbstractBlock implements ITexturable {
 
 			this.texture = texture;
 		} else {
-			this.texture = PIXI.Texture.EMPTY;
+			this.texture = Blocks.VOID.texture;
 		}
 
 		this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 	}
 
-	protected constructor(public name: string, public type: BlockType = BlockType.PLAIN) {}
+	protected constructor(public name: string) {}
 }

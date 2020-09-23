@@ -5,6 +5,17 @@ import Sprite from '../renderer/Sprite';
 
 export default class Gui implements IShowable {
 	public isShow: boolean;
+
+	public show(): void {
+		this.isShow = true;
+		this.app.stage.addChild(this.container);
+	}
+
+	public hide(): void {
+		this.isShow = false;
+		this.app.stage.removeChild(this.container);
+	}
+
 	private readonly container: PIXI.Container;
 	private sprites: Collection<string, PIXI.DisplayObject> = new Collection();
 	private guiObjects: Collection<string, PIXI.Container> = new Collection();
@@ -32,15 +43,5 @@ export default class Gui implements IShowable {
 			this.container.removeChild(this.sprites.get(name));
 			this.sprites.delete(name);
 		}
-	}
-
-	public show(): void {
-		this.isShow = true;
-		this.app.stage.addChild(this.container);
-	}
-
-	public hide(): void {
-		this.isShow = false;
-		this.app.stage.removeChild(this.container);
 	}
 }

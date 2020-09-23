@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"outDir": "./dist/",
 		"target": "ES2020",
+		"importsNotUsedAsValues": "remove",
 		"sourceMap": true,
 		"module": "esnext",
 		"noImplicitAny": false,

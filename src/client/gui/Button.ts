@@ -1,6 +1,6 @@
 import * as PIXIFilters from '@pixi/filter-outline';
-import PIXI from '../../PIXI';
 import { game } from '../../main';
+import PIXI from '../../PIXI';
 import Position from '../../utils/Position';
 import Color from '../renderer/Color';
 

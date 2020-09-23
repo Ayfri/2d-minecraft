@@ -1,7 +1,6 @@
-import PIXI from '../../PIXI';
 import { OutlineFilter } from '@pixi/filter-outline';
 import { game } from '../../main';
-import Position from '../../utils/Position';
+import PIXI from '../../PIXI';
 import TilePosition from '../../utils/TilePosition';
 import Color from '../renderer/Color';
 import Tile from '../renderer/Tile';

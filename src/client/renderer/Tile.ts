@@ -1,6 +1,6 @@
-import PIXI from '../../PIXI';
 import AbstractBlock from '../../blocks/AbstractBlock';
 import { game } from '../../main';
+import PIXI from '../../PIXI';
 import { BlockType, Directions } from '../../types';
 import Collection from '../../utils/Collection';
 import TilePosition from '../../utils/TilePosition';

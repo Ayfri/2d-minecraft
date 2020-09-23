@@ -42,7 +42,7 @@ export enum Directions {
 
 export type TileEvents = {
 	place: [Position];
-	replace: [Position, replacer: AbstractBlock];
+	replace: [position: Position, replacer: AbstractBlock];
 };
 
 export type Path = string;
@@ -62,4 +62,8 @@ export enum BlockType {
 	AIR = 'air',
 	PLAIN = 'plain',
 	FALLING = 'falling',
+}
+
+export enum InventoryType {
+	HOTBAR,
 }
