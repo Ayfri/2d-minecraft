@@ -1,9 +1,10 @@
 import type AbstractBlock from './blocks/AbstractBlock';
 import type Key from './client/input/Key';
+import type ItemStack from './inventory/ItemStack';
 import type PIXI from './PIXI';
 import type ChunkPosition from './utils/ChunkPosition';
 import type Position from './utils/Position';
-import TilePosition from './utils/TilePosition';
+import type TilePosition from './utils/TilePosition';
 
 export type EventMap = Record<string, any[]>;
 export type EventKey<T extends EventMap> = string & keyof T;
@@ -33,12 +34,9 @@ export type ColorEvents = {
 	alphaChange: [number];
 };
 
-export enum Directions {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-}
+export type SlotEvents = {
+	countChange: [ItemStack];
+};
 
 export type TileEvents = {
 	place: [Position];
@@ -48,8 +46,24 @@ export type TileEvents = {
 export type Path = string;
 
 export type StringChunkPosition = string;
+
 export type StringTilePosition = string;
 export type StringPosition = string;
+
+export enum Directions {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+}
+
+export enum LogType {
+	error = 'error',
+	warn = 'warn',
+	event = 'event',
+	log = 'log',
+	debug = 'debug',
+}
 
 export enum Layer {
 	BACKGROUND,
