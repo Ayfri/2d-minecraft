@@ -1,4 +1,6 @@
-export default abstract class AbstractRegistry<K> extends Map<string, K> {
+import Collection from '../utils/Collection';
+
+export default abstract class AbstractRegistry<K> extends Collection<string, K> {
 	public static register<T>(registry: AbstractRegistry<T>, key: string, value: T): AbstractRegistry<T> {
 		return registry.set(key, value);
 	}

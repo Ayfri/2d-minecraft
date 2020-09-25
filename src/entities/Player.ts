@@ -24,7 +24,7 @@ export default class Player extends Entity {
 		this.tileOn = new TilePosition(0, 0);
 		this.chunkIn = new ChunkPosition(0, 0);
 		this.hotBar = new Inventory(9, 1, InventoryType.HOTBAR);
-		this.hotBar.container.position.set(window.innerWidth / 3, window.innerHeight - window.innerHeight / 6);
+		this.hotBar.container.position.set(window.innerWidth / 2 - this.hotBar.container.width / 2, window.innerHeight - window.innerHeight / 6);
 
 		game.mainGui.addObject('hotbar', this.hotBar.container);
 	}

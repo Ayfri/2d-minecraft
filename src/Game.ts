@@ -8,6 +8,9 @@ import FallingTile from './client/renderer/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
 import Tile from './client/renderer/Tile';
 import Player from './entities/Player';
+import ItemStack from './inventory/ItemStack';
+import BlockItem from './items/BlockItem';
+import Items from './items/Items';
 import PIXI from './PIXI';
 import TextureManager from './ressources/TextureManager';
 import { BlockType, GameEvents, Path } from './types';
@@ -51,11 +54,19 @@ export default class Game {
 		});
 
 		this.app.loader.onComplete.add(() => {
+			const getTexture = (name: string): PIXI.Texture => {
+				return this.textureManager.getTexture(name) ?? this.textureManager.getTexture(`block:void`);
+			};
+
 			for (const [name, block] of Blocks.list) {
-				block.setTexture(this.textureManager.getTexture(`block:${name}`) ?? this.textureManager.getTexture('block:void'));
+				block.setTexture(getTexture(`block:${name}`));
 				if (block.type === BlockType.AIR) {
 					block.setTexture(this.textureManager.getTexture('block:air'));
 				}
+			}
+
+			for (let [name, item] of Items.list) {
+				item.setTexture(getTexture((item as BlockItem).block ? `block:${name}` : `item${name}`));
 			}
 
 			this.world = new World(this.app);
@@ -117,6 +128,8 @@ export default class Game {
 			this.world.ensureChunkAt(position);
 			this.world.updateRendering();
 		});
+
+		this.player.hotBar.slots.get(0).itemStack = ItemStack.from(Items.STONE);
 	}
 
 	public update() {
