@@ -69,7 +69,7 @@ export default class MouseManager {
 
 					case '6':
 					case '-':
-						game.player.selectedBlock = Blocks.OAK_LEAVE;
+						game.player.selectedBlock = Blocks.OAK_LEAVES;
 						break;
 
 					default:

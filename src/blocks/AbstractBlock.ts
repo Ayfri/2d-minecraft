@@ -8,7 +8,7 @@ export default abstract class AbstractBlock implements ITexturable {
 	public setTexture(texture: PIXI.Texture): void {
 		if (texture) {
 			if (texture.height !== 16 || texture.width !== 16) {
-				return console.error(`Texture for ${this.name} block has not the right size (16 x 16).\nSize : ${texture.height} x ${texture.width}`);
+				return console.error(`Texture for ${this.name} block don't have the right size (16 x 16).\nSize : ${texture.height} x ${texture.width}`);
 			}
 
 			this.texture = texture;

@@ -37,7 +37,7 @@ export default class Inventory {
 		itemStack.slot = slot;
 		slot.itemStack = itemStack;
 		slot.eventHandler.emit('countChange', itemStack);
-		slot.container.position.set(slot.container.position.x + game.renderer.resolution * 1.5 * i, slot.container.position.y);
+		slot.container.position.set(slot.container.position.x + game.renderer.resolution * 1.5 * slotNumber, slot.container.position.y);
 
 		if (itemStack.count === 1) slot.text.visible = false;
 		this.container.addChild(slot.container);
@@ -46,7 +46,7 @@ export default class Inventory {
 	public addItemStack(itemStack: ItemStack): boolean {
 		let hasAdd: boolean = false;
 		for (let i = 0; i < this.slots.toValuesArray().length; i++) {
-			if (this.slots.toValuesArray()[i].isEmpty()) {
+			if (this.slots.toValuesArray()[i]?.isEmpty()) {
 				this.setItemStackAt(itemStack, i);
 				hasAdd = true;
 				break;
@@ -54,6 +54,10 @@ export default class Inventory {
 		}
 
 		return hasAdd;
+	}
+
+	public getSlotAt(slotNumber: number) {
+		return this.slots.toValuesArray()[slotNumber];
 	}
 
 	public [Symbol.iterator]() {

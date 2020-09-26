@@ -14,7 +14,7 @@ export default class Blocks {
 	public static readonly STONE: SimpleBlock = Blocks.register('stone', new SimpleBlock('stone'));
 	public static readonly SAND: FallingBlock = Blocks.register('sand', new FallingBlock('sand'));
 	public static readonly OAK_LOG: SimpleBlock = Blocks.register('oak_log', new SimpleBlock('oak_log'));
-	public static readonly OAK_LEAVE: SimpleBlock = Blocks.register('oak_leave', new SimpleBlock('oak_leave'));
+	public static readonly OAK_LEAVES: SimpleBlock = Blocks.register('oak_leaves', new SimpleBlock('oak_leaves'));
 
 	public static register<T extends AbstractBlock>(name: string, block: T): T {
 		this.list.register(name, block);
