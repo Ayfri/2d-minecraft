@@ -1,7 +1,6 @@
 import PIXI from '../../PIXI';
 import Collection from '../../utils/Collection';
 import IShowable from '../IShowable';
-import Sprite from '../renderer/Sprite';
 
 export default class Gui implements IShowable {
 	public isShow: boolean;
@@ -24,7 +23,7 @@ export default class Gui implements IShowable {
 		this.container = new PIXI.Container();
 	}
 
-	public addPIXISprite(name: string, sprite: PIXI.DisplayObject) {
+	public addSprite(name: string, sprite: PIXI.DisplayObject) {
 		this.sprites.set(name, sprite);
 		this.container.addChild(sprite);
 	}
@@ -32,10 +31,6 @@ export default class Gui implements IShowable {
 	public addObject(name: string, object: PIXI.Container) {
 		this.guiObjects.set(name, object);
 		this.container.addChild(object);
-	}
-
-	public addSprite(name: string, sprite: Sprite): void {
-		this.addPIXISprite(name, sprite.getAsSprite());
 	}
 
 	public removeObject(name: string) {

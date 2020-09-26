@@ -22,9 +22,9 @@ export default class DebugGui extends Gui {
 		this.fpsCounter.position.set(window.innerWidth - 200, 20);
 		this.mouseCoordsText.position.set(window.innerWidth - 200, 50);
 		this.debugText.position.set(10, 50);
-		this.addPIXISprite('mouseCoordsText', this.mouseCoordsText);
-		this.addPIXISprite('fpsCounter', this.fpsCounter);
-		this.addPIXISprite('debugText', this.debugText);
+		this.addSprite('mouseCoordsText', this.mouseCoordsText);
+		this.addSprite('fpsCounter', this.fpsCounter);
+		this.addSprite('debugText', this.debugText);
 	}
 
 	public update(): void {

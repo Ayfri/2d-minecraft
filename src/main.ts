@@ -3,7 +3,6 @@ import SimpleBlock from './blocks/SimpleBlock';
 import Button from './client/gui/Button';
 import Gui from './client/gui/Gui';
 import Color from './client/renderer/Color';
-import Sprite from './client/renderer/Sprite';
 import Entity from './entities/Entity';
 import Game from './Game';
 import Inventory from './inventory/Inventory';
@@ -80,7 +79,6 @@ Object.defineProperties(window, {
 			Entity,
 			Button,
 			Gui,
-			Sprite,
 			SimpleBlock,
 			TilePosition,
 			ChunkPosition,

@@ -1,11 +1,13 @@
-import Sprite from '../client/renderer/Sprite';
+import PIXI from '../PIXI';
 import Position from '../utils/Position';
 
-export default abstract class Entity extends Sprite {
+export default abstract class Entity {
 	public velocity: Position;
+	public position: Position;
+	public sprite: PIXI.Sprite;
 
 	protected constructor() {
-		super();
+		this.sprite = new PIXI.Sprite();
 		this.velocity = new Position();
 	}
 

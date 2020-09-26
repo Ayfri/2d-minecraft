@@ -28,8 +28,8 @@ export default class TilePlacementGui extends Gui {
 		this.blockSelected.position.set(window.innerWidth - 150, 100);
 		this.blockSelected.scale.set(4, 4);
 
-		this.addPIXISprite('tilePlacementPreview', this.tilePreview);
-		this.addPIXISprite('blockSelected', this.blockSelected);
+		this.addSprite('tilePlacementPreview', this.tilePreview);
+		this.addSprite('blockSelected', this.blockSelected);
 	}
 
 	public updateTilePlacingPreview() {

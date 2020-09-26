@@ -73,7 +73,7 @@ export default class Game {
 			this.world.background.texture = this.textureManager.getTexture('background');
 			this.app.stage.addChild(this.world.background);
 			this.player = new Player();
-			this.player.setTexture(this.textureManager.getTexture('block:void'));
+			this.player.sprite.texture = this.textureManager.getTexture('block:void');
 			this.tilePlacementGui = new TilePlacementGui(this.app);
 			this.loaded = true;
 			this.eventHandler.emit('launch');
@@ -112,11 +112,6 @@ export default class Game {
 		this.mainGui.show();
 		this.debugGui.show();
 		this.tilePlacementGui.show();
-
-		/*this.player.eventEmitter.on('changeChunk', (position: ChunkPosition) => {
-			this.world.ensureChunkAt(position);
-			this.world.updateRendering();
-		});*/
 
 		this.player.hotBar.addItemStack(ItemStack.from(Items.STONE));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.DIRT));
