@@ -28,7 +28,6 @@ You can reset the world with the `reset` button on the up left corner.
 
 | Key          | Block     |
 | ------------ | --------- |
-| `²`          | Air       |
 | `&` (or `1`) | Dirt      |
 | `é` (or `2`) | Stone     |
 | `"` (or `3`) | Grass     |

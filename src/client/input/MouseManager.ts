@@ -7,7 +7,7 @@ import Position from '../../utils/Position';
 export default class MouseManager {
 	public mouse: PIXI.InteractionData;
 	public clicking: boolean;
-	public blankTexture: PIXI.Texture = PIXI.Texture.from('./assets/sprites/null.png');
+	public static blankTexture: PIXI.Texture = PIXI.Texture.from('./assets/sprites/null.png');
 
 	public constructor(public readonly app: PIXI.Application) {
 		this.mouse = app.renderer.plugins.interaction.mouse;
@@ -68,12 +68,23 @@ export default class MouseManager {
 					case '-':
 						MouseManager.setPlayerSelectedSlot(5);
 						break;
+					case '7':
+					case 'è':
+						MouseManager.setPlayerSelectedSlot(6);
+						break;
+					case '8':
+					case '_':
+						MouseManager.setPlayerSelectedSlot(7);
+						break;
+					case '9':
+					case 'ç':
+						MouseManager.setPlayerSelectedSlot(8);
+						break;
 
 					default:
 						break;
 				}
-
-				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.selectedSlot.item.block?.type === BlockType.AIR ? this.blankTexture : game.player.selectedSlot.item.block?.texture);
+				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.selectedSlot.item ? game.player.selectedSlot.item.block?.texture : MouseManager.blankTexture);
 			}
 		});
 	}

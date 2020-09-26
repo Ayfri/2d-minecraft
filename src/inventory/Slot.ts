@@ -1,3 +1,4 @@
+import MouseManager from '../client/input/MouseManager';
 import { game } from '../main';
 import PIXI from '../PIXI';
 import { SlotEvents } from '../types';
@@ -27,7 +28,7 @@ export default class Slot {
 		this.text.position.set(game.renderer.resolution * 1.1, game.renderer.resolution * 1.1);
 		this.text.scale.set(0.8, 0.8);
 
-		this.itemSprite = new PIXI.Sprite(PIXI.Texture.EMPTY);
+		this.itemSprite = new PIXI.Sprite(MouseManager.blankTexture);
 		this.itemSprite.width = game.renderer.resolution * 1.1;
 		this.itemSprite.height = game.renderer.resolution * 1.1;
 		this.itemSprite.position.set(5, 5);
@@ -39,7 +40,7 @@ export default class Slot {
 		});
 	}
 
-	private _itemStack: ItemStack | null = null;
+	private _itemStack: ItemStack = null;
 
 	public get itemStack(): ItemStack | null {
 		return this._itemStack;
@@ -51,7 +52,7 @@ export default class Slot {
 	}
 
 	public get item() {
-		return this.itemStack.item;
+		return this.itemStack?.item;
 	}
 
 	public isEmpty(): boolean {

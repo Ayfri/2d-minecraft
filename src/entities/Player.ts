@@ -1,5 +1,7 @@
-import Slot from '../inventory/Slot';
+import AbstractBlock from '../blocks/AbstractBlock';
+import Blocks from '../blocks/Blocks';
 import Inventory from '../inventory/Inventory';
+import Slot from '../inventory/Slot';
 import { game } from '../main';
 import { InventoryType, PlayerEvents } from '../types';
 import ChunkPosition from '../utils/ChunkPosition';
@@ -30,9 +32,10 @@ export default class Player extends Entity {
 
 	public putBlockWhereClicked(): void {
 		const position: TilePosition = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition());
+		const block: AbstractBlock = this.selectedSlot.item ? this.selectedSlot.item.block : Blocks.AIR;
 		this.position = position.toPosition();
-		if (game.world.getTileAt(position).block.name !== this.selectedSlot.item.block.name) game.world.replaceBlock(this.selectedSlot.item.block, position);
-		this.eventEmitter.emit('placeBlock', this.selectedSlot.item.block, this.tileOn);
+		if (game.world.getTileAt(position).block.name !== block.name) game.world.replaceBlock(block, position);
+		this.eventEmitter.emit('placeBlock', block, this.tileOn);
 	}
 
 	public update(): void {
