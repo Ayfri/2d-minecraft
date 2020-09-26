@@ -109,17 +109,6 @@ export default class Game {
 	}
 
 	public postInit() {
-		for (let i = 0; i < 8; i++) {
-			for (let j = 0; j < 8; j++) {
-				this.world.placeBlock(Blocks.VOID, new TilePosition(i, j));
-			}
-		}
-
-		const sandTilePosition: TilePosition = new TilePosition(15, 2);
-		this.sandTile = new FallingTile(Blocks.SAND, sandTilePosition);
-		this.world.placeTile(this.sandTile);
-		this.world.placeTile(new Tile(Blocks.DIRT, sandTilePosition.add(0, 1)));
-
 		this.mainGui.show();
 		this.debugGui.show();
 		this.tilePlacementGui.show();
