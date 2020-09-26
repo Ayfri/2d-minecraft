@@ -1,4 +1,3 @@
-import AbstractBlock from '../blocks/AbstractBlock';
 import Blocks from '../blocks/Blocks';
 import SimpleRegistry from '../ressources/SimpleRegistry';
 import AbstractItem from './AbstractItem';

@@ -68,8 +68,8 @@ export default class World {
 	public async update(): Promise<void> {
 		for (const tile of this.tiles.values()) {
 			// This will be changed
-			game.app.stage.removeChild(tile.getAsSprite());
-			game.app.stage.addChild(tile.getAsSprite());
+			game.app.stage.removeChild(tile.sprite);
+			game.app.stage.addChild(tile.sprite);
 			tile.update();
 		}
 	}

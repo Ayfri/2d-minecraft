@@ -12,15 +12,10 @@ export default class FallingTile extends Tile {
 	private isFalling: boolean = false;
 	private belowTile: Tile;
 
-	public constructor(public block: AbstractBlock, public position: TilePosition) {
+	public constructor(public block: AbstractBlock, position: TilePosition) {
 		super(block, position);
 		this.renderedPosition = position.copy();
 		this.motion = new Position(0, 0);
-	}
-
-	public getAsSprite(): PIXI.Sprite {
-		this.sprite.setTransform(this.renderedPosition.toPosition().x, this.renderedPosition.toPosition().y, game.renderer.resolution / 16, game.renderer.resolution / 16);
-		return this.sprite;
 	}
 
 	public update(): void {

@@ -1,26 +1,36 @@
 import AbstractBlock from '../../blocks/AbstractBlock';
 import { game } from '../../main';
 import PIXI from '../../PIXI';
-import { BlockType, Directions } from '../../types';
+import { BlockType, Directions, TileEvents } from '../../types';
 import Collection from '../../utils/Collection';
+import EventEmitter from '../../utils/EventEmitter';
 import TilePosition from '../../utils/TilePosition';
-import Sprite from './Sprite';
 
-export default class Tile extends Sprite {
+export default class Tile extends EventEmitter<TileEvents> {
 	public isAir: boolean;
-	public type: BlockType;
+	public sprite: PIXI.Sprite;
 
-	public constructor(public block: AbstractBlock, public position: TilePosition) {
+	public constructor(public block: AbstractBlock, position: TilePosition) {
 		super();
 		this.sprite = PIXI.Sprite.from(block.texture);
+		this.sprite.width = game.renderer.resolution;
+		this.sprite.height = game.renderer.resolution;
 		this.sprite.zIndex = -1000;
 		this.isAir = block.type === BlockType.AIR;
-		this.type = block.type;
+		this.position = position;
 	}
 
-	public getAsSprite(): PIXI.Sprite {
-		this.sprite.setTransform(this.position.toPosition().x, this.position.toPosition().y, game.renderer.resolution / 16, game.renderer.resolution / 16);
-		return this.sprite;
+	private _position: TilePosition;
+
+	public get position(): TilePosition {
+		return this._position;
+	}
+
+	public set position(value: TilePosition) {
+		this._position = value;
+
+		const position = value.toPosition();
+		this.sprite.position.set(position.x, position.y);
 	}
 
 	public getNeighbors(): Collection<Directions, Tile> {
@@ -57,7 +67,7 @@ export default class Tile extends Sprite {
 				break;
 		}
 
-		return game.world.getTileAt(this.position.add(x, y));
+		return game.world.getTileAt(this._position.add(x, y));
 	}
 
 	public update(): void {}

@@ -13,7 +13,7 @@ export default class TilePlacementGui extends Gui {
 
 	constructor(app: PIXI.Application) {
 		super(app);
-		this.tilePreview = new Tile(Blocks.AIR, TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
+		this.tilePreview = new Tile(Blocks.AIR, TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition())).sprite;
 		this.blockSelected = new PIXI.Sprite();
 
 		this.tilePreview.alpha = 0.4;
