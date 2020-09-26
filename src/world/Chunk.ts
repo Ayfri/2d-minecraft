@@ -17,8 +17,7 @@ export default class Chunk implements IShowable {
 		if (this.isShow) return;
 		this.isShow = true;
 		this.tiles.forEach((t) => {
-			game.app.stage.removeChild(t.getAsSprite());
-			game.app.stage.addChild(t.getAsSprite());
+			t.sprite.visible = true;
 		});
 	}
 
@@ -26,7 +25,7 @@ export default class Chunk implements IShowable {
 		if (!this.isShow) return;
 		this.isShow = false;
 		this.tiles.forEach((t) => {
-			game.app.stage.removeChild(t.getAsSprite());
+			t.sprite.visible = false;
 		});
 	}
 
