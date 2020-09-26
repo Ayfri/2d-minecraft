@@ -1,6 +1,6 @@
 import AbstractBlock from '../../blocks/AbstractBlock';
 import { game } from '../../main';
-import { Directions } from '../../types';
+import { BlockType, Directions } from '../../types';
 import Position from '../../utils/Position';
 import TilePosition from '../../utils/TilePosition';
 import Tile from './Tile';
@@ -30,7 +30,7 @@ export default class FallingTile extends Tile {
 			this.motion.y = this.motion.y > 0.4 ? this.motion.y : this.motion.y + 0.005;
 			this.renderedPosition.addPosition(this.motion);
 			if (!this.renderedPosition.round().equals(this.position)) {
-				game.world.removeBlock(this.position);
+				game.world.removeTile(this.position);
 				this.position = this.renderedPosition.round();
 				game.world.placeTile(this);
 			}
@@ -42,6 +42,7 @@ export default class FallingTile extends Tile {
 			this.isFalling = false;
 			this.motion.set(0, 0);
 			this.renderedPosition = this.position;
+			//			if (game.world.getTileAt(this.position).type !== BlockType.FALLING) game.world.placeTile(this);
 		}
 	}
 

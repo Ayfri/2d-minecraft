@@ -2,15 +2,13 @@ import AbstractBlock from '../blocks/AbstractBlock';
 import Blocks from '../blocks/Blocks';
 import FallingTile from '../client/renderer/FallingTile';
 import Tile from '../client/renderer/Tile';
+import { game } from '../main';
 import PIXI from '../PIXI';
-import { BlockType, StringChunkPosition } from '../types';
-import ChunkPosition from '../utils/ChunkPosition';
-import Collection from '../utils/Collection';
+import { BlockType } from '../types';
 import TilePosition from '../utils/TilePosition';
-import Chunk from './Chunk';
 
 export default class World {
-	public chunks: Collection<StringChunkPosition, Chunk> = new Collection<StringChunkPosition, Chunk>();
+	public tiles: Array<Tile> = new Array<Tile>();
 	public background: PIXI.Sprite;
 
 	public constructor(public app: PIXI.Application) {
@@ -23,67 +21,58 @@ export default class World {
 	}
 
 	public getTileAt(position: TilePosition): Tile {
-		const chunkPosition: ChunkPosition = position.toChunkPosition();
-		this.ensureChunkAt(chunkPosition);
-		return this.getChunkAt(chunkPosition).getTileAt(position);
+		this.ensureTileAt(position);
+		return this.getTileAtOrUndefined(position);
 	}
 
-	public placeTile(tile: Tile): void {
-		const chunkPosition: ChunkPosition = tile.position.toChunkPosition();
-		this.ensureChunkAt(chunkPosition);
-
-		this.removeBlock(tile.position);
-		this.getChunkAt(chunkPosition).setTile(tile);
+	public isTileAt(position: TilePosition): boolean {
+		return !!this.getTileAtOrUndefined(position);
 	}
 
-	public ensureChunkAt(position: ChunkPosition): void {
-		if (!this.chunks.has(position.stringify())) {
-			this.addBlankChunk(position);
+	private getTileAtOrUndefined(position: TilePosition) {
+		return this.tiles.find((t) => t.position.equals(position));
+	}
+
+	public ensureTileAt(position: TilePosition): void {
+		if (!this.isTileAt(position)) {
+			this.placeBlock(Blocks.AIR, position);
 		}
 	}
 
+	public placeTile(tile: Tile): void {
+		if (this.isTileAt(tile.position)) {
+			this.tiles[this.tiles.findIndex((t) => this.getTileAtOrUndefined(t.position))] = tile;
+		} else this.tiles.push(tile);
+	}
+
 	public placeBlock(block: AbstractBlock, position: TilePosition): void {
-		const tile: Tile = new Tile(block, position);
+		let tile: Tile = new Tile(block, position);
+		if (block.type === BlockType.FALLING) tile = new FallingTile(block, position);
 		this.placeTile(tile);
 	}
 
 	public replaceBlock(block: AbstractBlock, position: TilePosition): void {
-		this.removeBlock(position);
-		if (block.type === BlockType.FALLING) this.placeTile(new FallingTile(block, position));
-		else this.placeTile(new Tile(block, position));
+		this.removeTile(position);
+		this.placeBlock(block, position);
 	}
 
-	public removeBlock(position: TilePosition): Tile | undefined {
-		this.ensureChunkAt(position.toChunkPosition());
-		const chunk: Chunk = this.getChunkAt(position.toChunkPosition());
-		return chunk.setTile(new Tile(Blocks.AIR, position));
-	}
-
-	public addBlankChunk(chunkPosition: ChunkPosition): void {
-		this.chunks.set(chunkPosition.stringify(), new Chunk(chunkPosition));
-	}
-
-	public getChunkAt(position: ChunkPosition): Chunk | undefined {
-		return this.chunks.get(position.stringify());
+	public removeTile(position: TilePosition): void {
+		this.placeBlock(Blocks.AIR, position);
 	}
 
 	public clear(): void {
-		for (const chunk of this.chunks.values()) {
-			chunk.clear();
-		}
-		this.chunks.clear();
+		this.tiles = [];
 		this.updateRendering();
 	}
 
 	public async update(): Promise<void> {
-		for (const chunk of this.chunks.values()) {
-			if (chunk.isShow) chunk.update();
+		for (const tile of this.tiles.values()) {
+			// This will be changed
+			game.app.stage.removeChild(tile.getAsSprite());
+			game.app.stage.addChild(tile.getAsSprite());
+			tile.update();
 		}
 	}
 
-	public updateRendering(): void {
-		for (const chunk of this.chunks.values()) {
-			chunk.updateRendering();
-		}
-	}
+	public updateRendering(): void {}
 }

@@ -8,12 +8,14 @@ import Sprite from './Sprite';
 
 export default class Tile extends Sprite {
 	public isAir: boolean;
+	public type: BlockType;
 
 	public constructor(public block: AbstractBlock, public position: TilePosition) {
 		super();
 		this.sprite = PIXI.Sprite.from(block.texture);
 		this.sprite.zIndex = -1000;
 		this.isAir = block.type === BlockType.AIR;
+		this.type = block.type;
 	}
 
 	public getAsSprite(): PIXI.Sprite {
@@ -38,19 +40,23 @@ export default class Tile extends Sprite {
 				x = 0;
 				y = -1;
 				break;
+
 			case Directions.DOWN:
 				x = 0;
 				y = 1;
 				break;
+
 			case Directions.LEFT:
 				x = -1;
 				y = 0;
 				break;
+
 			case Directions.RIGHT:
 				x = 1;
 				y = 0;
 				break;
 		}
+
 		return game.world.getTileAt(this.position.add(x, y));
 	}
 

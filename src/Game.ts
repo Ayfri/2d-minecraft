@@ -113,10 +113,10 @@ export default class Game {
 		this.debugGui.show();
 		this.tilePlacementGui.show();
 
-		this.player.eventEmitter.on('changeChunk', (position: ChunkPosition) => {
+		/*this.player.eventEmitter.on('changeChunk', (position: ChunkPosition) => {
 			this.world.ensureChunkAt(position);
 			this.world.updateRendering();
-		});
+		});*/
 
 		this.player.hotBar.addItemStack(ItemStack.from(Items.STONE));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.DIRT));
