@@ -5,17 +5,7 @@ import EventEmitter from '../utils/EventEmitter';
 import ItemStack from './ItemStack';
 
 export default class Slot {
-	public get itemStack(): ItemStack | null {
-		return this._itemStack;
-	}
-
-	public set itemStack(value: ItemStack | null) {
-		this.itemSprite.texture = value.item?.texture;
-		this._itemStack = value;
-	}
-
 	public eventHandler: EventEmitter<SlotEvents>;
-	private _itemStack: ItemStack | null = null;
 	public text: PIXI.Text;
 	public container: PIXI.Container;
 	public itemSprite: PIXI.Sprite;
@@ -47,6 +37,21 @@ export default class Slot {
 		this.eventHandler.on('countChange', (itemStack) => {
 			if (itemStack) this.text.text = itemStack.count.toString();
 		});
+	}
+
+	private _itemStack: ItemStack | null = null;
+
+	public get itemStack(): ItemStack | null {
+		return this._itemStack;
+	}
+
+	public set itemStack(value: ItemStack | null) {
+		this.itemSprite.texture = value.item?.texture;
+		this._itemStack = value;
+	}
+
+	public get item() {
+		return this.itemStack.item;
 	}
 
 	public isEmpty(): boolean {

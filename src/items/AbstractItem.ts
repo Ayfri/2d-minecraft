@@ -1,3 +1,4 @@
+import AbstractBlock from '../blocks/AbstractBlock';
 import Blocks from '../blocks/Blocks';
 import PIXI from '../PIXI';
 import { ItemType } from '../types';
@@ -5,6 +6,7 @@ import ITexturable from '../utils/ITexturable';
 
 export default abstract class AbstractItem implements ITexturable {
 	public texture: PIXI.Texture = null;
+	public block: AbstractBlock | undefined;
 
 	public setTexture(texture: PIXI.Texture): void {
 		if (texture) {

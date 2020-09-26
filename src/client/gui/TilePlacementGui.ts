@@ -1,4 +1,5 @@
 import { OutlineFilter } from '@pixi/filter-outline';
+import Blocks from '../../blocks/Blocks';
 import { game } from '../../main';
 import PIXI from '../../PIXI';
 import TilePosition from '../../utils/TilePosition';
@@ -12,7 +13,7 @@ export default class TilePlacementGui extends Gui {
 
 	constructor(app: PIXI.Application) {
 		super(app);
-		this.tilePreview = new Tile(game.player.selectedBlock, TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
+		this.tilePreview = new Tile(Blocks.AIR, TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition())).getAsSprite();
 		this.blockSelected = new PIXI.Sprite();
 
 		this.tilePreview.alpha = 0.4;

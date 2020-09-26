@@ -38,38 +38,34 @@ export default class MouseManager {
 		game.eventHandler.on('keydown', (key) => {
 			if (game.loaded) {
 				switch (key.name) {
-					case '²':
-						game.player.selectedBlock = Blocks.AIR;
-						break;
-
 					case '1':
 					case '&':
-						game.player.selectedBlock = Blocks.DIRT;
+						game.player.selectedSlot = game.player.hotBar.getSlotAt(0);
 						break;
 
 					case '2':
 					case 'é':
-						game.player.selectedBlock = Blocks.STONE;
+						game.player.selectedSlot = game.player.hotBar.getSlotAt(1);
 						break;
 
 					case '3':
 					case '"':
-						game.player.selectedBlock = Blocks.GRASS;
+						game.player.selectedSlot = game.player.hotBar.getSlotAt(2);
 						break;
 
 					case '4':
 					case "'":
-						game.player.selectedBlock = Blocks.SAND;
+						game.player.selectedSlot = game.player.hotBar.getSlotAt(3);
 						break;
 
 					case '5':
 					case '(':
-						game.player.selectedBlock = Blocks.OAK_LOG;
+						game.player.selectedSlot = game.player.hotBar.getSlotAt(4);
 						break;
 
 					case '6':
 					case '-':
-						game.player.selectedBlock = Blocks.OAK_LEAVES;
+						game.player.selectedSlot = game.player.hotBar.getSlotAt(5);
 						break;
 
 					default:
@@ -77,7 +73,7 @@ export default class MouseManager {
 				}
 
 				const blankTexture: PIXI.Texture = PIXI.Texture.from('./assets/sprites/null.png');
-				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.selectedBlock.type === BlockType.AIR ? blankTexture : game.player.selectedBlock.texture);
+				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.selectedSlot.item.block?.type === BlockType.AIR ? blankTexture : game.player.selectedSlot.item.block?.texture);
 			}
 		});
 	}
