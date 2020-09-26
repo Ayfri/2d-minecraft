@@ -7,8 +7,9 @@ import Position from '../../utils/Position';
 export default class MouseManager {
 	public mouse: PIXI.InteractionData;
 	public clicking: boolean;
+	public blankTexture: PIXI.Texture = PIXI.Texture.from('./assets/sprites/null.png');
 
-	constructor(public readonly app: PIXI.Application) {
+	public constructor(public readonly app: PIXI.Application) {
 		this.mouse = app.renderer.plugins.interaction.mouse;
 		this.clicking = false;
 
@@ -40,42 +41,46 @@ export default class MouseManager {
 				switch (key.name) {
 					case '1':
 					case '&':
-						game.player.selectedSlot = game.player.hotBar.getSlotAt(0);
+						MouseManager.setPlayerSelectedSlot(0);
 						break;
 
 					case '2':
 					case 'é':
-						game.player.selectedSlot = game.player.hotBar.getSlotAt(1);
+						MouseManager.setPlayerSelectedSlot(1);
 						break;
 
 					case '3':
 					case '"':
-						game.player.selectedSlot = game.player.hotBar.getSlotAt(2);
+						MouseManager.setPlayerSelectedSlot(2);
 						break;
 
 					case '4':
 					case "'":
-						game.player.selectedSlot = game.player.hotBar.getSlotAt(3);
+						MouseManager.setPlayerSelectedSlot(3);
 						break;
 
 					case '5':
 					case '(':
-						game.player.selectedSlot = game.player.hotBar.getSlotAt(4);
+						MouseManager.setPlayerSelectedSlot(4);
 						break;
 
 					case '6':
 					case '-':
-						game.player.selectedSlot = game.player.hotBar.getSlotAt(5);
+						MouseManager.setPlayerSelectedSlot(5);
 						break;
 
 					default:
 						break;
 				}
 
-				const blankTexture: PIXI.Texture = PIXI.Texture.from('./assets/sprites/null.png');
-				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.selectedSlot.item.block?.type === BlockType.AIR ? blankTexture : game.player.selectedSlot.item.block?.texture);
+				game.tilePlacementGui.setTextureTilePlacingPreview(game.player.selectedSlot.item.block?.type === BlockType.AIR ? this.blankTexture : game.player.selectedSlot.item.block?.texture);
 			}
 		});
+	}
+
+	private static setPlayerSelectedSlot(number: number): void {
+		game.player.selectedSlot = game.player.hotBar.getSlotAt(number);
+		game.player.hotBar.selectedSlot = number;
 	}
 
 	public getMousePosition(): Position {

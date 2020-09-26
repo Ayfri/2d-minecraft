@@ -9,6 +9,7 @@ export default class TextureManager {
 		this.savedTextures = new Collection();
 		this.preLoadTexture('./assets/sprites/background.png', 'background');
 		this.preLoadTexture('../assets/sprites/hotBar_slot.png', 'hotBarSlot');
+		this.preLoadTexture('../assets/sprites/selected_slot.png', 'hotBarSelectedSlot');
 	}
 
 	public preLoadTexture(path: Path, name: string): void {
