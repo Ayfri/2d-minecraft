@@ -129,7 +129,12 @@ export default class Game {
 			this.world.updateRendering();
 		});
 
-		this.player.hotBar.slots.get(0).itemStack = ItemStack.from(Items.STONE);
+		this.player.hotBar.addItemStack(ItemStack.from(Items.STONE));
+		this.player.hotBar.addItemStack(ItemStack.from(Items.DIRT));
+		this.player.hotBar.addItemStack(ItemStack.from(Items.GRASS));
+		this.player.hotBar.addItemStack(ItemStack.from(Items.SAND));
+		this.player.hotBar.addItemStack(ItemStack.from(Items.OAK_LOG));
+		this.player.hotBar.addItemStack(ItemStack.from(Items.OAK_LEAVES));
 	}
 
 	public update() {

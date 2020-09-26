@@ -7,6 +7,7 @@ import Sprite from './client/renderer/Sprite';
 import Entity from './entities/Entity';
 import Game from './Game';
 import Inventory from './inventory/Inventory';
+import ItemStack from './inventory/ItemStack';
 import Items from './items/Items';
 import PIXI from './PIXI';
 import SimpleRegistry from './ressources/SimpleRegistry';
@@ -68,7 +69,7 @@ Object.defineProperties(window, {
 	app: {
 		value: app,
 	},
-	blocks: {
+	Blocks: {
 		value: Blocks,
 	},
 	gameClasses: {
@@ -84,12 +85,13 @@ Object.defineProperties(window, {
 			TilePosition,
 			ChunkPosition,
 			Inventory,
+			ItemStack,
 		},
 	},
 	game: {
 		value: game,
 	},
-	items: {
+	Items: {
 		value: Items,
 	},
 	/*PIXI: {

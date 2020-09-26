@@ -7,10 +7,11 @@ export default class ItemStack {
 	public constructor(public item: AbstractItem, count: number, slot?: Slot) {
 		this._count = count;
 		this.slot = slot;
+		this.verify();
 	}
 
 	public static from(item: AbstractItem): ItemStack {
-		return new ItemStack(item, 0, null);
+		return new ItemStack(item, 1, null);
 	}
 
 	private _count: number;
@@ -21,6 +22,12 @@ export default class ItemStack {
 
 	public set count(value: number) {
 		this._count = value;
+		this.verify();
 		this.slot?.eventHandler.emit('countChange', this);
+	}
+
+	private verify(): void {
+		if (this._count > 64) this._count = 64;
+		if (this._count < 0) this._count = 1;
 	}
 }

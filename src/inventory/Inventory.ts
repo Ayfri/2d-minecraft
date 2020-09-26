@@ -15,6 +15,7 @@ export default class Inventory {
 		const slotTexture: PIXI.Texture = game.textureManager.getTexture('hotBarSlot');
 		const graphics: PIXI.Graphics = new PIXI.Graphics();
 		const resolution: number = game.renderer.resolution * 1.5;
+
 		for (let i = 0; i < width; i++) {
 			for (let j = 0; j < height; j++) {
 				this.slots.set(this.slots.size, new Slot());
@@ -31,16 +32,27 @@ export default class Inventory {
 		this.container.addChild(graphics);
 	}
 
+	public setItemStackAt(itemStack: ItemStack, slotNumber: number): void {
+		const slot: Slot = this.slots.toValuesArray()[slotNumber];
+		itemStack.slot = slot;
+		slot.itemStack = itemStack;
+		slot.eventHandler.emit('countChange', itemStack);
+		slot.container.position.set(slot.container.position.x + game.renderer.resolution * 1.5 * i, slot.container.position.y);
+
+		if (itemStack.count === 1) slot.text.visible = false;
+		this.container.addChild(slot.container);
+	}
+
 	public addItemStack(itemStack: ItemStack): boolean {
 		let hasAdd: boolean = false;
-		for (const slot of this.slots.values()) {
-			if (slot.isEmpty()) {
-				itemStack.slot = slot;
-				slot.itemStack = itemStack;
+		for (let i = 0; i < this.slots.toValuesArray().length; i++) {
+			if (this.slots.toValuesArray()[i].isEmpty()) {
+				this.setItemStackAt(itemStack, i);
 				hasAdd = true;
 				break;
 			}
 		}
+
 		return hasAdd;
 	}
 
