@@ -6,17 +6,21 @@ import TilePosition from '../../utils/TilePosition';
 import Tile from './Tile';
 
 export default class FallingTile extends Tile {
-	public get belowTile(): Tile {
-		return this._belowTile;
-	}
-	public get isFalling(): boolean {
-		return this._isFalling;
-	}
 	public canFall: boolean = false;
 	public motion: Position;
 	public renderedPosition: TilePosition;
+
 	private _isFalling: boolean = false;
+
+	public get isFalling(): boolean {
+		return this._isFalling;
+	}
+
 	private _belowTile: Tile;
+
+	public get belowTile(): Tile {
+		return this._belowTile;
+	}
 
 	public constructor(public block: AbstractBlock, position: TilePosition) {
 		super(block, position);
@@ -51,11 +55,11 @@ export default class FallingTile extends Tile {
 			this._isFalling = false;
 			this.motion.set(0, 0);
 			this.renderedPosition = this.position;
-			//			if (game.world.getTileAt(this.position).type !== BlockType.FALLING) game.world.placeTile(this);
 		}
 	}
 
 	public updateState(): void {
+		this.ensureNeighbor(Directions.DOWN);
 		this._belowTile = this.getNeighbor(Directions.DOWN);
 		this.canFall = this._belowTile.isAir && this.position.y < 50;
 	}

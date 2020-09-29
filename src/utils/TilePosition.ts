@@ -1,5 +1,5 @@
 import { game } from '../main';
-import { Layer, StringTilePosition } from '../types';
+import { Directions, Layer, StringTilePosition } from '../types';
 import ChunkPosition from './ChunkPosition';
 import Position from './Position';
 
@@ -35,6 +35,10 @@ export default class TilePosition extends Position {
 
 	public addTilePosition(tilePosition: TilePosition): TilePosition {
 		return TilePosition.from(this.add(tilePosition.x, tilePosition.y));
+	}
+
+	public addWithDirection(direction: Directions, length: number) {
+		return TilePosition.from(super.addWithDirection(direction, length));
 	}
 
 	public add(x: number, y?: number): TilePosition {

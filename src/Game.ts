@@ -29,7 +29,6 @@ export default class Game {
 	public debugGui: DebugGui;
 	public sandTile;
 	public mainGui: MainGui;
-	debugTile: FallingTile;
 
 	constructor(public app: PIXI.Application) {
 		this.eventHandler = new EventEmitter<GameEvents>();
@@ -111,8 +110,6 @@ export default class Game {
 		this.mainGui.show();
 		this.debugGui.show();
 		this.tilePlacementGui.show();
-		this.debugTile = new FallingTile(Blocks.SAND, new TilePosition(0, 0));
-		this.world.placeTile(this.debugTile);
 
 		this.player.hotBar.addItemStack(ItemStack.from(Items.STONE));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.DIRT));

@@ -11,17 +11,6 @@ export default class Tile extends EventEmitter<TileEvents> {
 	public sprite: PIXI.Sprite;
 	public type: BlockType;
 
-	public constructor(public block: AbstractBlock, position: TilePosition) {
-		super();
-		this.sprite = PIXI.Sprite.from(block.texture);
-		this.sprite.width = game.renderer.resolution;
-		this.sprite.height = game.renderer.resolution;
-		this.sprite.zIndex = -1000;
-		this.type = block.type;
-		this.isAir = block.type === BlockType.AIR;
-		this.position = position;
-	}
-
 	private _position: TilePosition;
 
 	public get position(): TilePosition {
@@ -35,7 +24,18 @@ export default class Tile extends EventEmitter<TileEvents> {
 		this.sprite.position.set(position.x, position.y);
 	}
 
-	public getNeighbors(): Collection<Directions, Tile> {
+	public constructor(public block: AbstractBlock, position: TilePosition) {
+		super();
+		this.sprite = PIXI.Sprite.from(block.texture);
+		this.sprite.width = game.renderer.resolution;
+		this.sprite.height = game.renderer.resolution;
+		this.sprite.zIndex = -1000;
+		this.type = block.type;
+		this.isAir = block.type === BlockType.AIR;
+		this.position = position;
+	}
+
+	public getNeighbors(): Collection<Directions, Tile | undefined> {
 		const tiles: Collection<Directions, Tile> = new Collection();
 		tiles.set(Directions.UP, this.getNeighbor(Directions.UP));
 		tiles.set(Directions.DOWN, this.getNeighbor(Directions.DOWN));
@@ -44,31 +44,23 @@ export default class Tile extends EventEmitter<TileEvents> {
 		return tiles;
 	}
 
-	public getNeighbor(direction: Directions): Tile {
-		let x;
-		let y;
-		switch (direction) {
-			case Directions.UP:
-				x = 0;
-				y = -1;
-				break;
-
-			case Directions.DOWN:
-				x = 0;
-				y = 1;
-				break;
-
-			case Directions.LEFT:
-				x = -1;
-				y = 0;
-				break;
-
-			case Directions.RIGHT:
-				x = 1;
-				y = 0;
-				break;
+	public ensureNeighbor(direction: Directions): boolean {
+		if (this.getNeighbor(direction)) {
+			return true;
+		} else {
+			game.world.ensureTileAt(this.position.addWithDirection(direction, 1));
+			return false;
 		}
+	}
 
-		return game.world.getTileAt(this._position.add(x, y));
+	public ensureNeighbors(): void {
+		this.ensureNeighbor(Directions.UP);
+		this.ensureNeighbor(Directions.DOWN);
+		this.ensureNeighbor(Directions.LEFT);
+		this.ensureNeighbor(Directions.RIGHT);
+	}
+
+	public getNeighbor(direction: Directions): Tile | undefined {
+		return game.world.getTileAtOrUndefined(this._position.addWithDirection(direction, 1));
 	}
 }

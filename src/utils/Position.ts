@@ -1,4 +1,4 @@
-import { StringPosition } from '../types';
+import { Directions, StringPosition } from '../types';
 import IPosition from './IPosition';
 
 export default class Position implements IPosition {
@@ -35,6 +35,34 @@ export default class Position implements IPosition {
 
 	public add(x: number, y: number): Position {
 		return new Position(this.x + x, this.y + y);
+	}
+
+	public addWithDirection(direction: Directions, length: number) {
+		let x;
+		let y;
+		switch (direction) {
+			case Directions.UP:
+				x = 0;
+				y = -length;
+				break;
+
+			case Directions.DOWN:
+				x = 0;
+				y = length;
+				break;
+
+			case Directions.LEFT:
+				x = -length;
+				y = 0;
+				break;
+
+			case Directions.RIGHT:
+				x = length;
+				y = 0;
+				break;
+		}
+
+		return this.add(x, y).copy();
 	}
 
 	public copy(): Position {
