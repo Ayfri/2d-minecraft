@@ -123,18 +123,6 @@ export default class Game {
 	}
 
 	public update() {
-		this.debugGui.debugText.text = JSON.stringify(
-			{
-				belowTile: this.debugTile.belowTile.block.name,
-				block: this.debugTile.block.name,
-				canFall: this.debugTile.canFall,
-				isFalling: this.debugTile.isFalling,
-				tilePos: this.debugTile.position,
-			},
-			null,
-			4
-		);
-
 		this.player.update();
 		this.debugGui.update();
 		this.mainGui.update();

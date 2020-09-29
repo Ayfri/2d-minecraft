@@ -41,7 +41,7 @@ export default class World {
 
 	public placeTile(tile: Tile): void {
 		if (this.isTileAt(tile.position)) {
-			this.tiles[this.tiles.findIndex((t) => this.getTileAtOrUndefined(t.position))] = tile;
+			this.tiles[this.tiles.findIndex((t) => t.position.equals(tile.position))] = tile;
 		} else this.tiles.push(tile);
 		tile.emit('place', tile.position);
 		tile.emit('update');

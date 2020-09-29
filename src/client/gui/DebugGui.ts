@@ -37,5 +37,17 @@ export default class DebugGui extends Gui {
 		this.mouseCoordsText.text = `x: ${mousePosition.x}, y: ${mousePosition.y}`;
 		this.fpsCounter.text = `FPS: ${game.app.ticker.FPS.toFixed()}`;
 		this.mouseBlockText.text = `Block : ${game.world.getTileAt(game.player.tileOn).block.name}`;
+
+		this.debugText.text = JSON.stringify(
+			{
+				belowTile: game.debugTile.belowTile.block.name,
+				block: game.debugTile.block.name,
+				canFall: game.debugTile.canFall,
+				isFalling: game.debugTile.isFalling,
+				tilePos: game.debugTile.position,
+			},
+			null,
+			4
+		);
 	}
 }
