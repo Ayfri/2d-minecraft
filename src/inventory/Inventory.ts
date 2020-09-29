@@ -57,6 +57,7 @@ export default class Inventory {
 		this.container.addChild(graphics);
 		this.container.addChild(this.selectedSlotGraphics);
 	}
+
 	public setItemStackAt(itemStack: ItemStack, slotNumber: number): void {
 		const slot: Slot = this.slots.toValuesArray()[slotNumber];
 		itemStack.slot = slot;

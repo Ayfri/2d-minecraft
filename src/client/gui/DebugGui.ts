@@ -5,6 +5,7 @@ import Gui from './Gui';
 
 export default class DebugGui extends Gui {
 	public mouseCoordsText: PIXI.Text;
+	public mouseBlockText: PIXI.Text;
 	public fpsCounter: PIXI.Text;
 	public debugText: PIXI.Text;
 
@@ -12,6 +13,7 @@ export default class DebugGui extends Gui {
 		super(app);
 		this.mouseCoordsText = new PIXI.Text('', new PIXI.TextStyle({ fill: '#ffffff' }));
 		this.fpsCounter = new PIXI.Text('', new PIXI.TextStyle({ fill: '#ffffff' }));
+		this.mouseBlockText = new PIXI.Text('', new PIXI.TextStyle({ fill: '#ffffff' }));
 		this.debugText = new PIXI.Text(
 			'',
 			new PIXI.TextStyle({
@@ -19,10 +21,13 @@ export default class DebugGui extends Gui {
 				fontSize: 16,
 			})
 		);
+
 		this.fpsCounter.position.set(window.innerWidth - 200, 20);
 		this.mouseCoordsText.position.set(window.innerWidth - 200, 50);
+		this.mouseBlockText.position.set(window.innerWidth - 200, 80);
 		this.debugText.position.set(10, 50);
 		this.addSprite('mouseCoordsText', this.mouseCoordsText);
+		this.addSprite('mouseBlockText', this.mouseBlockText);
 		this.addSprite('fpsCounter', this.fpsCounter);
 		this.addSprite('debugText', this.debugText);
 	}
@@ -31,5 +36,6 @@ export default class DebugGui extends Gui {
 		const mousePosition = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition());
 		this.mouseCoordsText.text = `x: ${mousePosition.x}, y: ${mousePosition.y}`;
 		this.fpsCounter.text = `FPS: ${game.app.ticker.FPS.toFixed()}`;
+		this.mouseBlockText.text = `Block : ${game.world.getTileAt(game.player.tileOn).block.name}`;
 	}
 }

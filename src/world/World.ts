@@ -29,7 +29,7 @@ export default class World {
 		return !!this.getTileAtOrUndefined(position);
 	}
 
-	private getTileAtOrUndefined(position: TilePosition) {
+	private getTileAtOrUndefined(position: TilePosition): Tile | undefined {
 		return this.tiles.find((t) => t.position.equals(position));
 	}
 
@@ -43,6 +43,8 @@ export default class World {
 		if (this.isTileAt(tile.position)) {
 			this.tiles[this.tiles.findIndex((t) => this.getTileAtOrUndefined(t.position))] = tile;
 		} else this.tiles.push(tile);
+		tile.emit('place', tile.position);
+		tile.emit('update');
 	}
 
 	public placeBlock(block: AbstractBlock, position: TilePosition): void {
@@ -52,11 +54,17 @@ export default class World {
 	}
 
 	public replaceBlock(block: AbstractBlock, position: TilePosition): void {
+		if (this.isTileAt(position)) {
+			this.getTileAtOrUndefined(position).emit('replace', position, block);
+		}
+
 		this.removeTile(position);
 		this.placeBlock(block, position);
 	}
 
 	public removeTile(position: TilePosition): void {
+		const tile = this.getTileAt(position);
+		tile.getNeighbors().forEach((t) => t.emit('update'));
 		this.placeBlock(Blocks.AIR, position);
 	}
 
@@ -66,11 +74,12 @@ export default class World {
 	}
 
 	public async update(): Promise<void> {
-		for (const tile of this.tiles.values()) {
+		for (const tile of this.tiles) {
 			// This will be changed
 			game.app.stage.removeChild(tile.sprite);
 			game.app.stage.addChild(tile.sprite);
-			tile.update();
+
+			tile.emit('tick');
 		}
 	}
 

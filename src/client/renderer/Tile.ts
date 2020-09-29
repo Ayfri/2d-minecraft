@@ -9,6 +9,7 @@ import TilePosition from '../../utils/TilePosition';
 export default class Tile extends EventEmitter<TileEvents> {
 	public isAir: boolean;
 	public sprite: PIXI.Sprite;
+	public type: BlockType;
 
 	public constructor(public block: AbstractBlock, position: TilePosition) {
 		super();
@@ -16,6 +17,7 @@ export default class Tile extends EventEmitter<TileEvents> {
 		this.sprite.width = game.renderer.resolution;
 		this.sprite.height = game.renderer.resolution;
 		this.sprite.zIndex = -1000;
+		this.type = block.type;
 		this.isAir = block.type === BlockType.AIR;
 		this.position = position;
 	}
@@ -69,6 +71,4 @@ export default class Tile extends EventEmitter<TileEvents> {
 
 		return game.world.getTileAt(this._position.add(x, y));
 	}
-
-	public update(): void {}
 }

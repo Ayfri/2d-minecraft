@@ -6,7 +6,6 @@ import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
 import FallingTile from './client/renderer/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
-import Tile from './client/renderer/Tile';
 import Player from './entities/Player';
 import ItemStack from './inventory/ItemStack';
 import BlockItem from './items/BlockItem';
@@ -14,7 +13,6 @@ import Items from './items/Items';
 import PIXI from './PIXI';
 import TextureManager from './ressources/TextureManager';
 import { BlockType, GameEvents, Path } from './types';
-import ChunkPosition from './utils/ChunkPosition';
 import EventEmitter from './utils/EventEmitter';
 import TilePosition from './utils/TilePosition';
 import World from './world/World';
@@ -31,6 +29,7 @@ export default class Game {
 	public debugGui: DebugGui;
 	public sandTile;
 	public mainGui: MainGui;
+	debugTile: FallingTile;
 
 	constructor(public app: PIXI.Application) {
 		this.eventHandler = new EventEmitter<GameEvents>();
@@ -112,6 +111,8 @@ export default class Game {
 		this.mainGui.show();
 		this.debugGui.show();
 		this.tilePlacementGui.show();
+		this.debugTile = new FallingTile(Blocks.SAND, new TilePosition(0, 0));
+		this.world.placeTile(this.debugTile);
 
 		this.player.hotBar.addItemStack(ItemStack.from(Items.STONE));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.DIRT));
@@ -122,6 +123,18 @@ export default class Game {
 	}
 
 	public update() {
+		this.debugGui.debugText.text = JSON.stringify(
+			{
+				belowTile: this.debugTile.belowTile.block.name,
+				block: this.debugTile.block.name,
+				canFall: this.debugTile.canFall,
+				isFalling: this.debugTile.isFalling,
+				tilePos: this.debugTile.position,
+			},
+			null,
+			4
+		);
+
 		this.player.update();
 		this.debugGui.update();
 		this.mainGui.update();

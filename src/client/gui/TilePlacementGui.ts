@@ -25,7 +25,7 @@ export default class TilePlacementGui extends Gui {
 		outlineFilter.enabled = true;
 		outlineFilter.padding = 3;
 		this.blockSelected.filters = [outlineFilter];
-		this.blockSelected.position.set(window.innerWidth - 150, 100);
+		this.blockSelected.position.set(window.innerWidth - 150, 150);
 		this.blockSelected.scale.set(4, 4);
 
 		this.addSprite('tilePlacementPreview', this.tilePreview);

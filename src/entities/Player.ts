@@ -4,7 +4,6 @@ import Inventory from '../inventory/Inventory';
 import Slot from '../inventory/Slot';
 import { game } from '../main';
 import { InventoryType, PlayerEvents } from '../types';
-import ChunkPosition from '../utils/ChunkPosition';
 import EventEmitter from '../utils/EventEmitter';
 import Position from '../utils/Position';
 import TilePosition from '../utils/TilePosition';

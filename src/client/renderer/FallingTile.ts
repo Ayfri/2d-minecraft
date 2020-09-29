@@ -1,27 +1,41 @@
 import AbstractBlock from '../../blocks/AbstractBlock';
 import { game } from '../../main';
-import { BlockType, Directions } from '../../types';
+import { Directions } from '../../types';
 import Position from '../../utils/Position';
 import TilePosition from '../../utils/TilePosition';
 import Tile from './Tile';
 
 export default class FallingTile extends Tile {
+	public get belowTile(): Tile {
+		return this._belowTile;
+	}
+	public get isFalling(): boolean {
+		return this._isFalling;
+	}
 	public canFall: boolean = false;
 	public motion: Position;
 	public renderedPosition: TilePosition;
-	private isFalling: boolean = false;
-	private belowTile: Tile;
+	private _isFalling: boolean = false;
+	private _belowTile: Tile;
 
 	public constructor(public block: AbstractBlock, position: TilePosition) {
 		super(block, position);
 		this.renderedPosition = position.copy();
 		this.motion = new Position(0, 0);
+
+		this.on('update', () => {
+			this.updateState();
+		});
+
+		this.on('tick', () => {
+			if (this.canFall) this.update();
+		});
 	}
 
 	public update(): void {
 		this.updateState();
 
-		if (this.isFalling) {
+		if (this._isFalling) {
 			this.motion.y = this.motion.y > 0.4 ? this.motion.y : this.motion.y + 0.005;
 			this.renderedPosition.addPosition(this.motion);
 			if (!this.renderedPosition.round().equals(this.position)) {
@@ -32,9 +46,9 @@ export default class FallingTile extends Tile {
 		}
 
 		if (this.canFall) {
-			this.isFalling = true;
+			this._isFalling = true;
 		} else {
-			this.isFalling = false;
+			this._isFalling = false;
 			this.motion.set(0, 0);
 			this.renderedPosition = this.position;
 			//			if (game.world.getTileAt(this.position).type !== BlockType.FALLING) game.world.placeTile(this);
@@ -42,7 +56,7 @@ export default class FallingTile extends Tile {
 	}
 
 	public updateState(): void {
-		this.belowTile = this.getNeighbor(Directions.DOWN);
-		this.canFall = this.belowTile.isAir && this.position.y < 50;
+		this._belowTile = this.getNeighbor(Directions.DOWN);
+		this.canFall = this._belowTile.isAir && this.position.y < 50;
 	}
 }

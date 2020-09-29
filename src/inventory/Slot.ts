@@ -1,4 +1,5 @@
 import MouseManager from '../client/input/MouseManager';
+import AbstractItem from '../items/AbstractItem';
 import { game } from '../main';
 import PIXI from '../PIXI';
 import { SlotEvents } from '../types';
@@ -51,7 +52,7 @@ export default class Slot {
 		this._itemStack = value;
 	}
 
-	public get item() {
+	public get item(): AbstractItem | undefined {
 		return this.itemStack?.item;
 	}
 

@@ -39,6 +39,8 @@ export type SlotEvents = {
 };
 
 export type TileEvents = {
+	update: [];
+	tick: [];
 	place: [Position];
 	replace: [position: Position, replacer: AbstractBlock];
 };

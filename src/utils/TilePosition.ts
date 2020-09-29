@@ -38,7 +38,7 @@ export default class TilePosition extends Position {
 	}
 
 	public add(x: number, y?: number): TilePosition {
-		return TilePosition.from(super.add(x, y));
+		return new TilePosition(this.x + x, this.y + y);
 	}
 
 	public multiply(ratio: number): TilePosition;
