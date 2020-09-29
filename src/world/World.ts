@@ -1,7 +1,7 @@
 import Block from '../blocks/Block';
 import Blocks from '../blocks/Blocks';
-import FallingTile from '../client/renderer/FallingTile';
-import Tile from '../client/renderer/Tile';
+import FallingTile from '../blocks/FallingTile';
+import Tile from '../blocks/Tile';
 import { game } from '../main';
 import PIXI from '../PIXI';
 import { BlockType } from '../types';

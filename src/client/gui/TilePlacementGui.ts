@@ -4,7 +4,7 @@ import { game } from '../../main';
 import PIXI from '../../PIXI';
 import TilePosition from '../../utils/TilePosition';
 import Color from '../renderer/Color';
-import Tile from '../renderer/Tile';
+import Tile from '../../blocks/Tile';
 import Gui from './Gui';
 
 export default class TilePlacementGui extends Gui {

@@ -1,8 +1,8 @@
-import Block from '../../blocks/Block';
-import { game } from '../../main';
-import { Directions } from '../../types';
-import Position from '../../utils/Position';
-import TilePosition from '../../utils/TilePosition';
+import Block from './Block';
+import { game } from '../main';
+import { Directions } from '../types';
+import Position from '../utils/Position';
+import TilePosition from '../utils/TilePosition';
 import Tile from './Tile';
 
 export default class FallingTile extends Tile {

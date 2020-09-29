@@ -4,7 +4,7 @@ import MainGui from './client/gui/MainGui';
 import TilePlacementGui from './client/gui/TilePlacementGui';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
-import FallingTile from './client/renderer/FallingTile';
+import FallingTile from './blocks/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
 import Player from './entities/Player';
 import ItemStack from './inventory/ItemStack';
