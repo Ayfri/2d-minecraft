@@ -11,7 +11,7 @@ export default class Tile extends EventEmitter<TileEvents> {
 	public sprite: PIXI.Sprite;
 	public type: BlockType;
 
-	private _position: TilePosition;
+	protected _position: TilePosition;
 
 	public get position(): TilePosition {
 		return this._position;

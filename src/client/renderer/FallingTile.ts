@@ -8,7 +8,7 @@ import Tile from './Tile';
 export default class FallingTile extends Tile {
 	public canFall: boolean = false;
 	public motion: Position;
-	public renderedPosition: TilePosition;
+	public renderedPosition: Position;
 
 	private _isFalling: boolean = false;
 
@@ -24,7 +24,7 @@ export default class FallingTile extends Tile {
 
 	public constructor(public block: AbstractBlock, position: TilePosition) {
 		super(block, position);
-		this.renderedPosition = position.copy();
+		this.renderedPosition = position.toPosition().copy();
 		this.motion = new Position(0, 0);
 
 		this.on('update', () => {
@@ -40,11 +40,12 @@ export default class FallingTile extends Tile {
 		this.updateState();
 
 		if (this._isFalling) {
-			this.motion.y = this.motion.y > 0.4 ? this.motion.y : this.motion.y + 0.005;
+			this.motion.y = this.motion.y > 10 ? this.motion.y : this.motion.y + 0.2;
 			this.renderedPosition.addPosition(this.motion);
+			this.sprite.position.set(this.renderedPosition.x, this.renderedPosition.y);
 			if (!this.renderedPosition.round().equals(this.position)) {
 				game.world.removeTile(this.position);
-				this.position = this.renderedPosition.round();
+				this._position = TilePosition.fromPositionToTilePosition(this.renderedPosition);
 				game.world.placeTile(this);
 			}
 		}
@@ -54,7 +55,8 @@ export default class FallingTile extends Tile {
 		} else {
 			this._isFalling = false;
 			this.motion.set(0, 0);
-			this.renderedPosition = this.position;
+			this.position = this.position.round();
+			this.renderedPosition = this.position.toPosition();
 		}
 	}
 
