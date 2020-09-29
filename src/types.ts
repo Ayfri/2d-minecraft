@@ -1,4 +1,4 @@
-import type AbstractBlock from './blocks/AbstractBlock';
+import type Block from './blocks/Block';
 import type Key from './client/input/Key';
 import type ItemStack from './inventory/ItemStack';
 import type PIXI from './PIXI';
@@ -23,7 +23,7 @@ export type GameEvents = {
 
 export type PlayerEvents = {
 	changeChunk: [ChunkPosition];
-	placeBlock: [AbstractBlock, TilePosition];
+	placeBlock: [Block, TilePosition];
 };
 
 export type ColorEvents = {
@@ -42,7 +42,7 @@ export type TileEvents = {
 	update: [];
 	tick: [];
 	place: [Position];
-	replace: [position: Position, replacer: AbstractBlock];
+	replace: [position: Position, replacer: Block];
 };
 
 export type Path = string;

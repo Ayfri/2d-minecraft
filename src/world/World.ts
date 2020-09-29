@@ -1,4 +1,4 @@
-import AbstractBlock from '../blocks/AbstractBlock';
+import Block from '../blocks/Block';
 import Blocks from '../blocks/Blocks';
 import FallingTile from '../client/renderer/FallingTile';
 import Tile from '../client/renderer/Tile';
@@ -50,13 +50,13 @@ export default class World {
 		game.app.stage.addChild(tile.sprite);
 	}
 
-	public placeBlock(block: AbstractBlock, position: TilePosition): void {
+	public placeBlock(block: Block, position: TilePosition): void {
 		let tile: Tile = new Tile(block, position);
 		if (block.type === BlockType.FALLING) tile = new FallingTile(block, position);
 		this.placeTile(tile);
 	}
 
-	public replaceBlock(block: AbstractBlock, position: TilePosition): void {
+	public replaceBlock(block: Block, position: TilePosition): void {
 		if (this.isTileAt(position)) {
 			this.getTileAtOrUndefined(position)?.emit('replace', position, block);
 		}

@@ -1,4 +1,4 @@
-import AbstractBlock from '../../blocks/AbstractBlock';
+import Block from '../../blocks/Block';
 import { game } from '../../main';
 import { Directions } from '../../types';
 import Position from '../../utils/Position';
@@ -22,7 +22,7 @@ export default class FallingTile extends Tile {
 		return this._belowTile;
 	}
 
-	public constructor(public block: AbstractBlock, position: TilePosition) {
+	public constructor(public block: Block, position: TilePosition) {
 		super(block, position);
 		this.renderedPosition = position.toPosition().copy();
 		this.motion = new Position(0, 0);

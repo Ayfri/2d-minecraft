@@ -1,5 +1,5 @@
+import Block from './blocks/Block';
 import Blocks from './blocks/Blocks';
-import SimpleBlock from './blocks/SimpleBlock';
 import Button from './client/gui/Button';
 import Gui from './client/gui/Gui';
 import Color from './client/renderer/Color';
@@ -73,13 +73,13 @@ Object.defineProperties(window, {
 	},
 	gameClasses: {
 		value: {
+			Block,
 			Color,
 			Position,
 			SimpleRegistry,
 			Entity,
 			Button,
 			Gui,
-			SimpleBlock,
 			TilePosition,
 			ChunkPosition,
 			Inventory,

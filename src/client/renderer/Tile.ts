@@ -1,4 +1,4 @@
-import AbstractBlock from '../../blocks/AbstractBlock';
+import Block from '../../blocks/Block';
 import { game } from '../../main';
 import PIXI from '../../PIXI';
 import { BlockType, Directions, TileEvents } from '../../types';
@@ -24,7 +24,7 @@ export default class Tile extends EventEmitter<TileEvents> {
 		this.sprite.position.set(position.x, position.y);
 	}
 
-	public constructor(public block: AbstractBlock, position: TilePosition) {
+	public constructor(public block: Block, position: TilePosition) {
 		super();
 		this.sprite = PIXI.Sprite.from(block.texture);
 		this.sprite.width = game.renderer.resolution;

@@ -1,4 +1,4 @@
-import AbstractBlock from '../blocks/AbstractBlock';
+import Block from '../blocks/Block';
 import Blocks from '../blocks/Blocks';
 import Inventory from '../inventory/Inventory';
 import Slot from '../inventory/Slot';
@@ -29,7 +29,7 @@ export default class Player extends Entity {
 
 	public putBlockWhereClicked(): void {
 		const position: TilePosition = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition());
-		const block: AbstractBlock = this.selectedSlot.item ? this.selectedSlot.item.block : Blocks.AIR;
+		const block: Block = this.selectedSlot.item ? this.selectedSlot.item.block : Blocks.AIR;
 		if (game.world.getTileAt(position).block.name !== block.name) game.world.replaceBlock(block, position);
 		this.position = position.toPosition();
 		this.eventEmitter.emit('placeBlock', block, this.tileOn);
