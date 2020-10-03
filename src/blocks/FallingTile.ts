@@ -49,6 +49,12 @@ export default class FallingTile extends Tile {
 				game.world.placeTile(this);
 			}
 		}
+	}
+
+	public updateState(): void {
+		this.ensureNeighbor(Directions.DOWN);
+		this._belowTile = this.getNeighbor(Directions.DOWN);
+		this.canFall = this._belowTile.isAir && this.position.y < 50;
 
 		if (this.canFall) {
 			this._isFalling = true;
@@ -58,11 +64,5 @@ export default class FallingTile extends Tile {
 			this.position = this.position.round();
 			this.renderedPosition = this.position.toPosition();
 		}
-	}
-
-	public updateState(): void {
-		this.ensureNeighbor(Directions.DOWN);
-		this._belowTile = this.getNeighbor(Directions.DOWN);
-		this.canFall = this._belowTile.isAir && this.position.y < 50;
 	}
 }

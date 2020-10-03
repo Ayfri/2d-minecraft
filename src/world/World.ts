@@ -18,6 +18,16 @@ export default class World {
 		this.background.width = window.innerWidth;
 		this.background.height = window.innerHeight;
 		this.background.zIndex = -10000;
+
+		this.init();
+	}
+
+	public init(): void {
+		for (let i = -5; i < 60; i++) {
+			for (let j = -5; j < 60; j++) {
+				this.ensureTileAt(new TilePosition(i, j));
+			}
+		}
 	}
 
 	public getTileAt(position: TilePosition): Tile {
@@ -32,18 +42,13 @@ export default class World {
 	public ensureTileAt(position: TilePosition): void {
 		if (!this.isTileAt(position)) {
 			this.placeBlock(Blocks.AIR, position);
+			console.log(`placing air at ${position.stringify()}`);
 		}
 	}
 
 	public placeTile(tile: Tile): void {
 		if (this.isTileAt(tile.position)) {
 			this.tiles[this.tiles.findIndex((t) => t.position.equals(tile.position))] = tile;
-
-			tile.getNeighbors()
-				.toValuesArray()
-				.forEach((t) => {
-					if (t && !t.isAir) t.emit('update');
-				});
 		} else this.tiles.push(tile);
 		tile.emit('place', tile.position);
 		tile.emit('update');
@@ -76,12 +81,17 @@ export default class World {
 	}
 
 	public clear(): void {
+		this.tiles.forEach((t) => {
+			game.app.stage.removeChild(t.sprite);
+		});
 		this.tiles = [];
+		this.init();
 	}
 
 	public async update(): Promise<void> {
 		for (const tile of this.tiles) {
 			tile.emit('tick');
+			tile.emit('update');
 		}
 	}
 

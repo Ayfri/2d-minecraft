@@ -63,7 +63,7 @@ export default class Game {
 				}
 			}
 
-			for (let [name, item] of Items.list) {
+			for (const [name, item] of Items.list) {
 				item.setTexture(getTexture((item as BlockItem).block ? `block:${name}` : `item${name}`));
 			}
 

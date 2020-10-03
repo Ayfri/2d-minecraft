@@ -37,9 +37,5 @@ export default class Player extends Entity {
 
 	public update(): void {
 		this.tileOn = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition());
-		/*if (!this.chunkIn.equals(this.tileOn.toChunkPosition())) {
-			this.chunkIn = this.tileOn.toChunkPosition();
-			this.eventEmitter.emit('changeChunk', this.tileOn.toChunkPosition());
-		}*/
 	}
 }
