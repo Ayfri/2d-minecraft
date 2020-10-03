@@ -4,11 +4,12 @@ import FallingTile from '../blocks/FallingTile';
 import Tile from '../blocks/Tile';
 import { game } from '../main';
 import PIXI from '../PIXI';
-import { BlockType } from '../types';
+import { BlockType, StringTilePosition } from '../types';
+import Collection from '../utils/Collection';
 import TilePosition from '../utils/TilePosition';
 
 export default class World {
-	public tiles: Tile[] = [];
+	public tiles: Collection<StringTilePosition, Tile> = new Collection();
 	public background: PIXI.Sprite;
 
 	public constructor(public app: PIXI.Application) {
@@ -47,9 +48,9 @@ export default class World {
 	}
 
 	public placeTile(tile: Tile): void {
-		if (this.isTileAt(tile.position)) {
-			this.tiles[this.tiles.findIndex((t) => t.position.equals(tile.position))] = tile;
-		} else this.tiles.push(tile);
+		if (tile.type === BlockType.FALLING) this.tiles.set(tile.position.stringify(), tile as FallingTile);
+		else this.tiles.set(tile.position.stringify(), tile);
+		tile = this.tiles.get(tile.position.stringify());
 		tile.emit('place', tile.position);
 		tile.emit('update');
 		game.app.stage.addChild(tile.sprite);
@@ -81,21 +82,21 @@ export default class World {
 	}
 
 	public clear(): void {
-		this.tiles.forEach((t) => {
+		this.tiles.toValuesArray().forEach((t) => {
 			game.app.stage.removeChild(t.sprite);
 		});
-		this.tiles = [];
+		this.tiles.clear();
 		this.init();
 	}
 
 	public async update(): Promise<void> {
-		for (const tile of this.tiles) {
+		for (const tile of this.tiles.values()) {
 			tile.emit('tick');
 			tile.emit('update');
 		}
 	}
 
 	public getTileAtOrUndefined(position: TilePosition): Tile | undefined {
-		return this.tiles.find((t) => t.position.equals(position));
+		return this.tiles.toValuesArray().find((t) => t.position.equals(position));
 	}
 }

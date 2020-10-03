@@ -6,13 +6,11 @@ export default class Gui implements IShowable {
 	public isShow: boolean;
 
 	public show(): void {
-		this.isShow = true;
-		this.app.stage.addChild(this.container);
+		this.isShow = this.container.visible = true;
 	}
 
 	public hide(): void {
-		this.isShow = false;
-		this.app.stage.removeChild(this.container);
+		this.isShow = this.container.visible = false;
 	}
 
 	private readonly container: PIXI.Container;
@@ -21,6 +19,7 @@ export default class Gui implements IShowable {
 
 	constructor(public readonly app: PIXI.Application) {
 		this.container = new PIXI.Container();
+		this.app.stage.addChild(this.container);
 	}
 
 	public addSprite(name: string, sprite: PIXI.DisplayObject) {
@@ -42,13 +41,8 @@ export default class Gui implements IShowable {
 
 	public removeSprite(name: string): void {
 		if (this.sprites.has(name)) {
-			this.container.removeChild(this.sprites.get(name));
 			this.sprites.delete(name);
+			this.container.removeChild(this.sprites.get(name));
 		}
-	}
-
-	public update() {
-		this.app.stage.removeChild(this.container);
-		this.app.stage.addChild(this.container);
 	}
 }

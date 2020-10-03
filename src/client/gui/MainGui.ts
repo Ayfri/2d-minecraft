@@ -29,6 +29,5 @@ export default class MainGui extends Gui {
 			this.removeObject(c[0]);
 			this.addObject(...c);
 		});
-		super.update();
 	}
 }

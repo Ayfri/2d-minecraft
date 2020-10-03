@@ -36,6 +36,6 @@ export default class DebugGui extends Gui {
 		const mousePosition = TilePosition.fromPositionToTilePosition(game.mouseManager.getMousePosition());
 		this.mouseCoordsText.text = `x: ${mousePosition.x}, y: ${mousePosition.y}`;
 		this.fpsCounter.text = `FPS: ${game.app.ticker.FPS.toFixed()}`;
-		this.mouseBlockText.text = `Block : ${game.world.getTileAt(game.player.tileOn).block.name}`;
+		this.mouseBlockText.text = `Block : ${game.world.getTileAtOrUndefined(game.player.tileOn)?.block.name ?? 'air'}`;
 	}
 }
