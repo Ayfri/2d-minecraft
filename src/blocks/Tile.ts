@@ -1,10 +1,10 @@
-import Block from './Block';
 import { game } from '../main';
 import PIXI from '../PIXI';
 import { BlockType, Directions, TileEvents } from '../types';
 import Collection from '../utils/Collection';
 import EventEmitter from '../utils/EventEmitter';
 import TilePosition from '../utils/TilePosition';
+import Block from './Block';
 
 export default class Tile extends EventEmitter<TileEvents> {
 	public isAir: boolean;

@@ -4,7 +4,6 @@ import MainGui from './client/gui/MainGui';
 import TilePlacementGui from './client/gui/TilePlacementGui';
 import Key from './client/input/Key';
 import MouseManager from './client/input/MouseManager';
-import FallingTile from './blocks/FallingTile';
 import GameRenderer from './client/renderer/GameRenderer';
 import Player from './entities/Player';
 import ItemStack from './inventory/ItemStack';
@@ -14,7 +13,6 @@ import PIXI from './PIXI';
 import TextureManager from './ressources/TextureManager';
 import { BlockType, GameEvents, Path } from './types';
 import EventEmitter from './utils/EventEmitter';
-import TilePosition from './utils/TilePosition';
 import World from './world/World';
 
 export default class Game {
@@ -107,10 +105,6 @@ export default class Game {
 	}
 
 	public postInit() {
-		this.mainGui.show();
-		this.debugGui.show();
-		this.tilePlacementGui.show();
-
 		this.player.hotBar.addItemStack(ItemStack.from(Items.STONE));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.DIRT));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.GRASS));
