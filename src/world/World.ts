@@ -1,6 +1,7 @@
 import Block from '../blocks/Block';
 import Blocks from '../blocks/Blocks';
 import FallingTile from '../blocks/FallingTile';
+import GrassTile from '../blocks/GrassTile';
 import Tile from '../blocks/Tile';
 import { game } from '../main';
 import PIXI from '../PIXI';
@@ -47,16 +48,7 @@ export default class World {
 	}
 
 	public placeTile(tile: Tile): void {
-		switch (tile.type) {
-			case BlockType.FALLING:
-				this.tiles.set(tile.position.stringify(), tile as FallingTile);
-				break;
-
-			default:
-				this.tiles.set(tile.position.stringify(), tile);
-				break;
-		}
-		tile = this.tiles.get(tile.position.stringify());
+		this.tiles.set(tile.position.stringify(), tile);
 		tile.emit('place', tile.position);
 		tile.emit('update');
 		if (!tile.isAir) game.app.stage.addChild(tile.sprite);
@@ -64,7 +56,14 @@ export default class World {
 
 	public placeBlock(block: Block, position: TilePosition): void {
 		let tile: Tile = new Tile(block, position);
-		if (block.type === BlockType.FALLING) tile = new FallingTile(block, position);
+		switch (block.type) {
+			case BlockType.FALLING:
+				tile = new FallingTile(block, position);
+				break;
+			case BlockType.GRASS:
+				tile = new GrassTile(block, position);
+				break;
+		}
 		this.placeTile(tile);
 	}
 

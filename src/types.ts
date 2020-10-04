@@ -78,6 +78,7 @@ export enum BlockType {
 	AIR = 'air',
 	PLAIN = 'plain',
 	FALLING = 'falling',
+	GRASS = 'grass',
 }
 
 export enum InventoryType {
