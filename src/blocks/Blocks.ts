@@ -7,7 +7,7 @@ export default class Blocks {
 
 	public static readonly VOID: Block = Blocks.register('void', new Block('void'));
 	public static readonly AIR: Block = Blocks.register('air', new Block('air', BlockType.AIR));
-	public static readonly DIRT: Block = Blocks.register('dirt', new Block('dirt'));
+	public static readonly DIRT: Block = Blocks.register('dirt', new Block('dirt', BlockType.DIRT));
 	public static readonly GRASS: Block = Blocks.register('grass', new Block('grass', BlockType.GRASS));
 	public static readonly STONE: Block = Blocks.register('stone', new Block('stone'));
 	public static readonly SAND: Block = Blocks.register('sand', new Block('sand', BlockType.FALLING));

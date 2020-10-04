@@ -60,6 +60,13 @@ export default class Tile extends EventEmitter<TileEvents> {
 		this.ensureNeighbor(Directions.RIGHT);
 	}
 
+	public isExposedToSky(): boolean {
+		return game.world.tiles
+			.toValuesArray()
+			.filter((t) => t.position.x === this.position.x && t.position.y < this.position.y)
+			.every((t) => t.isAir);
+	}
+
 	public getNeighbor(direction: Directions): Tile | undefined {
 		return game.world.getTileAtOrUndefined(this._position.addWithDirection(direction, 1));
 	}

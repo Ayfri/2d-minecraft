@@ -1,5 +1,6 @@
 import Block from '../blocks/Block';
 import Blocks from '../blocks/Blocks';
+import DirtTile from '../blocks/DirtTile';
 import FallingTile from '../blocks/FallingTile';
 import GrassTile from '../blocks/GrassTile';
 import Tile from '../blocks/Tile';
@@ -62,6 +63,9 @@ export default class World {
 				break;
 			case BlockType.GRASS:
 				tile = new GrassTile(block, position);
+				break;
+			case BlockType.DIRT:
+				tile = new DirtTile(block, position);
 				break;
 		}
 		this.placeTile(tile);

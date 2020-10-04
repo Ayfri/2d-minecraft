@@ -22,7 +22,7 @@ export default class FallingTile extends Tile {
 		return this._belowTile;
 	}
 
-	public constructor(public block: Block, position: TilePosition) {
+	public constructor(block: Block, position: TilePosition) {
 		super(block, position);
 		this.renderedPosition = position.toPosition().copy();
 		this.motion = new Position(0, 0);
