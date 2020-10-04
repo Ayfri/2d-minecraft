@@ -60,6 +60,18 @@ export default class Tile extends EventEmitter<TileEvents> {
 		this.ensureNeighbor(Directions.RIGHT);
 	}
 
+	public place(): void {
+		game.world.placeTile(this);
+	}
+
+	public replaceTo(block: Block) {
+		game.world.replaceBlock(block, this.position);
+	}
+
+	public remove(): void {
+		game.world.removeTile(this.position);
+	}
+
 	public isExposedToSky(): boolean {
 		return game.world.tiles
 			.toValuesArray()

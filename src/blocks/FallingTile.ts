@@ -1,4 +1,3 @@
-import { game } from '../main';
 import { Directions } from '../types';
 import Position from '../utils/Position';
 import TilePosition from '../utils/TilePosition';
@@ -45,9 +44,9 @@ export default class FallingTile extends Tile {
 			this.renderedPosition.addPosition(this.motion);
 			this.sprite.position.set(this.renderedPosition.x, this.renderedPosition.y);
 			if (!this.renderedPosition.round().equals(this.position)) {
-				game.world.removeTile(this.position);
+				this.remove();
 				this._position = TilePosition.fromPositionToTilePosition(this.renderedPosition);
-				game.world.placeTile(this);
+				this.place();
 				this.ensureNeighbor(Directions.DOWN);
 			}
 		}

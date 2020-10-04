@@ -18,7 +18,7 @@ export default class DirtBlock extends Tile {
 	public async updateState() {
 		if (this.canTransformToGrass()) {
 			await sleep(5000 + Math.random() * 100 * 1000);
-			game.world.replaceBlock(Blocks.GRASS, this.position);
+			this.replaceTo(Blocks.GRASS);
 		}
 	}
 

@@ -1,4 +1,3 @@
-import { game } from '../main';
 import TilePosition from '../utils/TilePosition';
 import { sleep } from '../utils/Utils';
 import Block from './Block';
@@ -17,7 +16,7 @@ export default class GrassTile extends Tile {
 	public async updateState(): Promise<void> {
 		if (!this.isExposedToSky()) {
 			await sleep(5000 + Math.random() * 100 * 1000);
-			game.world.replaceBlock(Blocks.DIRT, this.position);
+			this.replaceTo(Blocks.DIRT);
 		}
 	}
 }
