@@ -43,17 +43,23 @@ export default class World {
 	public ensureTileAt(position: TilePosition): void {
 		if (!this.isTileAt(position)) {
 			this.placeBlock(Blocks.AIR, position);
-			console.log(`placing air at ${position.stringify()}`);
 		}
 	}
 
 	public placeTile(tile: Tile): void {
-		if (tile.type === BlockType.FALLING) this.tiles.set(tile.position.stringify(), tile as FallingTile);
-		else this.tiles.set(tile.position.stringify(), tile);
+		switch (tile.type) {
+			case BlockType.FALLING:
+				this.tiles.set(tile.position.stringify(), tile as FallingTile);
+				break;
+
+			default:
+				this.tiles.set(tile.position.stringify(), tile);
+				break;
+		}
 		tile = this.tiles.get(tile.position.stringify());
 		tile.emit('place', tile.position);
 		tile.emit('update');
-		game.app.stage.addChild(tile.sprite);
+		if (!tile.isAir) game.app.stage.addChild(tile.sprite);
 	}
 
 	public placeBlock(block: Block, position: TilePosition): void {
@@ -73,10 +79,10 @@ export default class World {
 
 	public removeTile(position: TilePosition): void {
 		const tile = this.getTileAt(position);
-		tile.ensureNeighbors();
+		/*tile.ensureNeighbors();
 		tile.getNeighbors().forEach((t) => {
 			t.emit('update');
-		});
+		});*/
 		game.app.stage.removeChild(tile.sprite);
 		this.placeBlock(Blocks.AIR, position);
 	}

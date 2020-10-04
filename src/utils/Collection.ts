@@ -4,10 +4,10 @@ export default class Collection<K, V> extends Map<K, V> {
 	}
 
 	public toValuesArray(): V[] {
-		return [...this.values()];
+		return Array.from(this.values());
 	}
 
 	public toKeysArray(): K[] {
-		return [...this.keys()];
+		return Array.from(this.keys());
 	}
 }

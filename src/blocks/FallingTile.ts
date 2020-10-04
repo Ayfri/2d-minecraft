@@ -26,6 +26,7 @@ export default class FallingTile extends Tile {
 		super(block, position);
 		this.renderedPosition = position.toPosition().copy();
 		this.motion = new Position(0, 0);
+		this.ensureNeighbor(Directions.DOWN);
 
 		this.on('update', () => {
 			this.updateState();
@@ -47,12 +48,12 @@ export default class FallingTile extends Tile {
 				game.world.removeTile(this.position);
 				this._position = TilePosition.fromPositionToTilePosition(this.renderedPosition);
 				game.world.placeTile(this);
+				this.ensureNeighbor(Directions.DOWN);
 			}
 		}
 	}
 
 	public updateState(): void {
-		this.ensureNeighbor(Directions.DOWN);
 		this._belowTile = this.getNeighbor(Directions.DOWN);
 		this.canFall = this._belowTile.isAir && this.position.y < 50;
 

@@ -13,12 +13,8 @@ export default class TilePosition extends Position {
 	}
 
 	public static fromPositionToTilePosition(position: Position): TilePosition {
-		return TilePosition.from(
-			position
-				.subtract(game.renderer.resolution / 2, game.renderer.resolution / 2)
-				.divide(game.renderer.resolution)
-				.round()
-		);
+		const resolutionDivided: number = game.renderer.resolution / 2;
+		return TilePosition.from(position.subtract(resolutionDivided, resolutionDivided).divide(game.renderer.resolution).round());
 	}
 
 	public copy(): TilePosition {
