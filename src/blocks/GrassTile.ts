@@ -14,8 +14,7 @@ export default class GrassTile extends Tile {
 	}
 
 	public async updateState(): Promise<void> {
-		if (!this.isExposedToSky()) {
-			await sleep(5000 + Math.random() * 100 * 1000);
+		if (!this.isExposedToSky() && Math.random() < 0.001) {
 			this.replaceTo(Blocks.DIRT);
 		}
 	}

@@ -26,14 +26,6 @@ app.stage.sortableChildren = true;
 game.preInit();
 game.init();
 
-// Events
-app.ticker.add(() => {
-	if (game.loaded) {
-		game.update();
-		app.stage.sortChildren();
-	}
-});
-
 function resize(app: PIXI.Application) {
 	return function () {
 		const vpw = window.innerWidth;

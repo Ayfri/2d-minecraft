@@ -51,7 +51,7 @@ export default class World {
 	public placeTile(tile: Tile): void {
 		this.tiles.set(tile.position.stringify(), tile);
 		tile.emit('place', tile.position);
-		tile.emit('update');
+		tile.emit('tick');
 		if (!tile.isAir) game.app.stage.addChild(tile.sprite);
 	}
 
@@ -96,8 +96,13 @@ export default class World {
 
 	public async update(): Promise<void> {
 		for (const tile of this.tiles.values()) {
-			tile.emit('tick');
 			tile.emit('update');
+		}
+	}
+
+	public tick(): void {
+		for (const tile of this.tiles.values()) {
+			tile.emit('tick');
 		}
 	}
 

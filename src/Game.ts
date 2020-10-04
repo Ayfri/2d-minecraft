@@ -1,3 +1,4 @@
+import Block from './blocks/Block';
 import Blocks from './blocks/Blocks';
 import DebugGui from './client/gui/DebugGui';
 import MainGui from './client/gui/MainGui';
@@ -31,26 +32,26 @@ export default class Game {
 	constructor(public app: PIXI.Application) {
 		this.eventHandler = new EventEmitter<GameEvents>();
 
-		this.eventHandler.once('launch', () => {
+		this.eventHandler.once('launch', (): void => {
 			this.postInit();
 			console.log('Game launched.');
 		});
 	}
 
-	public init() {
+	public init(): void {
 		this.renderer = new GameRenderer();
 		this.textureManager = new TextureManager(this.app);
 		this.mouseManager = new MouseManager(this.app);
 		this.mainGui = new MainGui(this.app);
 		this.debugGui = new DebugGui(this.app);
 
-		Blocks.list.forEach((block) => {
+		Blocks.list.forEach((block: Block): void => {
 			const path: Path = `./assets/sprites/${block.name}.png`;
 			this.textureManager.preLoadTexture(path, `block:${block.name}`);
 		});
 
-		this.app.loader.onComplete.add(() => {
-			const getTexture = (name: string): PIXI.Texture => {
+		this.app.loader.onComplete.add((): void => {
+			const getTexture: (name: string) => PIXI.Texture = (name: string): PIXI.Texture => {
 				return this.textureManager.getTexture(name) ?? this.textureManager.getTexture(`block:void`);
 			};
 
@@ -78,24 +79,24 @@ export default class Game {
 		this.app.loader.load();
 	}
 
-	public preInit() {
-		this.app.loader.onError.add((params) => {
+	public preInit(): void {
+		this.app.loader.onError.add((params: any): void => {
 			console.warn(params);
 		});
 
-		this.app.renderer.plugins.interaction.on('mouseup', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseUp', event));
-		this.app.renderer.plugins.interaction.on('mousedown', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseDown', event));
-		this.app.renderer.plugins.interaction.on('mousemove', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseMove', event));
-		this.app.renderer.plugins.interaction.on('mouseupoutside', (event: PIXI.InteractionEvent) => this.eventHandler.emit('mouseUpOutside', event));
-		this.app.renderer.plugins.interaction.on('click', (event: PIXI.InteractionEvent) => this.eventHandler.emit('click', event));
+		this.app.renderer.plugins.interaction.on('mouseup', (event: PIXI.InteractionEvent): void => this.eventHandler.emit('mouseUp', event));
+		this.app.renderer.plugins.interaction.on('mousedown', (event: PIXI.InteractionEvent): void => this.eventHandler.emit('mouseDown', event));
+		this.app.renderer.plugins.interaction.on('mousemove', (event: PIXI.InteractionEvent): void => this.eventHandler.emit('mouseMove', event));
+		this.app.renderer.plugins.interaction.on('mouseupoutside', (event: PIXI.InteractionEvent): void => this.eventHandler.emit('mouseUpOutside', event));
+		this.app.renderer.plugins.interaction.on('click', (event: PIXI.InteractionEvent): void => this.eventHandler.emit('click', event));
 
-		document.addEventListener('keydown', (event: KeyboardEvent) => {
+		document.addEventListener('keydown', (event: KeyboardEvent): void => {
 			const key: Key = new Key(event.key);
 			key.isDown = true;
 			this.eventHandler.emit('keydown', key, event);
 		});
 
-		document.addEventListener('keyup', (event: KeyboardEvent) => {
+		document.addEventListener('keyup', (event: KeyboardEvent): void => {
 			const key: Key = new Key(event.key);
 			key.isUp = true;
 			this.eventHandler.emit('keyup', key, event);
@@ -104,20 +105,36 @@ export default class Game {
 		document.body.appendChild(this.app.view);
 	}
 
-	public postInit() {
+	public postInit(): void {
 		this.player.hotBar.addItemStack(ItemStack.from(Items.STONE));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.DIRT));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.GRASS));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.SAND));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.OAK_LOG));
 		this.player.hotBar.addItemStack(ItemStack.from(Items.OAK_LEAVES));
+
+		this.app.ticker.add(
+			() => {
+				this.update();
+			},
+			undefined,
+			PIXI.UPDATE_PRIORITY.HIGH
+		);
+
+		setInterval(() => {
+			this.tick();
+		}, 50);
 	}
 
-	public update() {
+	public update(): void {
 		this.player.update();
 		this.debugGui.update();
 		this.mainGui.update();
-		//noinspection JSIgnoredPromiseFromCall
+		//noinspection JSIgnoredPromiseFromCal
 		this.world.update();
+	}
+
+	public tick(): void {
+		this.world.tick();
 	}
 }

@@ -1,3 +1,4 @@
+import { game } from '../main';
 import { Directions } from '../types';
 import Position from '../utils/Position';
 import TilePosition from '../utils/TilePosition';
@@ -26,13 +27,14 @@ export default class FallingTile extends Tile {
 		this.renderedPosition = position.toPosition().copy();
 		this.motion = new Position(0, 0);
 		this.ensureNeighbor(Directions.DOWN);
+		this.updateState();
 
 		this.on('update', () => {
-			this.updateState();
+			if (this.canFall) this.update();
 		});
 
 		this.on('tick', () => {
-			if (this.canFall) this.update();
+			this.updateState();
 		});
 	}
 
@@ -43,6 +45,7 @@ export default class FallingTile extends Tile {
 			this.motion.y = this.motion.y > 10 ? this.motion.y : this.motion.y + 0.2;
 			this.renderedPosition.addPosition(this.motion);
 			this.sprite.position.set(this.renderedPosition.x, this.renderedPosition.y);
+
 			if (!this.renderedPosition.round().equals(this.position)) {
 				this.remove();
 				this._position = TilePosition.fromPositionToTilePosition(this.renderedPosition);
