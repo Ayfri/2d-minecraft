@@ -79,10 +79,6 @@ export default class World {
 
 	public removeTile(position: TilePosition): void {
 		const tile = this.getTileAt(position);
-		/*tile.ensureNeighbors();
-		tile.getNeighbors().forEach((t) => {
-			t.emit('update');
-		});*/
 		game.app.stage.removeChild(tile.sprite);
 		this.placeBlock(Blocks.AIR, position);
 	}

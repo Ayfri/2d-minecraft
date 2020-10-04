@@ -26,11 +26,14 @@ You can place blocks with the left click.
 
 You can reset the world with the `reset` button on the up left corner.
 
-| Key          | Block     |
-| ------------ | --------- |
-| `&` (or `1`) | Dirt      |
-| `é` (or `2`) | Stone     |
-| `"` (or `3`) | Grass     |
-| `'` (or `4`) | Sand      |
-| `(` (or `5`) | Oak log   |
-| `-` (or `6`) | Oak leave |
+| Key          | Block        |
+| ------------ | ------------ |
+| `&` (or `1`) | First Slot   |
+| `é` (or `2`) | Second Slot  |
+| `"` (or `3`) | Third Slot   |
+| `'` (or `4`) | Fourth Slot  |
+| `(` (or `5`) | Fifth Slot   |
+| `-` (or `6`) | Sixth Slot   |
+| `è` (or `7`) | Seventh Slot |
+| `_` (or `8`) | Eighth Slot  |
+| `ç` (or `9`) | Ninth Slot   |

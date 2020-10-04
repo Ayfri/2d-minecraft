@@ -1,10 +1,10 @@
 import { OutlineFilter } from '@pixi/filter-outline';
 import Blocks from '../../blocks/Blocks';
+import Tile from '../../blocks/Tile';
 import { game } from '../../main';
 import PIXI from '../../PIXI';
 import TilePosition from '../../utils/TilePosition';
 import Color from '../renderer/Color';
-import Tile from '../../blocks/Tile';
 import Gui from './Gui';
 
 export default class TilePlacementGui extends Gui {

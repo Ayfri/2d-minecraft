@@ -1,7 +1,5 @@
-import Blocks from '../../blocks/Blocks';
 import { game } from '../../main';
 import PIXI from '../../PIXI';
-import { BlockType } from '../../types';
 import Position from '../../utils/Position';
 
 export default class MouseManager {
