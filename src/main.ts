@@ -10,7 +10,6 @@ import ItemStack from './inventory/ItemStack';
 import Items from './items/Items';
 import PIXI from './PIXI';
 import SimpleRegistry from './ressources/SimpleRegistry';
-import ChunkPosition from './utils/ChunkPosition';
 import Position from './utils/Position';
 import TilePosition from './utils/TilePosition';
 
@@ -81,7 +80,6 @@ Object.defineProperties(window, {
 			Button,
 			Gui,
 			TilePosition,
-			ChunkPosition,
 			Inventory,
 			ItemStack,
 		},

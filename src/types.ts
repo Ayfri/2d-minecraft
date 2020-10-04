@@ -2,7 +2,6 @@ import type Block from './blocks/Block';
 import type Key from './client/input/Key';
 import type ItemStack from './inventory/ItemStack';
 import type PIXI from './PIXI';
-import type ChunkPosition from './utils/ChunkPosition';
 import type Position from './utils/Position';
 import type TilePosition from './utils/TilePosition';
 
@@ -22,7 +21,6 @@ export type GameEvents = {
 };
 
 export type PlayerEvents = {
-	changeChunk: [ChunkPosition];
 	placeBlock: [Block, TilePosition];
 };
 

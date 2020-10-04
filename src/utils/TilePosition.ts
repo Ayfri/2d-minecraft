@@ -1,6 +1,5 @@
 import { game } from '../main';
 import { Directions, Layer, StringTilePosition } from '../types';
-import ChunkPosition from './ChunkPosition';
 import Position from './Position';
 
 export default class TilePosition extends Position {
@@ -19,10 +18,6 @@ export default class TilePosition extends Position {
 
 	public copy(): TilePosition {
 		return new TilePosition(this.x, this.y);
-	}
-
-	public toChunkPosition(): ChunkPosition {
-		return new ChunkPosition(Math.floor(this.x / 16), Math.floor(this.y / 16));
 	}
 
 	public toPosition(): Position {
