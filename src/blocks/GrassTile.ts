@@ -20,9 +20,8 @@ export default class GrassTile extends Tile {
 
 	public async updateState(): Promise<void> {
 		if (!this.isExposedToSky()) {
-			await sleep(5000 + Math.random() * 50000);
-			game.world.removeTile(this.position);
-			game.world.placeBlock(Blocks.DIRT, this.position);
+			await sleep(5000 + Math.random() * 100 * 1000);
+			game.world.replaceBlock(Blocks.DIRT, this.position);
 		}
 	}
 
