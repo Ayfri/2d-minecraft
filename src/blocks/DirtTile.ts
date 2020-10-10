@@ -1,5 +1,5 @@
 import { game } from '../main';
-import { BlockType, Directions } from '../types';
+import { BlockType } from '../types';
 import TilePosition from '../utils/TilePosition';
 import Block from './Block';
 import Blocks from './Blocks';

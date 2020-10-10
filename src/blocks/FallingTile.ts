@@ -1,4 +1,3 @@
-import { game } from '../main';
 import { Directions } from '../types';
 import Position from '../utils/Position';
 import TilePosition from '../utils/TilePosition';

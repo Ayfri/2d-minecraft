@@ -1,5 +1,4 @@
 import TilePosition from '../utils/TilePosition';
-import { sleep } from '../utils/Utils';
 import Block from './Block';
 import Blocks from './Blocks';
 import Tile from './Tile';
