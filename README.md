@@ -13,8 +13,11 @@ This game does not have a site where to play it although you can download the fi
 
 ## How to play it
 
-**You can now play it [here](http://51.91.39.85:8080/) !!**
+**You can play it [here](http://51.91.39.85:8080/) !!**
 
+## Contributing
+
+To start the game with the code, do this :
 1. Clone the repo with this command : `git clone https://github.com/Ayfri/2d-minecraft.git`.
 2. Then install the dependencies using the `npm i` command.
 3. Then run the `start` script (in the `package.json`) using the `npm run start` command.
