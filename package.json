@@ -21,7 +21,7 @@
 		"http-server": "^0.12.3",
 		"prettier": "^2.1.2",
 		"source-map-loader": "^1.1.1",
-		"ts-loader": "^8.0.4",
+		"ts-loader": "^8.0.7",
 		"typescript": "^4.0.5",
 		"webpack": "^4.44.2",
 		"webpack-cli": "^4.1.0",
