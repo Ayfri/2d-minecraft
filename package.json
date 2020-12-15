@@ -8,7 +8,7 @@
 		"@pixi/filter-outline": "^3.1.1",
 		"@pixi/loaders": "^5.3.3",
 		"@pixi/sprite": "^5.3.3",
-		"@pixi/text": "^5.3.3",
+		"@pixi/text": "^5.3.4",
 		"@pixi/unsafe-eval": "^5.3.3",
 		"webpack-dev-server": "^3.11.0"
 	},
