@@ -5,7 +5,7 @@
 	"main": "src/main.ts",
 	"dependencies": {
 		"@pixi/app": "^5.3.6",
-		"@pixi/filter-outline": "^3.1.1",
+		"@pixi/filter-outline": "^3.2.0",
 		"@pixi/loaders": "^5.3.6",
 		"@pixi/sprite": "^5.3.4",
 		"@pixi/text": "^5.3.6",
