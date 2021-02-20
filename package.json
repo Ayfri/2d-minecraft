@@ -4,7 +4,7 @@
 	"description": "This is a 2d-minecraft like game (more like Terraria).",
 	"main": "src/main.ts",
 	"dependencies": {
-		"@pixi/app": "^5.3.6",
+		"@pixi/app": "^5.3.8",
 		"@pixi/filter-outline": "^3.2.0",
 		"@pixi/loaders": "^5.3.6",
 		"@pixi/sprite": "^5.3.6",
