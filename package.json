@@ -9,7 +9,7 @@
 		"@pixi/loaders": "^5.3.6",
 		"@pixi/sprite": "^5.3.6",
 		"@pixi/text": "^5.3.6",
-		"@pixi/unsafe-eval": "^5.3.6",
+		"@pixi/unsafe-eval": "^6.0.0",
 		"webpack-dev-server": "^3.11.1"
 	},
 	"devDependencies": {
