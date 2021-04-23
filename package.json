@@ -19,7 +19,7 @@
 		"gulp-esbuild": "^0.7.4",
 		"prettier": "^2.2.1",
 		"reload": "^3.1.1",
-		"source-map-loader": "^1.1.3",
+		"source-map-loader": "^2.0.1",
 		"ts-loader": "^8.0.7",
 		"typescript": "^4.1.4"
 	},
