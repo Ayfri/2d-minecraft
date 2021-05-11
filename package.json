@@ -4,7 +4,7 @@
 		"@pixi/app": "^5.3.6",
 		"@pixi/filter-outline": "^3.2.0",
 		"@pixi/loaders": "^5.3.6",
-		"@pixi/sprite": "^5.3.6",
+		"@pixi/sprite": "^6.0.4",
 		"@pixi/text": "^5.3.6",
 		"@pixi/unsafe-eval": "^5.3.6"
 	},
