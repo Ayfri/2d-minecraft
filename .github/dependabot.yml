@@ -1,0 +1,87 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 99
+  labels:
+  - dependencies
+  ignore:
+  - dependency-name: copy-webpack-plugin
+    versions:
+    - "> 6.3.1, < 6.4"
+  - dependency-name: ts-loader
+    versions:
+    - "> 8.0.7, < 8.1"
+  - dependency-name: webpack
+    versions:
+    - "> 4.44.2"
+  - dependency-name: source-map-loader
+    versions:
+    - 2.0.1
+  - dependency-name: ts-loader
+    versions:
+    - 8.1.0
+    - 9.0.0
+    - 9.1.0
+  - dependency-name: ssri
+    versions:
+    - 6.0.2
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+    - 4.0.2
+    - 4.0.3
+  - dependency-name: typescript
+    versions:
+    - 4.1.5
+    - 4.2.2
+    - 4.2.3
+    - 4.2.4
+  - dependency-name: webpack-cli
+    versions:
+    - 4.4.0
+    - 4.5.0
+    - 4.6.0
+  - dependency-name: "@pixi/text"
+    versions:
+    - 5.3.7
+    - 5.3.8
+    - 6.0.0
+    - 6.0.1
+  - dependency-name: "@pixi/unsafe-eval"
+    versions:
+    - 5.3.7
+    - 5.3.8
+    - 6.0.0
+    - 6.0.1
+  - dependency-name: "@pixi/loaders"
+    versions:
+    - 5.3.7
+    - 5.3.8
+    - 6.0.0
+    - 6.0.1
+  - dependency-name: "@pixi/sprite"
+    versions:
+    - 5.3.7
+    - 5.3.8
+    - 6.0.0
+    - 6.0.1
+  - dependency-name: "@pixi/app"
+    versions:
+    - 5.3.7
+    - 5.3.8
+    - 6.0.0
+    - 6.0.1
+  - dependency-name: elliptic
+    versions:
+    - 6.5.4
+  - dependency-name: html-webpack-plugin
+    versions:
+    - 4.5.1
+    - 4.5.2
+  - dependency-name: webpack-dev-server
+    versions:
+    - 3.11.2
