@@ -1,7 +1,7 @@
 {
 	"author": "Ayfri",
 	"dependencies": {
-		"@pixi/app": "^5.3.6",
+		"@pixi/app": "^6.1.0",
 		"@pixi/filter-outline": "^3.2.0",
 		"@pixi/loaders": "^5.3.6",
 		"@pixi/sprite": "^5.3.6",
