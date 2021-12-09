@@ -6,7 +6,9 @@
 		"@pixi/loaders": "^5.3.6",
 		"@pixi/sprite": "^5.3.6",
 		"@pixi/text": "^5.3.6",
-		"@pixi/unsafe-eval": "^5.3.6"
+		"@pixi/unsafe-eval": "^5.3.6",
+		"events": "^3.3.0",
+		"pixi.js": "^6.2.0"
 	},
 	"description": "This is a 2d-minecraft like game (more like Terraria).",
 	"devDependencies": {
