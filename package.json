@@ -11,7 +11,7 @@
 	"description": "This is a 2d-minecraft like game (more like Terraria).",
 	"devDependencies": {
 		"@types/pixi.js": "^5.0.0",
-		"esbuild": "^0.12.0",
+		"esbuild": "^0.14.14",
 		"gulp": "^4.0.2",
 		"gulp-cli": "^2.3.0",
 		"gulp-esbuild": "^0.8.0",
