@@ -11,9 +11,9 @@ This is a 2d-game made in TypeScript with the PIXI.js library and WebPack.
 
 This game does not have a site where to play it although you can download the files and launch it locally.
 
-## How to play it
+# Important :
 
-**You can play it [here](http://51.91.39.85:8080/) !!**
+I'm remaking this game in Kotlin and archiving this repo, for now there's [this repo with the new game](https://github.com/Ayfri/Minekraft-2D).
 
 ## Contributing
 
